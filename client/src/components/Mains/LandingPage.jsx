@@ -124,7 +124,7 @@ const LandingPage = () => {
 
                 {/* Call-to-Action Footer */}
                 <footer className="mt-20 w-full bg-blue-200  dark:bg-cyan-600 text-black py-8 text-center">
-                    <h3 className="text-2xl font-bold mb-4">Ready to Collaborate?</h3>
+                    <h3 className="text-2xl font-bold mb-4 dark:text-white">Ready to Collaborate?</h3>
                     <button className="px-8 py-3 bg-white text-blue-600 rounded-md shadow-md hover:bg-gray-100 transition">
                         Join Now for Free
                     </button>
