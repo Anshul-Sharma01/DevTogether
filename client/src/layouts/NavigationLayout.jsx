@@ -3,6 +3,7 @@ import ThemeToggle from "../components/Misc/ThemeToggle";
 import EditProfile from "../components/Profile/EditProfile.jsx";
 import ChangeAvatar from "../components/Profile/ChangeAvatar.jsx";
 import UpdateBio from "../components/Profile/UpdateBio.jsx";
+import ConfirmLogout from "../components/Auth/ConfirmLogout.jsx";
 
 function NavigationLayout({ children }) {
     const isLoggedIn = true;
@@ -14,6 +15,7 @@ function NavigationLayout({ children }) {
     const [ showEditProfile, setShowEditProfile ] = useState(false); // State for Edit Profile modal
     const [ showEditAvatar, setShowEditAvatar ] = useState(false); // State for Edit Avatar modal
     const [ showBioModal, setShowBioModal ] = useState(false);
+    const [ showLogoutModal, setShowLogoutModal ] = useState(false);
 
     // Refs for handling outside clicks
     const dropdownRef = useRef(null);
@@ -104,7 +106,7 @@ function NavigationLayout({ children }) {
                                         hasSubmenu={true}
                                     />
                                     <DropdownItem label="My Friends" />
-                                    <DropdownItem label="Logout" />
+                                    <DropdownItem label="Logout" onClick={() => setShowLogoutModal(true)} />
                                 </div>
                             )}
 
@@ -137,6 +139,11 @@ function NavigationLayout({ children }) {
             {
                 showBioModal && (
                     <UpdateBio showBioModal={showBioModal} setShowBioModal={setShowBioModal}/>
+                )
+            }
+            {
+                showLogoutModal && (
+                    <ConfirmLogout showLogoutModal={showLogoutModal} setShowLogoutModal={setShowLogoutModal} />
                 )
             }
         </div>
