@@ -2,16 +2,18 @@ import { useState, useRef, useEffect } from "react";
 import ThemeToggle from "../components/Misc/ThemeToggle";
 import EditProfile from "../components/Profile/EditProfile.jsx";
 import ChangeAvatar from "../components/Profile/ChangeAvatar.jsx";
+import UpdateBio from "../components/Profile/UpdateBio.jsx";
 
 function NavigationLayout({ children }) {
     const isLoggedIn = true;
 
     // State for dropdowns
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-    const [isCollabDropdownOpen, setIsCollabDropdownOpen] = useState(false);
-    const [showEditProfile, setShowEditProfile] = useState(false); // State for Edit Profile modal
-    const [showEditAvatar, setShowEditAvatar] = useState(false); // State for Edit Avatar modal
+    const [ isDropdownOpen, setIsDropdownOpen ] = useState(false);
+    const [ isSettingsOpen, setIsSettingsOpen ] = useState(false);
+    const [ isCollabDropdownOpen, setIsCollabDropdownOpen ] = useState(false);
+    const [ showEditProfile, setShowEditProfile ] = useState(false); // State for Edit Profile modal
+    const [ showEditAvatar, setShowEditAvatar ] = useState(false); // State for Edit Avatar modal
+    const [ showBioModal, setShowBioModal ] = useState(false);
 
     // Refs for handling outside clicks
     const dropdownRef = useRef(null);
@@ -110,7 +112,7 @@ function NavigationLayout({ children }) {
                             {isSettingsOpen && isDropdownOpen && (
                                 <div className="absolute right-48 top-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-md rounded-md py-2 z-30 border dark:border-gray-700">
                                     <DropdownItem label="Change Password" />
-                                    <DropdownItem label="Update Email" />
+                                    <DropdownItem label="Update Bio"  onClick={() => setShowBioModal(true)}/>
                                     <DropdownItem label="Delete Account" />
                                 </div>
                             )}
@@ -121,12 +123,20 @@ function NavigationLayout({ children }) {
             <main className="w-full h-full">{children}</main>
 
             {/* Edit Profile Modal */}
-            {showEditProfile && (
-                <EditProfile showEditProfile={showEditProfile} setShowEditProfile={setShowEditProfile} />
-            )}
+            {
+                showEditProfile && (
+                    <EditProfile showEditProfile={showEditProfile} setShowEditProfile={setShowEditProfile} />
+                )
+            }
+            {/* Edit Avatar Modal */}
             {
                 showEditAvatar && (
                     <ChangeAvatar showEditAvatar={setShowEditAvatar}/>
+                )
+            }
+            {
+                showBioModal && (
+                    <UpdateBio showBioModal={showBioModal} setShowBioModal={setShowBioModal}/>
                 )
             }
         </div>
