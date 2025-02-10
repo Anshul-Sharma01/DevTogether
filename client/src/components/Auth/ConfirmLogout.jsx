@@ -16,31 +16,31 @@ const ConfirmLogout = ({ showLogoutModal, setShowLogoutModal }) => {
             {showLogoutModal && (
                 <div className="fixed inset-0 flex items-center justify-center z-50">
                     {/* Modal Background */}
-                    <div className="absolute inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-md"></div>
+                    <div className="absolute inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-md transition-opacity duration-300 ease-in-out"></div>
 
                     {/* Modal Container */}
-                    <div className="relative bg-white dark:bg-gray-900 p-4 rounded-lg shadow-lg w-96 text-center z-50">
-                        <p className="text-xl mt-8 text-gray-900 dark:text-white">
+                    <div className="relative bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-lg w-full max-w-md text-center z-50 transform transition-transform duration-300 ease-in-out scale-100">
+                        <p className="text-2xl font-bold mt-4 text-gray-900 dark:text-white">
                             Are you sure you want to logout?
                         </p>
 
                         {/* Close Button */}
                         <button onClick={() => setShowLogoutModal(false)}>
-                            <RxCross2 className="text-3xl absolute top-2 right-2 text-gray-700 dark:text-white cursor-pointer"/>
+                            <RxCross2 className="text-3xl absolute top-4 right-4 text-gray-700 dark:text-white cursor-pointer transition-transform duration-300 ease-in-out hover:scale-110 hover:rotate-90" />
                         </button>
 
                         {/* Buttons Row */}
-                        <div className="flex justify-center gap-4 mb-4">
+                        <div className="flex justify-center gap-6 mt-8 mb-4">
                             <button
                                 onClick={handleLogout}
-                                className="bg-red-500 text-white px-6 py-2 rounded-md hover:bg-red-700 transition duration-300"
+                                className="bg-red-500 text-white px-8 py-3 rounded-full hover:bg-red-700 transition duration-300 ease-in-out shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-red-400"
                             >
                                 Logout
                             </button>
 
                             <button
                                 onClick={() => setShowLogoutModal(false)}
-                                className="bg-gray-400 text-black dark:text-white px-6 py-2 rounded-md hover:bg-gray-700 hover:text-white transition duration-300"
+                                className="bg-gray-400 text-black dark:text-white px-8 py-3 rounded-full hover:bg-gray-700 hover:text-white transition duration-300 ease-in-out shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
                             >
                                 Cancel
                             </button>

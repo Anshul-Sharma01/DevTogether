@@ -4,6 +4,7 @@ import EditProfile from "../components/Profile/EditProfile.jsx";
 import ChangeAvatar from "../components/Profile/ChangeAvatar.jsx";
 import UpdateBio from "../components/Profile/UpdateBio.jsx";
 import ConfirmLogout from "../components/Auth/ConfirmLogout.jsx";
+import DeleteAccount from "../components/Auth/DeleteAccount.jsx";
 
 function NavigationLayout({ children }) {
     const isLoggedIn = true;
@@ -16,6 +17,7 @@ function NavigationLayout({ children }) {
     const [ showEditAvatar, setShowEditAvatar ] = useState(false); // State for Edit Avatar modal
     const [ showBioModal, setShowBioModal ] = useState(false);
     const [ showLogoutModal, setShowLogoutModal ] = useState(false);
+    const [ showDeleteAccountModal, setShowDeleteAccountModal ] = useState(false);
 
     // Refs for handling outside clicks
     const dropdownRef = useRef(null);
@@ -115,7 +117,7 @@ function NavigationLayout({ children }) {
                                 <div className="absolute right-48 top-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-md rounded-md py-2 z-30 border dark:border-gray-700">
                                     <DropdownItem label="Change Password" />
                                     <DropdownItem label="Update Bio"  onClick={() => setShowBioModal(true)}/>
-                                    <DropdownItem label="Delete Account" />
+                                    <DropdownItem label="Delete Account" onClick={() => setShowDeleteAccountModal(true)} />
                                 </div>
                             )}
                         </li>
@@ -133,7 +135,7 @@ function NavigationLayout({ children }) {
             {/* Edit Avatar Modal */}
             {
                 showEditAvatar && (
-                    <ChangeAvatar showEditAvatar={setShowEditAvatar}/>
+                    <ChangeAvatar showEditAvatar={setShowEditAvatar} setShowEditAvatar={setShowEditAvatar}/>
                 )
             }
             {
@@ -144,6 +146,11 @@ function NavigationLayout({ children }) {
             {
                 showLogoutModal && (
                     <ConfirmLogout showLogoutModal={showLogoutModal} setShowLogoutModal={setShowLogoutModal} />
+                )
+            }
+            {
+                showDeleteAccountModal && (
+                    <DeleteAccount showDeleteAccountModal={showDeleteAccountModal} setShowDeleteAccountModal={setShowDeleteAccountModal} />
                 )
             }
         </div>

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 const EditProfile = ({ showEditProfile, setShowEditProfile }) => {
     const userNameFromStore = useSelector((state) => state?.auth?.userDetails?.userName);
-    
+
     // State for editable input
     const [userName, setUserName] = useState(userNameFromStore || "John Doe");
 
@@ -20,33 +20,33 @@ const EditProfile = ({ showEditProfile, setShowEditProfile }) => {
             {showEditProfile && (
                 <div className="fixed inset-0 flex items-center justify-center z-50">
                     {/* Modal Background */}
-                    <div className="absolute inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-md"></div>
+                    <div className="absolute inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-md transition-opacity duration-300 ease-in-out"></div>
 
                     {/* Modal Container */}
-                    <div className="relative bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg w-96 text-center z-50">
-                        <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
+                    <div className="relative bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-lg w-full max-w-md text-center z-50 transform transition-transform duration-300 ease-in-out scale-100">
+                        <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
                             Edit Profile
                         </h2>
 
                         {/* Close Button */}
-                        <button onClick={() => setShowEditProfile(false)}>
-                            <RxCross2 className="text-3xl absolute top-2 right-2 text-gray-700 dark:text-white cursor-pointer"/>
+                        <button onClick={() => setShowEditProfile(false)} aria-label="Close">
+                            <RxCross2 className="text-3xl absolute top-4 right-4 text-gray-700 dark:text-white cursor-pointer transition-transform duration-300 ease-in-out hover:scale-110 hover:rotate-90" />
                         </button>
 
                         {/* Form */}
-                        <form onSubmit={handleSubmit}>
+                        <form onSubmit={handleSubmit} className="space-y-4">
                             <input
                                 type="text"
-                                className="w-full p-2 mb-4 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
+                                className="w-full p-3 border border-gray-300 dark:border-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white text-center"
                                 placeholder="Enter your updated name"
                                 value={userName}
                                 onChange={(e) => setUserName(e.target.value)}
                             />
-                            
+
                             {/* Submit Button */}
                             <button
                                 type="submit"
-                                className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition duration-300"
+                                className="w-full bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition duration-300"
                             >
                                 Submit
                             </button>
@@ -55,7 +55,7 @@ const EditProfile = ({ showEditProfile, setShowEditProfile }) => {
                         {/* Cancel Button */}
                         <button
                             onClick={() => setShowEditProfile(false)}
-                            className="mt-3 text-black dark:text-white hover:text-white bg-gray-400 w-full px-4 py-2 rounded-lg hover:bg-gray-700"
+                            className="mt-4 text-black dark:text-white hover:text-white bg-gray-400 w-full px-6 py-3 rounded-full hover:bg-gray-700 transition duration-300"
                         >
                             Cancel
                         </button>
