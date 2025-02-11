@@ -5,6 +5,7 @@ import ChangeAvatar from "../components/Profile/ChangeAvatar.jsx";
 import UpdateBio from "../components/Profile/UpdateBio.jsx";
 import ConfirmLogout from "../components/Auth/ConfirmLogout.jsx";
 import DeleteAccount from "../components/Auth/DeleteAccount.jsx";
+import NewCollab from "../components/Collabs/NewCollab.jsx";
 
 function NavigationLayout({ children }) {
     const isLoggedIn = true;
@@ -18,6 +19,7 @@ function NavigationLayout({ children }) {
     const [ showBioModal, setShowBioModal ] = useState(false);
     const [ showLogoutModal, setShowLogoutModal ] = useState(false);
     const [ showDeleteAccountModal, setShowDeleteAccountModal ] = useState(false);
+    const [ showNewCollabModal, setShowNewCollabModal ] = useState(false);
 
     // Refs for handling outside clicks
     const dropdownRef = useRef(null);
@@ -71,7 +73,7 @@ function NavigationLayout({ children }) {
                             {/* Collab Dropdown Menu */}
                             {isCollabDropdownOpen && (
                                 <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-md rounded-md py-2 z-20 border dark:border-gray-700">
-                                    <DropdownItem label="Create New Collab" />
+                                    <DropdownItem label="Create New Collab" onClick={() => setShowNewCollabModal(true)} />
                                     <DropdownItem label="Recent Collab" />
                                     <DropdownItem label="All Collabs" />
                                 </div>
@@ -151,6 +153,11 @@ function NavigationLayout({ children }) {
             {
                 showDeleteAccountModal && (
                     <DeleteAccount showDeleteAccountModal={showDeleteAccountModal} setShowDeleteAccountModal={setShowDeleteAccountModal} />
+                )
+            }
+            {
+                showNewCollabModal && (
+                    <NewCollab showNewCollabModal={showNewCollabModal} setShowNewCollabModel={setShowNewCollabModal}/>
                 )
             }
         </div>
