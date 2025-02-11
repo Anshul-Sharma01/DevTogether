@@ -3,7 +3,7 @@ import NavigationLayout from "../../layouts/NavigationLayout.jsx";
 const LandingPage = () => {
     return (
         <NavigationLayout>
-            <section className="dark:bg-gray-900 w-full bg-white min-h-screen flex flex-col items-center justify-center">
+            <section className="dark:bg-gray-900 w-full bg-white min-h-screen flex flex-col items-center justify-center px-4">
                 {/* Hero Section */}
                 <div className="text-center max-w-3xl mt-12">
                     <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-cyan-400 mb-4">
@@ -13,17 +13,17 @@ const LandingPage = () => {
                         Seamless real-time collaboration for students and teams. Code, preview, and communicate—all in one place.
                     </p>
                     <div className="flex justify-center space-x-4">
-                        <button className="px-6 py-3 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-800 transition">
+                        <button className="px-6 py-3 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-800 transition duration-300 ease-in-out transform hover:scale-105">
                             Get Started
                         </button>
-                        <button className="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-md shadow-md hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+                        <button className="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-md shadow-md hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-300 ease-in-out transform hover:scale-105">
                             Learn More
                         </button>
                     </div>
                 </div>
 
                 {/* Features Section */}
-                <section className="mt-20 grid gap-8 md:grid-cols-2 lg:grid-cols-3 max-w-6xl">
+                <section className="mt-20 grid gap-8 md:grid-cols-2 lg:grid-cols-3 max-w-6xl px-4">
                     {[
                         {
                             title: "Real-Time Collaboration",
@@ -52,7 +52,7 @@ const LandingPage = () => {
                     ].map((feature, index) => (
                         <div
                             key={index}
-                            className="p-6 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md transition transform hover:-translate-y-2 hover:shadow-lg"
+                            className="p-6 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md transition transform hover:-translate-y-2 hover:shadow-lg duration-300 ease-in-out"
                         >
                             <h3 className="text-xl font-semibold text-gray-900 dark:text-cyan-400 mb-2">
                                 {feature.title}
@@ -63,7 +63,7 @@ const LandingPage = () => {
                 </section>
 
                 {/* How It Works Section */}
-                <section className="mt-20 max-w-4xl text-center">
+                <section className="mt-20 max-w-4xl text-center px-4">
                     <h2 className="text-3xl font-bold text-gray-900 dark:text-cyan-400 mb-6">
                         How It Works
                     </h2>
@@ -85,7 +85,7 @@ const LandingPage = () => {
                                 description: "Code together with live previews, chat, and integrated tools."
                             }
                         ].map((item, index) => (
-                            <div key={index} className="p-6 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md">
+                            <div key={index} className="p-6 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md transition transform hover:-translate-y-2 hover:shadow-lg duration-300 ease-in-out">
                                 <div className="w-12 h-12 flex items-center justify-center bg-blue-600 text-white rounded-full mx-auto mb-4 text-xl font-bold">
                                     {item.step}
                                 </div>
@@ -99,7 +99,7 @@ const LandingPage = () => {
                 </section>
 
                 {/* Testimonials Section */}
-                <section className="mt-20 max-w-5xl text-center">
+                <section className="mt-20 max-w-5xl text-center px-4">
                     <h2 className="text-3xl font-bold text-gray-900 dark:text-cyan-400 mb-6">
                         What Our Users Say
                     </h2>
@@ -114,7 +114,7 @@ const LandingPage = () => {
                                 feedback: "I love the live preview feature. It helped me debug faster and collaborate effectively with my team."
                             }
                         ].map((testimonial, index) => (
-                            <div key={index} className="p-6 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md">
+                            <div key={index} className="p-6 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md transition transform hover:-translate-y-2 hover:shadow-lg duration-300 ease-in-out">
                                 <p className="italic text-gray-700 dark:text-gray-300 mb-4">“{testimonial.feedback}”</p>
                                 <h4 className="font-semibold text-gray-900 dark:text-cyan-400">- {testimonial.name}</h4>
                             </div>
@@ -123,9 +123,9 @@ const LandingPage = () => {
                 </section>
 
                 {/* Call-to-Action Footer */}
-                <footer className="mt-20 w-full bg-blue-200  dark:bg-cyan-600 text-black py-8 text-center">
+                <footer className="mt-20 w-full bg-blue-200 dark:bg-cyan-600 text-black py-8 text-center">
                     <h3 className="text-2xl font-bold mb-4 dark:text-white">Ready to Collaborate?</h3>
-                    <button className="px-8 py-3 bg-white text-blue-600 rounded-md shadow-md hover:bg-gray-100 transition">
+                    <button className="px-8 py-3 bg-white text-blue-600 rounded-md shadow-md hover:bg-gray-100 transition duration-300 ease-in-out transform hover:scale-105">
                         Join Now for Free
                     </button>
                 </footer>
