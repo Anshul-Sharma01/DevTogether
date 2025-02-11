@@ -28,7 +28,7 @@ const NewCollab = ({ showNewCollabModal, setShowNewCollabModel }) => {
 
                     {/* Modal Container */}
                     <div className="relative bg-white p-6 dark:bg-gray-900 rounded-2xl shadow-lg w-full max-w-md text-center z-50 transform transition-transform duration-300 ease-in-out scale-100">
-                        <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
+                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
                             Create a new <span className="text-red-500 dark:text-blue-500">Collab</span>
                         </h2>
                         {/* Close Button */}
@@ -45,7 +45,7 @@ const NewCollab = ({ showNewCollabModal, setShowNewCollabModel }) => {
                                 required
                                 className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600 transition duration-300"
                             />
-                            <div className="flex flex-wrap flex-row justify-center gap-4">
+                            <div className="flex flex-wrap flex-row justify-center gap-4 dark:text-white">
                                 {options.map((option) => (
                                     <div
                                         key={option.id}

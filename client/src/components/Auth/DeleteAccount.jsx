@@ -34,7 +34,7 @@ const DeleteAccount = ({ showDeleteAccountModal, setShowDeleteAccountModal }) =>
                             type="text"
                             value={deleteText}
                             onChange={(e) => setDeleteText(e.target.value)}
-                            placeholder="Type 'DELETE'"
+                            placeholder="Type DELETE"
                             className={`w-full p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 ${deleteText === "DELETE" ? "text-red-500 focus:ring-red-400" : "text-gray-800 focus:ring-blue-400"} dark:bg-gray-800 dark:text-white`}
                         />
 

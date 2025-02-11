@@ -44,21 +44,24 @@ const EditProfile = ({ showEditProfile, setShowEditProfile }) => {
                             />
 
                             {/* Submit Button */}
-                            <button
-                                type="submit"
-                                className="w-full bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition duration-300"
-                            >
-                                Submit
-                            </button>
+                            <div className="flex flex-row justify-center items-center gap-4">
+                                <button
+                                    type="submit"
+                                    className="w-full bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-300"
+                                >
+                                    Submit
+                                </button>
+                                <button
+                                    onClick={() => setShowEditProfile(false)}
+                                    className=" text-black dark:text-white hover:text-white bg-gray-400 w-full px-6 py-3 rounded-lg hover:bg-gray-700 transition duration-300"
+                                >
+                                    Cancel
+                                </button>
+
+                            </div>
                         </form>
 
                         {/* Cancel Button */}
-                        <button
-                            onClick={() => setShowEditProfile(false)}
-                            className="mt-4 text-black dark:text-white hover:text-white bg-gray-400 w-full px-6 py-3 rounded-full hover:bg-gray-700 transition duration-300"
-                        >
-                            Cancel
-                        </button>
                     </div>
                 </div>
             )}
