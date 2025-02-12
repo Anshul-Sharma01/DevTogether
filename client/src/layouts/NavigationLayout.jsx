@@ -6,9 +6,12 @@ import UpdateBio from "../components/Profile/UpdateBio.jsx";
 import ConfirmLogout from "../components/Auth/ConfirmLogout.jsx";
 import DeleteAccount from "../components/Auth/DeleteAccount.jsx";
 import NewCollab from "../components/Collabs/NewCollab.jsx";
+import { useNavigate } from "react-router-dom";
 
 function NavigationLayout({ children }) {
     const isLoggedIn = true;
+
+    const navigate = useNavigate();
 
     // State for dropdowns
     const [ isDropdownOpen, setIsDropdownOpen ] = useState(false);
@@ -75,7 +78,7 @@ function NavigationLayout({ children }) {
                                 <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-md rounded-md py-2 z-20 border dark:border-gray-700">
                                     <DropdownItem label="Create New Collab" onClick={() => setShowNewCollabModal(true)} />
                                     <DropdownItem label="Recent Collab" />
-                                    <DropdownItem label="All Collabs" />
+                                    <DropdownItem label="All Collabs"  />
                                 </div>
                             )}
                         </li>
@@ -109,7 +112,7 @@ function NavigationLayout({ children }) {
                                         onClick={() => setIsSettingsOpen(!isSettingsOpen)}
                                         hasSubmenu={true}
                                     />
-                                    <DropdownItem label="My Friends" />
+                                    <DropdownItem label="My Friends" onClick={() => navigate("/user/friends")} />
                                     <DropdownItem label="Logout" onClick={() => setShowLogoutModal(true)} />
                                 </div>
                             )}

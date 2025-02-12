@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { FaHtml5, FaReact, FaNodeJs } from "react-icons/fa";
-import { SiJavascript, SiCustomink } from "react-icons/si";
 import { FaDev } from "react-icons/fa6";
+import toast from "react-hot-toast";
 
 const NewCollab = ({ showNewCollabModal, setShowNewCollabModel }) => {
     const [collabName, setCollabName] = useState("");
@@ -18,6 +18,14 @@ const NewCollab = ({ showNewCollabModal, setShowNewCollabModel }) => {
     const handleOptionClick = (id) => {
         setSelectedOption(id);
     };
+
+    const handleSubmit = () => {
+        toast.dismiss();
+        if(collabName === ""){
+            toast.error("Please enter the collab title");
+            return;
+        }
+    }
 
     return (
         <>
@@ -35,7 +43,7 @@ const NewCollab = ({ showNewCollabModal, setShowNewCollabModel }) => {
                         <button onClick={() => setShowNewCollabModel(false)} aria-label="Close">
                             <RxCross2 className="text-3xl absolute top-4 right-4 text-gray-700 dark:text-white cursor-pointer transition-transform duration-300 ease-in-out hover:scale-110 hover:rotate-90" />
                         </button>
-                        <form className="space-y-4">
+                        <form noValidate className="space-y-4">
                             <input
                                 type="text"
                                 id="collabName"
@@ -63,6 +71,7 @@ const NewCollab = ({ showNewCollabModal, setShowNewCollabModel }) => {
                             </div>
                             <div className="flex flex-row justify-center items-center gap-4">
                                 <button
+                                    onClick={handleSubmit}
                                     type="submit"
                                     className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300 shadow-md hover:shadow-lg"
                                 >
