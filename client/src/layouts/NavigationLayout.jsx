@@ -78,7 +78,7 @@ function NavigationLayout({ children }) {
                                 <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-md rounded-md py-2 z-20 border dark:border-gray-700">
                                     <DropdownItem label="Create New Collab" onClick={() => setShowNewCollabModal(true)} />
                                     <DropdownItem label="Recent Collab" />
-                                    <DropdownItem label="All Collabs"  />
+                                    <DropdownItem label="All Collabs"  onClick={()=>navigate('/collabs/all-collabs')} />
                                 </div>
                             )}
                         </li>
