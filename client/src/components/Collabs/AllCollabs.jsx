@@ -3,6 +3,8 @@ import NavigationLayout from "../../layouts/NavigationLayout";
 import { RxCross2 } from "react-icons/rx";
 import { FiRefreshCcw } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import NewCollab from "./NewCollab";
+import AddCollab from "./AddCollab"; 
 
 const collabs = [
   {
@@ -26,20 +28,21 @@ const collabs = [
 const AllCollabs = () => {
   const [view, setView] = useState("grid");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isNewCollabOpen, setIsNewCollabOpen] = useState(false);
+  const [isAddCollabOpen, setIsAddCollabOpen] = useState(false);
   const [isSpinning, setIsSpinning] = useState(false);
 
   useEffect(() => {
     if (isSpinning) {
       const timer = setTimeout(() => {
         setIsSpinning(false);
-      }, 1000); // Spin for 2 seconds
+      }, 1000);
       return () => clearTimeout(timer);
     }
   }, [isSpinning]);
 
   const handleSyncClick = () => {
     setIsSpinning(true);
-    // Add your sync logic here
   };
 
   return (
@@ -77,19 +80,42 @@ const AllCollabs = () => {
         </Link>
       </div>
 
+      {/* Add Project Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="absolute inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-md transition-opacity duration-300 ease-in-out"></div>
           <div className="relative bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-lg w-full max-w-md text-center z-50 transform transition-transform duration-300 ease-in-out scale-100">
-            <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Create Project</h2>
+            <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Create Collab</h2>
             <button onClick={() => setIsModalOpen(false)} aria-label="Close">
               <RxCross2 className="text-3xl absolute top-4 right-4 text-gray-700 dark:text-white cursor-pointer transition-transform duration-300 ease-in-out hover:scale-110 hover:rotate-90" />
             </button>
-            <button className="block w-full px-4 py-2 bg-white text-black hover:bg-blue-600 border-solid border-2 border-gray-400 hover:text-white rounded-xl mb-2 transition-colors duration-300">Add Existing Project</button>
-            <button className="block w-full px-4 py-2 border-solid border-2 border-gray-400 text-black hover:bg-blue-600 hover:text-white rounded-xl transition-colors duration-300">Create New Project</button>
+            <button
+              onClick={() => {
+                setIsModalOpen(false);
+                setIsAddCollabOpen(true);
+              }}
+              className="block w-full px-4 py-2 bg-white text-black hover:bg-blue-600 border-solid border-2 border-gray-400 hover:text-white rounded-xl mb-2 transition-colors duration-300"
+            >
+              Add Existing Collab
+            </button>
+            <button
+              onClick={() => {
+                setIsModalOpen(false);
+                setIsNewCollabOpen(true);
+              }}
+              className="block w-full px-4 py-2 border-solid border-2 border-gray-400 text-black hover:bg-blue-600 hover:text-white rounded-xl transition-colors duration-300"
+            >
+              Create New Collab
+            </button>
           </div>
         </div>
       )}
+
+      {/* New Collab Modal */}
+      {isNewCollabOpen && <NewCollab showNewCollabModal={isNewCollabOpen} setShowNewCollabModel={setIsNewCollabOpen} />}
+
+      {/* Add Existing Project Modal */}
+      {isAddCollabOpen && <AddCollab showAddProject={isAddCollabOpen} setShowAddProject={setIsAddCollabOpen} />}
     </NavigationLayout>
   );
 };
