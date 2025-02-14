@@ -4,7 +4,7 @@ import { RxCross2 } from "react-icons/rx";
 import { FiRefreshCcw } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import NewCollab from "./NewCollab";
-import AddCollab from "./AddCollab"; 
+import AddCollab from "./AddCollab";
 
 const collabs = [
   {
@@ -21,6 +21,14 @@ const collabs = [
     description: "A scalable e-commerce solution for online businesses.",
     participants: 8,
     collabOwner: "Jane Smith",
+    techStack: ["Next.js", "TailwindCSS", "MongoDB"],
+  },
+  {
+    id: 2,
+    title: "Street Cafe",
+    description: "A scalable e-commerce solution for online businesses.",
+    participants: 2,
+    collabOwner: "Vansh Patial",
     techStack: ["Next.js", "TailwindCSS", "MongoDB"],
   },
 ];
@@ -67,17 +75,21 @@ const AllCollabs = () => {
           </button>
         </div>
 
-        <Link to={"/collab/:collabId"} className={view === "grid" ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" : "flex flex-col space-y-4"}>
+        <div className={view === "grid" ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" : "flex flex-col space-y-4"}>
           {collabs.map((collab) => (
-            <div key={collab.id} className="p-6 border rounded-lg bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <h2 className="text-2xl font-bold mb-4 text-blue-600 dark:text-blue-400">{collab.title}</h2>
-              <p className="mb-4 text-green-700 dark:text-green-500">{collab.description}</p>
-              <p className="text-sm text-gray-500 dark:text-gray-300 mb-2">Participants: {collab.participants}</p>
-              <p className="text-sm text-gray-500 dark:text-gray-300 mb-2">Owner: {collab.collabOwner}</p>
-              <p className="text-sm text-gray-500 dark:text-gray-300">Tech Stack: {collab.techStack.join(", ")}</p>
-            </div>
+            <Link key={collab.id} to={`/collab/${collab.id}`} className="p-6 border rounded-lg bg-gray-100 shadow-gray-400 dark:bg-gray-800 shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col sm:flex-row">
+              <div className="flex-1">
+                <h2 className="text-2xl font-bold mb-4 text-blue-600 dark:text-blue-400">{collab.title}</h2>
+                <p className="mb-4 text-green-700 dark:text-green-500">{collab.description}</p>
+              </div>
+              <div className="flex-1">
+                <p className="text-sm text-gray-500 dark:text-gray-300 mb-2">Participants: {collab.participants}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-300 mb-2">Owner: {collab.collabOwner}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-300">Tech Stack: {collab.techStack.join(", ")}</p>
+              </div>
+            </Link>
           ))}
-        </Link>
+        </div>
       </div>
 
       {/* Add Project Modal */}
@@ -103,7 +115,7 @@ const AllCollabs = () => {
                 setIsModalOpen(false);
                 setIsNewCollabOpen(true);
               }}
-              className="block w-full px-4 py-2 border-solid border-2 border-gray-400 text-black hover:bg-blue-600 hover:text-white rounded-xl transition-colors duration-300"
+              className="block w-full px-4 py-2 bg-white text-black hover:bg-blue-600 border-solid border-2 border-gray-400 hover:text-white rounded-xl mb-2 transition-colors duration-300"
             >
               Create New Collab
             </button>
