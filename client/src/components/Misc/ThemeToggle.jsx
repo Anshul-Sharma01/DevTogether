@@ -42,7 +42,7 @@ function ThemeToggle(){
                         transform: isDarkMode ? 'scale(0.5)' : 'scale(1)',
                     }}
                 >
-                    <FiSun size={30} />
+                    <FiMoon size={30} />
                 </div>
 
                 <div
@@ -53,7 +53,7 @@ function ThemeToggle(){
                         transform: isDarkMode ? 'scale(1)' : 'scale(0.5)',
                     }}
                 >
-                    <FiMoon size={30} />
+                    <FiSun size={30} />
                 </div>
             </div>
         </label>

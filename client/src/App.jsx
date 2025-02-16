@@ -7,6 +7,7 @@ import UserFriends from './components/Friends/UserFriends'
 import AllCollabs from './components/Collabs/AllCollabs'
 import NotFound from './components/Misc/NotFound'
 import Denied from './components/Misc/Denied'
+import SignIn from './components/Auth/SignIn'
 
 function App() {
 
@@ -17,6 +18,9 @@ function App() {
         <Route path='/' element={<LandingPage/>}> </Route>
         <Route path='/user/friends'  element={<UserFriends/>}></Route>
         <Route path='/collabs/all-collabs'  element={<AllCollabs/>}></Route>
+
+        {/* Auth Routes */}
+        <Route path='/auth/sign-in' element={<SignIn/>}></Route>
 
 
         {/* Denied Route */}
