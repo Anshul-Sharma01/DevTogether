@@ -8,6 +8,7 @@ import AllCollabs from './components/Collabs/AllCollabs'
 import NotFound from './components/Misc/NotFound'
 import Denied from './components/Misc/Denied'
 import SignIn from './components/Auth/SignIn'
+import SignUp from './components/Auth/SignUp'
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
 
         {/* Auth Routes */}
         <Route path='/auth/sign-in' element={<SignIn/>}></Route>
+        <Route path='/auth/sign-up' element={<SignUp/>}></Route>
 
 
         {/* Denied Route */}
