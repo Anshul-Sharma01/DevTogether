@@ -9,6 +9,7 @@ import NotFound from './components/Misc/NotFound'
 import Denied from './components/Misc/Denied'
 import SignIn from './components/Auth/SignIn'
 import SignUp from './components/Auth/SignUp'
+import ForgotPassword from './components/Auth/ForgotPassword'
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
         {/* Auth Routes */}
         <Route path='/auth/sign-in' element={<SignIn/>}></Route>
         <Route path='/auth/sign-up' element={<SignUp/>}></Route>
+        <Route path='/auth/forgot-password' element={<ForgotPassword/>}></Route>
 
 
         {/* Denied Route */}
