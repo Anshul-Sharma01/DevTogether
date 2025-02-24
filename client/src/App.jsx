@@ -10,6 +10,7 @@ import Denied from './components/Misc/Denied'
 import SignIn from './components/Auth/SignIn'
 import SignUp from './components/Auth/SignUp'
 import ForgotPassword from './components/Auth/ForgotPassword'
+import DevelopersTeam from './pages/DevelopersTeam'
 
 function App() {
 
@@ -20,6 +21,8 @@ function App() {
         <Route path='/' element={<LandingPage/>}> </Route>
         <Route path='/user/friends'  element={<UserFriends/>}></Route>
         <Route path='/collabs/all-collabs'  element={<AllCollabs/>}></Route>
+
+        <Route path='/dev-team' element={<DevelopersTeam/>}></Route>
 
         {/* Auth Routes */}
         <Route path='/auth/sign-in' element={<SignIn/>}></Route>

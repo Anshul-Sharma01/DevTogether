@@ -1,4 +1,5 @@
 import NavigationLayout from "../../layouts/NavigationLayout.jsx";
+import DevelopersTeam from "../../pages/DevelopersTeam.jsx";
 
 const LandingPage = () => {
     return (
@@ -120,6 +121,9 @@ const LandingPage = () => {
                             </div>
                         ))}
                     </div>
+                </section>
+                <section className="mt-20  text-center px-4">
+                    <DevelopersTeam/>
                 </section>
 
                 {/* Call-to-Action Footer */}
