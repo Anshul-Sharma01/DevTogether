@@ -1,10 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import NavigationLayout from "../../layouts/NavigationLayout.jsx";
-import DevelopersTeam from "../../pages/DevelopersTeam.jsx";
-
 
 const LandingPage = () => {
     const navigate = useNavigate();
+    
     return (
         <NavigationLayout>
             <section className="dark:bg-gray-900 w-full bg-white min-h-screen flex flex-col items-center justify-center px-4">
@@ -125,8 +124,21 @@ const LandingPage = () => {
                         ))}
                     </div>
                 </section>
-                <section className="mt-20  text-center px-4">
-                    <DevelopersTeam/>
+
+                {/* Contact Redirect Section */}
+                <section className="mt-20 max-w-4xl text-center px-4">
+                    <h2 className="text-3xl font-bold text-gray-900 dark:text-cyan-400 mb-6">
+                        Need Help?
+                    </h2>
+                    <p className="text-gray-700 dark:text-gray-300 mb-8">
+                        Visit our contact page for FAQs and to get in touch with our team.
+                    </p>
+                    <button
+                        onClick={() => navigate("/contact")}
+                        className="px-6 py-3 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-800 transition duration-300 ease-in-out transform hover:scale-105"
+                    >
+                        Go to Contact Page
+                    </button>
                 </section>
 
                 {/* Call-to-Action Footer */}

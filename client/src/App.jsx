@@ -11,6 +11,7 @@ import SignIn from './components/Auth/SignIn'
 import SignUp from './components/Auth/SignUp'
 import ForgotPassword from './components/Auth/ForgotPassword'
 import DevelopersTeam from './pages/DevelopersTeam'
+import Contact from './pages/Contact'
 
 function App() {
 
@@ -22,7 +23,7 @@ function App() {
         <Route path='/user/friends'  element={<UserFriends/>}></Route>
         <Route path='/collabs/all-collabs'  element={<AllCollabs/>}></Route>
 
-        <Route path='/dev-team' element={<DevelopersTeam/>}></Route>
+        <Route path='/contact' element={<Contact/>}></Route>
 
         {/* Auth Routes */}
         <Route path='/auth/sign-in' element={<SignIn/>}></Route>
