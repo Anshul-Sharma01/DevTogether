@@ -90,9 +90,9 @@ const Contact = () => {
                 <section className="mt-12 max-w-3xl w-full text-center">
                     <h2 className="text-3xl font-bold text-gray-900 dark:text-cyan-400 mb-6">Follow Us</h2>
                     <div className="flex justify-center space-x-6">
-                        <a href="#" className="text-blue-600 hover:text-blue-800 text-xl"><FaFacebook /></a>
-                        <a href="#" className="text-blue-600 hover:text-blue-800 text-xl"><FaTwitter /></a>
-                        <a href="#" className="text-blue-600 hover:text-blue-800 text-xl"><FaInstagram /></a>
+                    <a href="#" className="text-[#1877F2] hover:text-[#145dbf] text-2xl"><FaFacebook /></a>
+                        <a href="#" className="text-[#1DA1F2] hover:text-[#0d8ddf] text-2xl"><FaTwitter /></a>
+                        <a href="#" className="text-[#E4405F] hover:text-[#d52d4a] text-2xl"><FaInstagram /></a>
                     </div>
                 </section>
                 
