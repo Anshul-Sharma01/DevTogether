@@ -1,7 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import NavigationLayout from "../../layouts/NavigationLayout.jsx";
 import DevelopersTeam from "../../pages/DevelopersTeam.jsx";
 
+
 const LandingPage = () => {
+    const navigate = useNavigate();
     return (
         <NavigationLayout>
             <section className="dark:bg-gray-900 w-full bg-white min-h-screen flex flex-col items-center justify-center px-4">
@@ -129,7 +132,7 @@ const LandingPage = () => {
                 {/* Call-to-Action Footer */}
                 <footer className="mt-20 w-full bg-blue-200 dark:bg-cyan-600 text-black py-8 text-center">
                     <h3 className="text-2xl font-bold mb-4 dark:text-white">Ready to Collaborate?</h3>
-                    <button className="px-8 py-3 bg-white text-blue-600 rounded-md shadow-md hover:bg-gray-100 transition duration-300 ease-in-out transform hover:scale-105">
+                    <button onClick={()=>navigate("/auth/sign-in")} className="px-8 py-3 bg-white text-blue-600 rounded-md shadow-md hover:bg-gray-100 transition duration-300 ease-in-out transform hover:scale-105">
                         Join Now for Free
                     </button>
                 </footer>
