@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
 import NavigationLayout from "../layouts/NavigationLayout";
 import DevelopersTeam from "./DevelopersTeam";
 
@@ -81,7 +82,7 @@ const Contact = () => {
                 </section>
                 
                 {/* Developers Team */}
-                <section className="mt-12 max-w-4xl w-full text-center">
+                <section className="mt-12  w-full text-center">
                     <DevelopersTeam />
                 </section>
                 
@@ -89,9 +90,9 @@ const Contact = () => {
                 <section className="mt-12 max-w-3xl w-full text-center">
                     <h2 className="text-3xl font-bold text-gray-900 dark:text-cyan-400 mb-6">Follow Us</h2>
                     <div className="flex justify-center space-x-6">
-                        {["Facebook", "Twitter", "Instagram"].map((platform) => (
-                            <a key={platform} href="#" className="text-blue-600 hover:text-blue-800 text-xl">{platform}</a>
-                        ))}
+                        <a href="#" className="text-blue-600 hover:text-blue-800 text-xl"><FaFacebook /></a>
+                        <a href="#" className="text-blue-600 hover:text-blue-800 text-xl"><FaTwitter /></a>
+                        <a href="#" className="text-blue-600 hover:text-blue-800 text-xl"><FaInstagram /></a>
                     </div>
                 </section>
                 
