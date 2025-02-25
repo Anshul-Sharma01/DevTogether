@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
 import NavigationLayout from "../layouts/NavigationLayout";
-import DevelopersTeam from "./DevelopersTeam";
+import DevelopersTeam from "./DevelopersTeam.jsx";
 
 const Contact = () => {
     const [openIndex, setOpenIndex] = useState(null);

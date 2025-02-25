@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import DeveloperCard from '../components/Profile/DevelopersCard';
+import DevelopersCard from "../components/Profile/DevelopersCard.jsx";
 
 const developers = [
     {
@@ -70,7 +70,7 @@ const DevelopersTeam = () => {
                     ))}
                 </div>
                 {selectedDeveloper && (
-                    <DeveloperCard developer={selectedDeveloper} onClose={() => setSelectedDeveloper(null)} cardRef={cardRef} />
+                    <DevelopersCard developer={selectedDeveloper} onClose={() => setSelectedDeveloper(null)} cardRef={cardRef} />
                 )}
             </div>
         </div>
