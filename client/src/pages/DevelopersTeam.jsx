@@ -5,19 +5,19 @@ const developers = [
     {
         name: 'Anshul Sharma',
         role: 'Team Lead, Frontend, Backend',
-        avatar: 'https://static.vecteezy.com/system/resources/previews/020/911/739/large_2x/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png',
+        avatar: 'https://s3.amazonaws.com/cbrig-assets/csoethp/resources/Student/S10rV4i.JPG',
         description: 'Anshul is the team lead and handles both frontend and backend development. He has extensive experience in full-stack development and ensures the team delivers high-quality software solutions.'
     },
     {
         name: 'Shaishav',
         role: 'Frontend, UI Designer, Database Schema Designer',
-        avatar: 'https://static.vecteezy.com/system/resources/previews/020/911/739/large_2x/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png',
+        avatar: 'https://s3.amazonaws.com/cbrig-assets/csoethp/resources/Student/S46cYSh.JPG',
         description: 'Shaishav is responsible for frontend development, UI design, and database schema design. He creates intuitive and visually appealing user interfaces and ensures the database is optimized for performance.'
     },
     {
         name: 'Chirag Bhatia',
         role: 'Backend, API Designing',
-        avatar: 'https://static.vecteezy.com/system/resources/previews/020/911/739/large_2x/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png',
+        avatar: 'https://s3.amazonaws.com/cbrig-assets/csoethp/resources/Student/S17thYj.JPG',
         description: 'Chirag focuses on backend development and API design. He builds robust and scalable server-side applications and designs efficient APIs that power our applications.'
     },
     {
@@ -61,7 +61,7 @@ const DevelopersTeam = () => {
                             className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden transform transition-transform duration-300 hover:scale-105"
                             onClick={() => setSelectedDeveloper(developer)}
                         >
-                            <img className="w-full h-48 object-cover" src={developer.avatar} alt={developer.name} />
+                            <img className="w-full h-48 object-contain" src={developer.avatar} alt={developer.name} />
                             <div className="p-4">
                                 <h2 className="text-2xl font-bold">{developer.name}</h2>
                                 <p className="text-gray-600 dark:text-gray-400">{developer.role}</p>

@@ -12,7 +12,7 @@ const DeveloperCard = ({ developer, onClose, cardRef }) => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </button>
-                <img className="w-full h-48 object-cover rounded-lg mb-4" src={developer.avatar} alt={developer.name} />
+                <img className="w-full h-48 object-contain rounded-lg mb-4" src={developer.avatar} alt={developer.name} />
                 <h2 className="text-2xl font-bold mb-2">{developer.name}</h2>
                 <p className="text-gray-600 dark:text-gray-400 mb-4">{developer.role}</p>
                 <p className="text-gray-800 dark:text-gray-200">{developer.description}</p>
