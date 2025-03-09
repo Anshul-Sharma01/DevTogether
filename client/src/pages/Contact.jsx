@@ -13,13 +13,13 @@ const Contact = () => {
     return (
         <NavigationLayout>
             <section className="dark:bg-gray-900 bg-gray-50 min-h-screen flex flex-col items-center justify-center px-6 py-12">
-                
+
                 {/* Hero Section */}
                 <section className="max-w-4xl w-full text-center mb-12">
                     <h1 className="text-5xl font-extrabold text-gray-900 dark:text-cyan-400 mb-4">Get in Touch</h1>
                     <p className="text-lg text-gray-700 dark:text-gray-300">We’d love to hear from you! Reach out with any questions or feedback.</p>
                 </section>
-                
+
                 {/* Contact Form Section */}
                 <section className="mt-12 max-w-3xl w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
                     <h2 className="text-3xl font-bold text-gray-900 dark:text-cyan-400 mb-6 text-center">Send Us a Message</h2>
@@ -30,7 +30,7 @@ const Contact = () => {
                         <button type="submit" className="w-full px-6 py-3 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-800 transition duration-300 ease-in-out transform hover:scale-105">Send Message</button>
                     </form>
                 </section>
-                
+
                 {/* FAQ Section */}
                 <section className="mt-12 max-w-4xl w-full">
                     <h2 className="text-3xl font-bold text-gray-900 dark:text-cyan-400 mb-6 text-center">FAQs</h2>
@@ -80,22 +80,22 @@ const Contact = () => {
                         ))}
                     </div>
                 </section>
-                
+
                 {/* Developers Team */}
-                <section className="mt-12  w-full text-center">
+                <section className="mt-12 w-full text-center">
                     <DevelopersTeam />
                 </section>
-                
+
                 {/* Social Media Links */}
                 <section className="mt-12 max-w-3xl w-full text-center">
                     <h2 className="text-3xl font-bold text-gray-900 dark:text-cyan-400 mb-6">Follow Us</h2>
                     <div className="flex justify-center space-x-6">
-                    <a href="#" className="text-[#1877F2] hover:text-[#145dbf] text-2xl"><FaFacebook /></a>
+                        <a href="#" className="text-[#1877F2] hover:text-[#145dbf] text-2xl"><FaFacebook /></a>
                         <a href="#" className="text-[#1DA1F2] hover:text-[#0d8ddf] text-2xl"><FaTwitter /></a>
-                        <a href="#" className="text-[#E4405F] hover:text-[#d52d4a] text-2xl"><FaInstagram /></a>
+                        <a href="https://instagram.com/anshul_2904" className="text-[#E4405F] hover:text-[#d52d4a] text-2xl"><FaInstagram /></a>
                     </div>
                 </section>
-                
+
                 {/* Newsletter Signup */}
                 <section className="mt-12 max-w-3xl w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 text-center">
                     <h2 className="text-3xl font-bold text-gray-900 dark:text-cyan-400 mb-6">Stay Updated</h2>

@@ -23,7 +23,7 @@ const developers = [
     {
         name: 'Abhinav Sharma',
         role: 'Authentication Manager and API Handler',
-        avatar: 'https://static.vecteezy.com/system/resources/previews/020/911/739/large_2x/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png',
+        avatar: 'https://res.cloudinary.com/dqnzstk72/image/upload/v1741067257/DevTogether/tkizclopmreavc3uqc5w.jpg',
         description: 'Abhinav manages authentication and handles API integration. He ensures secure user authentication and seamless communication between our applications and external services.'
     }
 ];
