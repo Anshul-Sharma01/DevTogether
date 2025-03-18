@@ -5,7 +5,7 @@ class ApiError extends Error{
      * @param {number} statusCode - The HTTP status code.
      * @param {string} [message="Something went wrong"] - The error message.
      * @param {Array} [errors=[]] - An array of error details.
-     * @param {string} [stack=""] - The stack trace.
+     * @param {string} [stack=""] - The stack trace of error.
      */
     constructor(
         statusCode,
