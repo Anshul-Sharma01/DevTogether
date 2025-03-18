@@ -18,5 +18,12 @@ app.use(cookieParser());
 app.use(express.static("public"));
 
 
+// routes imports
+import healthRoutes from "./routes/serverCheck.routes.js";
+
+
+
+app.use("/api/v1/server-health", healthRoutes);
+
 
 export { app };
