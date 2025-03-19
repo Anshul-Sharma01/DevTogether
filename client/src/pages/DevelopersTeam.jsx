@@ -23,7 +23,7 @@ const developers = [
     {
         name: 'Abhinav Sharma',
         role: 'Authentication Manager and API Handler',
-        avatar: 'https://res.cloudinary.com/dqnzstk72/image/upload/v1741067257/DevTogether/tkizclopmreavc3uqc5w.jpg',
+        avatar: 'https://res.cloudinary.com/dqnzstk72/image/upload/v1742398586/DevTogether/abhi-pic_qf1bvi.jpg',
         description: 'Abhinav manages authentication and handles API integration. He ensures secure user authentication and seamless communication between our applications and external services.'
     }
 ];

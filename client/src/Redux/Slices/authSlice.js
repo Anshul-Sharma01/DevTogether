@@ -16,7 +16,7 @@ const toastHandler = (promise, loadingMsg, successMsg, errorMsg) => {
     });
 };
 
-export const createUserAccount = createAsyncThunk("/auth/register", async (data) => {
+export const createUserAccountThunk = createAsyncThunk("/auth/register", async (data) => {
     try {
         const res = axiosInstance.post("users/register", data);
         toastHandler(res, "Creating your account..", "Account created successfully!", "Failed to create a new account!");
