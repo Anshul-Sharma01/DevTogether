@@ -4,16 +4,16 @@ import bcrypt from "bcryptjs";
 
 const userSchema = new Schema(
     {
-        avatar: {
-            public_id:{
-                type: String,
-                required: true
-            },
-            secure_url:{
-                type: String,
-                required: true
-            }
-        },
+        // avatar: {
+        //     public_id:{
+        //         type: String,
+        //         required: true
+        //     },
+        //     secure_url:{
+        //         type: String,
+        //         required: true
+        //     }
+        // },
         username: {
             type: String,
             required: true,
