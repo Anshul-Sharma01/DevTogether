@@ -2,6 +2,7 @@ import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js"
 import { asyncHandler } from "../utils/asyncHandler.js";
+import jwt from "jsonwebtoken"
 
 const generateAccessTokenAndRefreshToken = async (user) =>{
     const accessToken = user.generateAccessToken()
@@ -11,6 +12,11 @@ const generateAccessTokenAndRefreshToken = async (user) =>{
     await user.save({ validateBeforeSave : false })
 
     return { accessToken, refreshToken }
+}
+
+const option = {
+    httpOnly: true,
+    secure: true
 }
 
 const registerController = asyncHandler(async (req,res) => {
@@ -67,11 +73,6 @@ const loginController = asyncHandler(async (req,res) => {
 
     const { accessToken, refreshToken } = await generateAccessTokenAndRefreshToken(checkUser)
 
-    const options = {
-        httpOnly: true,
-        secure: true
-    }
-
     const loginUser  = await User.findById(checkUser._id).select(
         "-password -refreshToken"
     )
@@ -89,4 +90,45 @@ const loginController = asyncHandler(async (req,res) => {
     )
 })
 
-export {registerController, loginController}
+const refreshAccessTokenController = asyncHandler(async (req,res) => {
+    const  token = req.cookies.refreshToken || req.body.refreshToken
+   // console.log(token)
+    if(!token) {
+        throw new ApiError(401, "unauthorized request") 
+    }
+
+    try {
+        const decodeToken = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET)
+        //console.log(decodeToken);
+         
+        const user = await User.findById(decodeToken?._id)
+
+        if(!user) {
+            throw new ApiError(401, "Invalid refresh token")
+        }
+
+        if(token != user?.refreshToken) {
+            throw new ApiError(401, "Refresh Token is expires or used")
+        }
+
+
+        const {accessToken, newRefreshToken} = await generateAccessTokenAndRefreshToken(user)
+
+        return res
+        .status(200)
+        .cookie("accessToken", accessToken, option)
+        .cookie("refreshToken", newRefreshToken, option)
+        .json(
+            new ApiResponse(
+                200,
+                {accessToken, refreshToken: newRefreshToken},
+                "Access Token Refreshed"
+            )
+        )
+
+    } catch (error) {
+        throw new ApiError(401, error?.message || "Invalid  refresh token")
+    }
+})
+
+export {registerController, loginController, refreshAccessTokenController}
