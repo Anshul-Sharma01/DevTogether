@@ -132,4 +132,61 @@ const refreshAccessTokenController = asyncHandler(async (req,res) => {
     }
 })
 
-export {registerController, loginController, refreshAccessTokenController}
+const updateProfileController = asyncHandler(async (req,res) => {
+    const {username} = req.body
+
+    if(!username) {
+        throw new ApiError(400, "Username is required")
+    }
+
+    if(username == req.user?.username) {
+        throw new ApiError(400, "Username is same as previous")
+    }
+
+    const user = await User.findByIdAndUpdate(
+        req.user?._id,
+        { $set:  {
+            username:username
+          }
+        },
+        {
+            new: true,
+        }
+    ).select("-password -refreshToken")
+
+    //console.log(user);
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200, user, "Profile details updated successfully"))
+    
+})
+
+const changePasswordController = asyncHandler(async (req,res) => {
+    const { currentPassword, newPassword} = req.body
+     console.log(req.body);
+     
+    if(!currentPassword || !newPassword) {
+        throw new ApiError(400, "Current Password and New Password is required")
+    }
+
+    const user = await User.findById(req.user?._id)
+    const checkPassword = await user.isPasswordCorrect(currentPassword)
+
+
+    if(!checkPassword) {
+        throw new ApiError(400, " Invalid current password")
+    }
+
+    user.password = newPassword
+
+    await user.save({validateBeforeSave:false})
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200, {user}, "Password changed successfully"))
+
+
+})
+
+export {registerController, loginController, refreshAccessTokenController, updateProfileController, changePasswordController}
