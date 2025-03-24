@@ -3,6 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js"
 import { asyncHandler } from "../utils/asyncHandler.js";
 import jwt from "jsonwebtoken"
+import { usernameCheck , emailCheck , passwordCheck } from "../utils/inputValdation.js";
 
 const generateAccessTokenAndRefreshToken = async (user) =>{
     const accessToken = user.generateAccessToken()
@@ -23,6 +24,9 @@ const registerController = asyncHandler(async (req,res) => {
     const { username, email, password } = req.body;
 
     //console.log(username);
+    usernameCheck(username)
+    emailCheck(email)
+    passwordCheck(password)
     
     const existUser = await User.findOne({
         $or: [{username},{email}]
@@ -102,7 +106,7 @@ const refreshAccessTokenController = asyncHandler(async (req,res) => {
         //console.log(decodeToken);
          
         const user = await User.findById(decodeToken?._id)
-        console.log(user);
+        //console.log(user);
         
         if(!user) {
             throw new ApiError(401, "Invalid refresh token")
@@ -134,7 +138,8 @@ const refreshAccessTokenController = asyncHandler(async (req,res) => {
 
 const updateProfileController = asyncHandler(async (req,res) => {
     const {username} = req.body
-
+    
+    usernameCheck(username)
     if(!username) {
         throw new ApiError(400, "Username is required")
     }
@@ -165,7 +170,8 @@ const updateProfileController = asyncHandler(async (req,res) => {
 const changePasswordController = asyncHandler(async (req,res) => {
     const { currentPassword, newPassword} = req.body
      //console.log(req.body);
-     
+    
+    passwordCheck(newPassword)
     if(!currentPassword || !newPassword) {
         throw new ApiError(400, "Current Password and New Password is required")
     }
