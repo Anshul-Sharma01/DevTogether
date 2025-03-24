@@ -83,8 +83,8 @@ const loginController = asyncHandler(async (req,res) => {
 
     return res
     .status(201)
-    .cookie("accessToken", accessToken, options)
-    .cookie("refreshToken", refreshToken, options)
+    .cookie("accessToken", accessToken, option)
+    .cookie("refreshToken", refreshToken, option)
     .json(
         new ApiResponse(200,loginUser,"User Logged in successfully")
     )
@@ -102,7 +102,8 @@ const refreshAccessTokenController = asyncHandler(async (req,res) => {
         //console.log(decodeToken);
          
         const user = await User.findById(decodeToken?._id)
-
+        console.log(user);
+        
         if(!user) {
             throw new ApiError(401, "Invalid refresh token")
         }
