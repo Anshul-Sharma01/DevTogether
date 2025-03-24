@@ -191,12 +191,12 @@ const changePasswordController = asyncHandler(async (req,res) => {
 
 const fetchProfileController = asyncHandler(async (req,res) => {
      let { userId } = req.query;
-     console.log(userId);
+     //console.log(userId);
      
      if(!userId) {
         userId=req.user._id;
      }
-     console.log(userId);
+     //console.log(userId);
      
      const user= await User.findById(userId).select("-password")
 
@@ -206,10 +206,33 @@ const fetchProfileController = asyncHandler(async (req,res) => {
 
 })
 
-export {registerController, 
-        loginController, 
-        refreshAccessTokenController, 
-        updateProfileController, 
-        changePasswordController,
-        fetchProfileController,
+const logoutController = asyncHandler(async (req,res) => {
+    await User.findByIdAndUpdate(
+        req.user._id,
+        {
+            $unset: {
+                refreshToken:1
+            }
+        },
+        {
+            new: true
+        }
+
+    )
+
+    return res
+    .status(200)
+    .clearCookie("accessToken", option)
+    .clearCookie("refreshToken", option)
+    .json(new ApiResponse(200, {}, "User Logged out successfully"))
+})
+
+export {
+    registerController, 
+    loginController, 
+    refreshAccessTokenController, 
+    updateProfileController, 
+    changePasswordController,
+    fetchProfileController,
+    logoutController,
        }

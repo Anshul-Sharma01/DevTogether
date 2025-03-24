@@ -1,10 +1,12 @@
 import { Router } from "express";
-import { registerController, 
+import { 
+        registerController, 
          loginController, 
          refreshAccessTokenController, 
          updateProfileController,
          changePasswordController, 
-         fetchProfileController
+         fetchProfileController,
+         logoutController
         } from "../controllers/user.controller.js";
 import { validationUser } from "../middlewares/zod.middleware.js";
 import { authMiddleware } from "../middlewares/auth.middleware.js"
@@ -17,5 +19,6 @@ router.route("/refresh-token").post(refreshAccessTokenController)
 router.route("/update-profile").patch(authMiddleware, updateProfileController)
 router.route('/change-password').patch(authMiddleware, changePasswordController)
 router.route("/me").get(authMiddleware, fetchProfileController)
+router.route("/logout").get(authMiddleware, logoutController)
 
 export default router;
