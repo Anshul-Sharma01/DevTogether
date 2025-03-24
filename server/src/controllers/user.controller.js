@@ -233,6 +233,16 @@ const logoutController = asyncHandler(async (req,res) => {
     .json(new ApiResponse(200, {}, "User Logged out successfully"))
 })
 
+const deleteAccountController = asyncHandler(async (req,res) => {
+    await User.findByIdAndDelete(req.user._id)
+
+    return res
+    .status(200)
+    .clearCookie("accessToken", option)
+    .clearCookie("refreshToken", option)
+    .json(new ApiResponse(200, {}, "User account deleted successfully"))
+})
+
 export {
     registerController, 
     loginController, 
@@ -241,4 +251,5 @@ export {
     changePasswordController,
     fetchProfileController,
     logoutController,
+    deleteAccountController,
        }
