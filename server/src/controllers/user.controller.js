@@ -164,7 +164,7 @@ const updateProfileController = asyncHandler(async (req,res) => {
 
 const changePasswordController = asyncHandler(async (req,res) => {
     const { currentPassword, newPassword} = req.body
-     console.log(req.body);
+     //console.log(req.body);
      
     if(!currentPassword || !newPassword) {
         throw new ApiError(400, "Current Password and New Password is required")
@@ -189,4 +189,27 @@ const changePasswordController = asyncHandler(async (req,res) => {
 
 })
 
-export {registerController, loginController, refreshAccessTokenController, updateProfileController, changePasswordController}
+const fetchProfileController = asyncHandler(async (req,res) => {
+     let { userId } = req.query;
+     console.log(userId);
+     
+     if(!userId) {
+        userId=req.user._id;
+     }
+     console.log(userId);
+     
+     const user= await User.findById(userId).select("-password")
+
+     return res
+     .status(200)
+     .json( new ApiResponse(200, user, "user fetched succesfully"))
+
+})
+
+export {registerController, 
+        loginController, 
+        refreshAccessTokenController, 
+        updateProfileController, 
+        changePasswordController,
+        fetchProfileController,
+       }
