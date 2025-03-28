@@ -1,6 +1,7 @@
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axiosInstance from "../../helpers/axiosInstance.js";
+import toast from 'react-hot-toast';
 
 const initialState = {
     isLoggedIn : localStorage.getItem("isLoggedIn") === "true",
@@ -18,13 +19,23 @@ const toastHandler = (promise, loadingMsg, successMsg, errorMsg) => {
 
 export const createUserAccountThunk = createAsyncThunk("/auth/register", async (data) => {
     try {
-        const res = axiosInstance.post("users/register", data);
+        const res = axiosInstance.post("user/register", data);
         toastHandler(res, "Creating your account..", "Account created successfully!", "Failed to create a new account!");
         return (await res).data;
     } catch (err) {
         console.error(`Error occurred in creating new account: ${err}`);
     }
 });
+
+export const loginUserAccountThunk = createAsyncThunk("/auth/login", async(data) => {
+    try{
+        const res = axiosInstance.post("user/login", data);
+        toastHandler(res, "Authenticating your credentials", "Authentication Successfully", "Failed to Authenticate User, Wrong Credentials");
+        return (await res).data;
+    }catch(err){
+        console.error(`Error occurred while logging in : ${err}`);
+    }
+})
 
 const authSlice = createSlice({
     name : "auth",

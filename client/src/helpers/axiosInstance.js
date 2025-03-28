@@ -1,21 +1,20 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import toast from "react-hot-toast";
+
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 const axiosInstance = axios.create({
-    baseUrl : BASE_URL,
-    withCredentials : true,
-})
+    baseURL: BASE_URL,
+    withCredentials: true,
+});
 
 let isRefreshing = false;
-
 
 axiosInstance.interceptors.request.use(
     async (config) => {
         const accessToken = Cookies.get('accessToken');
-        if(accessToken){
+        if (accessToken) {
             config.headers.Authorization = `Bearer ${accessToken}`;
         }
         return config;
@@ -23,8 +22,7 @@ axiosInstance.interceptors.request.use(
     (error) => {
         return Promise.reject(error);
     }
-)
-
+);
 
 axiosInstance.interceptors.response.use(
     (response) => {
@@ -32,18 +30,20 @@ axiosInstance.interceptors.response.use(
     },
     async (error) => {
         const originalRequest = error.config;
-        if(error.response.status === 403 && !originalRequest._retry){
-            if(isRefreshing){
+
+        if (error.response.status === 403 && !originalRequest._retry) {
+            if (isRefreshing) {
                 const retryRequest = new Promise((resolve) => {
                     const interval = setInterval(() => {
-                        const accessToken = Cookies.get("accessToken");
-                        if(accessToken){
+                        const accessToken = Cookies.get('accessToken');
+                        if (accessToken) {
                             clearInterval(interval);
                             originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
                             resolve(axiosInstance(originalRequest));
                         }
-                    }, 100);
+                    }, 100); 
                 });
+
                 return retryRequest;
             }
 
@@ -51,37 +51,39 @@ axiosInstance.interceptors.response.use(
             isRefreshing = true;
 
             return new Promise(async (resolve, reject) => {
-                try{
+                try {
                     const refreshToken = Cookies.get('refreshToken');
-                    const response = await axiosInstance.post("/user/refresh-token", { refreshToken });
+                    const response = await axiosInstance.post('/users/refresh-token', { refreshToken });
 
                     const newAccessToken = response.data.accessToken;
                     const newRefreshToken = response.data.refreshToken;
 
+        
                     Cookies.set('accessToken', newAccessToken);
                     Cookies.set('refreshToken', newRefreshToken);
 
+            
                     axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
                     originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
 
-                    resolve(axiosInstance(originalRequest));
-
-                }catch(err){
+                    resolve(axiosInstance(originalRequest)); 
+                } catch (err) {
                     reject(err);
-                }finally{
-                    isRefreshing = false;
+                } finally {
+                    isRefreshing = false; 
                 }
             });
-        }else if(error.response.status === 401){
-            toast.error("Please log In again !!");
+        } else if (error.response.status === 401) {
+            window.alert("Please Log In again..");
             localStorage.clear();
             Cookies.remove('accessToken');
             Cookies.remove('refreshToken');
-            console.log("Redirected...");
+            console.log("Redirected..");
             window.location.href = import.meta.env.VITE_LOGIN_URL;
         }
+
         return Promise.reject(error);
-    } 
-)
+    }
+);
 
 export default axiosInstance;
