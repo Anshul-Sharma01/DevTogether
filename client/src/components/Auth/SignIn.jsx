@@ -21,9 +21,10 @@ function SignIn() {
             return;
         }
 
-        const res = await dispatch(loginUserAccountThunk(inputValue));
+
+        const res = await dispatch(loginUserAccountThunk({ username : inputValue.input, password : inputValue.password }));
         console.log(res);
-        if(res?.payload?.statusCode === 201){
+        if(res?.payload?.statusCode === 200){
             navigate("/");
         }
 

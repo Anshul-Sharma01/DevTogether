@@ -91,6 +91,8 @@ const registerController = asyncHandler(async (req,res) => {
 const loginController = asyncHandler(async (req,res) => {
     const { username, email, password } = req.body;
 
+    // console.log(username, password);
+
     const checkUser = await User.findOne({
         $or: [{username},{email}]
     })
@@ -117,8 +119,8 @@ const loginController = asyncHandler(async (req,res) => {
 
     return res
     .status(201)
-    .cookie("accessToken", accessToken, option)
-    .cookie("refreshToken", refreshToken, option)
+    .cookie("accessToken", accessToken, cookieOptions)
+    .cookie("refreshToken", refreshToken, cookieOptions)
     .json(
         new ApiResponse(200,loginUser,"User Logged in successfully")
     )

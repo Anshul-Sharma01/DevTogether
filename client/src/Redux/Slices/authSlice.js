@@ -3,6 +3,13 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axiosInstance from "../../helpers/axiosInstance.js";
 import toast from 'react-hot-toast';
 
+const updateLocalStorage = (user) => {
+    localStorage.setItem("userData", JSON.stringify(user));
+    localStorage.setItem("isLoggedIn", "true");
+    localStorage.setItem("userRole", user?.role);
+};
+
+
 const initialState = {
     isLoggedIn : localStorage.getItem("isLoggedIn") === "true",
     userRole : localStorage.getItem("userRole") !== undefined ? localStorage.getItem("userRole") : "",
@@ -41,6 +48,39 @@ const authSlice = createSlice({
     name : "auth",
     initialState,
     reducers : {},
+    extraReducers : (builder) => {
+        builder
+        .addCase(createUserAccountThunk.fulfilled, (state, action) => {
+            if (action?.payload?.statusCode === 201) {
+                const user = action?.payload?.data;
+                updateLocalStorage(user);
+                state.isLoggedIn = true;
+                state.userData = user;
+                state.userRole = user?.role;
+            }
+        })
+        .addCase(createUserAccountThunk.rejected, (state) => {
+            localStorage.clear();
+            state.userData = {};
+            state.isLoggedIn = false;
+            state.userRole = "";
+        })
+        .addCase(loginUserAccountThunk.fulfilled, (state, action) => {
+            if (action?.payload?.statusCode === 200) {
+                const user = action?.payload?.data;
+                updateLocalStorage(user);
+                state.isLoggedIn = true;
+                state.userData = user;
+                state.userRole = user?.role;
+            }
+        })
+        .addCase(loginUserAccountThunk.rejected, (state) => {
+            localStorage.clear();
+            state.userData = {};
+            state.isLoggedIn = false;
+            state.userRole = "";
+        })
+    }
 })
 
 

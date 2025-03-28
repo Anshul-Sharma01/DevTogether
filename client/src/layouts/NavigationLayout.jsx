@@ -10,7 +10,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 function NavigationLayout({ children }) {
-    const isLoggedIn = useSelector((state) => state?.auth?.isLoggedIn);
+    const isLoggedIn = useSelector((state) => state?.auth?.isLoggedIn) || false;
+    const userData = useSelector((state) => state?.auth?.userData);
 
     const navigate = useNavigate();
 
@@ -99,7 +100,7 @@ function NavigationLayout({ children }) {
                             <img
                                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                                 className="h-10 w-10 rounded-full border-gray-200 border-2 hover:cursor-pointer"
-                                src="https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-174669.jpg"
+                                src={userData?.avatar?.secure_url ||"https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-174669.jpg"}
                                 alt="User Avatar"
                             />
 
