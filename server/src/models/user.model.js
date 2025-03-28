@@ -4,16 +4,11 @@ import bcrypt from "bcryptjs";
 
 const userSchema = new Schema(
     {
-        // avatar: {
-        //     public_id:{
-        //         type: String,
-        //         required: true
-        //     },
-        //     secure_url:{
-        //         type: String,
-        //         required: true
-        //     }
-        // },
+        name : {
+            type : String,
+            required : [true, "Name is required"],
+            trim : true
+        },
         username: {
             type: String,
             required: true,
@@ -28,18 +23,39 @@ const userSchema = new Schema(
             lowercase: true,
             trim: true
         },
+        avatar : {
+            public_id : {
+                type : String,
+                required : [true, "Avatar Public Id is required"]
+            },
+            secure_url : {
+                type : String,
+                required : [true, "Avatar secure_url is required"]
+            }
+        },
+
         password: {
             type: String,
             required: [true, 'password is required']
         },
-
+        bio : {
+            type : String,
+            required : [true, "Bio is required"],
+        },
+        accountDeleted : {
+            type : Boolean,
+            default : false,
+            enum : [true, false]
+        },
+        accoutnDeletionExpiry : {
+            type : Date,
+        },
         allCollabs : [
             {
                 type : Schema.Types.ObjectId,
                 ref : "Collab"
             }
         ],
-
         refreshToken: {
             type: String
         }

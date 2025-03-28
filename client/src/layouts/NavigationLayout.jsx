@@ -7,9 +7,10 @@ import ConfirmLogout from "../components/Auth/ConfirmLogout.jsx";
 import DeleteAccount from "../components/Auth/DeleteAccount.jsx";
 import NewCollab from "../components/Collabs/NewCollab.jsx";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function NavigationLayout({ children }) {
-    const isLoggedIn = true;
+    const isLoggedIn = useSelector((state) => state?.auth?.isLoggedIn);
 
     const navigate = useNavigate();
 
