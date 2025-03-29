@@ -126,7 +126,7 @@ function NavigationLayout({ children }) {
                                         onClick={() => setIsSettingsOpen(!isSettingsOpen)}
                                         hasSubmenu={true}
                                     />
-                                    <DropdownItem label="My Friends" onClick={() => navigate("/user/friends")} />
+                                    {/* <DropdownItem label="My Friends" onClick={() => navigate("/user/friends")} /> */}
                                     <DropdownItem label="Logout" onClick={() => setShowLogoutModal(true)} />
                                 </div>
                             )}

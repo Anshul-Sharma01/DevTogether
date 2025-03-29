@@ -36,7 +36,7 @@ function LogIn() {
     useEffect(() => {
         if(isLoggedIn){
             console.log("already logged in");
-            
+            window.alert("You are already logged in!");
             navigate("/");
         }
     }, [])

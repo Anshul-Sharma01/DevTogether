@@ -8,7 +8,7 @@ function RequireAuth({ allowedRoles }){
     
     if(!isLoggedIn){
         window.alert("You have to log in first");
-        return <Navigate to="/auth/log-in" />
+        return <Navigate to="/auth/login" />
     }
     
     return <Outlet />
