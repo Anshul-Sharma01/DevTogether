@@ -1,18 +1,20 @@
-import React, { useState } from 'react';  // ✅ Import useState
+import React, { useEffect, useState } from 'react';  // ✅ Import useState
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginUserAccountThunk } from '../../Redux/Slices/authSlice';
 
-function SignIn() {
+function LogIn() {
+
+    
     const [inputValue, setInputValue] = useState({
         input: '',
         password: ''
     });
-
+    
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
+    
     const handleLogin = async (e) => {
         e.preventDefault();
         toast.dismiss();
@@ -20,15 +22,24 @@ function SignIn() {
             toast.error("Please fill in all fields!");
             return;
         }
-
-
+        
+        
         const res = await dispatch(loginUserAccountThunk({ username : inputValue.input, password : inputValue.password }));
         console.log(res);
         if(res?.payload?.statusCode === 200){
             navigate("/");
         }
-
+        
     };
+    const isLoggedIn = useSelector((state) => state?.auth?.isLoggedIn);
+
+    useEffect(() => {
+        if(isLoggedIn){
+            console.log("already logged in");
+            
+            navigate("/");
+        }
+    }, [])
 
     return (
         <section className="flex justify-center items-center h-screen bg-gradient-to-r from-gray-100 to-gray-300 dark:from-gray-700 dark:to-gray-900 transition-colors duration-300">
@@ -88,4 +99,4 @@ function SignIn() {
     );
 }
 
-export default SignIn;
+export default LogIn;

@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createUserAccountThunk } from "../../Redux/Slices/authSlice";
 import { useNavigate } from "react-router-dom";
 
 function SignUp() {
+
+    const isLoggedIn = useSelector((state) => state?.auth?.isLoggedIn);
+
     const [avatar, setAvatar] = useState(null);
     const [ previewAvatar, setPreviewAvatar] = useState(null);
     const [name, setName] = useState("");
@@ -49,6 +52,12 @@ function SignUp() {
         }
 
     };
+
+    useEffect(() => {
+        if(isLoggedIn){
+            navigate("/");
+        }
+    }, [])
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
