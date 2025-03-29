@@ -224,6 +224,41 @@ const changePasswordController = asyncHandler(async (req,res) => {
 
 })
 
+const updateProfilePictureController = asyncHandler(async(req, res) => {
+    const userId = req.user?._id;
+    
+    if(!req.file){
+        throw new ApiError(400, "Avatar file is required");
+    }
+
+    const user = await User.findById(userId);
+    if(!user){
+        throw new ApiError(404, "user not found");
+    }
+    // console.log("req : ", req.file);
+
+    const avatar = await uploadOnCloudinary(req.file?.path);
+    if(!avatar.secure_url){
+        throw new ApiError(400, "Please try again");
+    }
+
+    await deleteFromCloudinary(user.avatar.public_id);
+    user.avatar.secure_url = avatar?.secure_url;
+    user.avatar.public_id = avatar?.public_id;
+
+    await user.save({ validateBeforeSave : false });
+
+    return res.status(200)
+    .json(
+        new ApiResponse(
+            200,
+            user,
+            "Successfully updated Profile Picture"
+        )
+    );
+
+})
+
 const fetchProfileController = asyncHandler(async (req,res) => {
     let { userId } = req.query;
      //console.log(userId);
@@ -280,4 +315,5 @@ export {
     fetchProfileController,
     logoutController,
     deleteAccountController,
+    updateProfilePictureController
 }

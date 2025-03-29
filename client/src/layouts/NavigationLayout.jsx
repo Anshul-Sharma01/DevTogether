@@ -68,6 +68,9 @@ function NavigationLayout({ children }) {
                     Together
                 </div>
                 <ul className="flex flex-row justify-center items-center gap-4">
+                    <li className="relative cursor-pointer" onClick={() => navigate("/")}>
+                        Home
+                    </li>
                     {isLoggedIn && (
                         <li className="relative" ref={collabDropdownRef}>
                             <span
@@ -89,7 +92,7 @@ function NavigationLayout({ children }) {
                     )}
                     {!isLoggedIn && (
                         <>
-                            <Link to={"/auth/log-in"}>Log In</Link>
+                            <Link to={"/auth/login"}>Log In</Link>
                             <Link to={"/auth/sign-up"}>Sign Up</Link>
                         </>
                     )}
@@ -101,7 +104,7 @@ function NavigationLayout({ children }) {
                         <li className="relative" ref={dropdownRef}>
                             <img
                                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                                className="h-10 w-10 rounded-full border-gray-200 border-2 hover:cursor-pointer"
+                                className="h-10 w-10 rounded-full border-gray-200 border-2 object-center hover:cursor-pointer"
                                 src={userData?.avatar?.secure_url ||"https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-174669.jpg"}
                                 alt="User Avatar"
                             />
@@ -111,7 +114,13 @@ function NavigationLayout({ children }) {
                                 <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-md rounded-md py-2 z-20 border dark:border-gray-700">
                                     <DropdownItem label="Change Avatar" onClick={() => setShowEditAvatar(true)} />
                                     {/* <DropdownItem label="Edit Profile" onClick={() => setShowEditProfile(true)} /> */}
-                                    <DropdownItem label="My Profile" onClick={() => setShowProfileModal(true)} />
+                                    <DropdownItem 
+                                        label="My Profile" 
+                                        onClick={() => {
+                                            setShowProfileModal(true)
+                                            setIsDropdownOpen(false)
+                                        }} 
+                                    />
                                     <DropdownItem
                                         label="Settings"
                                         onClick={() => setIsSettingsOpen(!isSettingsOpen)}

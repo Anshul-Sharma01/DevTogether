@@ -7,7 +7,8 @@ import {
         changePasswordController, 
         fetchProfileController,
         logoutController,
-        deleteAccountController
+        deleteAccountController,
+        updateProfilePictureController
         } from "../controllers/user.controller.js";
         
 import { authMiddleware } from "../middlewares/auth.middleware.js"
@@ -24,6 +25,8 @@ router.route("/refresh-token").post(refreshAccessTokenController)
 router.use(authMiddleware);
 
 router.route("/update-profile").patch( updateProfileController)
+router.route("/update-picture")
+.post(upload.single("avatar"), updateProfilePictureController);
 router.route('/change-password').patch( changePasswordController)
 router.route("/me").get( fetchProfileController)
 router.route("/logout").get( logoutController)

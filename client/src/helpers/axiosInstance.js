@@ -53,7 +53,7 @@ axiosInstance.interceptors.response.use(
             return new Promise(async (resolve, reject) => {
                 try {
                     const refreshToken = Cookies.get('refreshToken');
-                    const response = await axiosInstance.post('/users/refresh-token', { refreshToken });
+                    const response = await axiosInstance.post('/user/refresh-token', { refreshToken });
 
                     const newAccessToken = response.data.accessToken;
                     const newRefreshToken = response.data.refreshToken;

@@ -54,6 +54,18 @@ export const logoutUserThunk = createAsyncThunk("/auth/logout", async() => {
     }
 })
 
+export const updateProfilePictureThunk = createAsyncThunk("/auth/profile-picture", async(data) => {
+    try{
+        
+        const res = axiosInstance.post("user/update-picture", data);
+        toastHandler(res, "Updating your profile picture...", "Successfully updated profile picture", "Failed to update profile picture");
+        return (await res).data;
+
+    }catch(err){
+        console.error(`Error occurred while updating profile picture : ${err}`);
+    }
+})
+
 const authSlice = createSlice({
     name : "auth",
     initialState,
@@ -92,10 +104,13 @@ const authSlice = createSlice({
         })
         .addCase(logoutUserThunk.fulfilled, (state, action) => {
             localStorage.clear();
-            state.userData = {},
-            state.isLoggedIn = false,
+            state.userData = {}
+            state.isLoggedIn = false;
             state.userRole = "";
-            
+        })
+        .addCase(updateProfilePictureThunk.fulfilled, (state, action) => {
+            state.userData = action?.payload?.data;
+            updateLocalStorage(action?.payload?.data);
         })
     }
 })
