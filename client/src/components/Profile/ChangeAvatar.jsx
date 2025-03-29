@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 const ChangeAvatar = ({ showEditAvatar, setShowEditAvatar }) => {
-    const userAvatar = useSelector((state) => state?.auth?.userDetails?.userAvatar);
+    const userAvatar = useSelector((state) => state?.auth?.userData?.avatar?.secure_url);
     const [previewAvatar, setPreviewAvatar] = useState(userAvatar);
     const [selectedFile, setSelectedFile] = useState(null);
 

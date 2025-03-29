@@ -3,7 +3,7 @@ import { RxCross2 } from "react-icons/rx";
 import { useSelector } from "react-redux";
 
 const EditProfile = ({ showEditProfile, setShowEditProfile }) => {
-    const userNameFromStore = useSelector((state) => state?.auth?.userDetails?.userName);
+    const userNameFromStore = useSelector((state) => state?.auth?.userData?.name);
 
     // State for editable input
     const [userName, setUserName] = useState(userNameFromStore || "John Doe");

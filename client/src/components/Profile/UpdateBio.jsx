@@ -3,7 +3,7 @@ import { RxCross2 } from "react-icons/rx";
 import { useSelector } from "react-redux";
 
 const UpdateBio = ({ showBioModal, setShowBioModal }) => {
-    const bioFromStore = useSelector((state) => state?.auth?.userDetails?.bio);
+    const bioFromStore = useSelector((state) => state?.auth?.userData?.bio);
 
     // State for editable bio input
     const [bioField, setBioField] = useState(bioFromStore || "Enter your bio...");
