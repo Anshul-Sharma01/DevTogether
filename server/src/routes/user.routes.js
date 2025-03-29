@@ -20,10 +20,13 @@ router.route("/register")
 
 router.route("/login").post(loginController)
 router.route("/refresh-token").post(refreshAccessTokenController)
-router.route("/update-profile").patch(authMiddleware, updateProfileController)
-router.route('/change-password').patch(authMiddleware, changePasswordController)
-router.route("/me").get(authMiddleware, fetchProfileController)
-router.route("/logout").get(authMiddleware, logoutController)
-router.route("/delete-account").delete(authMiddleware, deleteAccountController)
+
+router.use(authMiddleware);
+
+router.route("/update-profile").patch( updateProfileController)
+router.route('/change-password').patch( changePasswordController)
+router.route("/me").get( fetchProfileController)
+router.route("/logout").get( logoutController)
+router.route("/delete-account").delete( deleteAccountController)
 
 export default router;

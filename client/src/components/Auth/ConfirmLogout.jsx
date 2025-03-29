@@ -11,7 +11,7 @@ const ConfirmLogout = ({ showLogoutModal, setShowLogoutModal }) => {
     const handleLogout = async (event) => {
         event.preventDefault();
         const res = await dispatch(logoutUserThunk()); // Prevent default form submission
-        toast.success("Logged out successfully!");  // Example toast notification
+        console.log(res);
         setShowLogoutModal(false);
         // Implement actual logout logic here
     };

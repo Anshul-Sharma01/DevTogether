@@ -20,7 +20,6 @@ const cookieOptions = {
     httpOnly: true,
     secure: false,
     maxAge : 7 *24 * 60 * 60 * 1000,
-    sameSite: "None"
 }
 
 const registerController = asyncHandler(async (req,res) => {
@@ -257,8 +256,8 @@ const logoutController = asyncHandler(async (req,res) => {
 
     return res
     .status(200)
-    .clearCookie("accessToken", option)
-    .clearCookie("refreshToken", option)
+    .clearCookie("accessToken", cookieOptions)
+    .clearCookie("refreshToken", cookieOptions)
     .json(new ApiResponse(200, {}, "User Logged out successfully"))
 })
 
