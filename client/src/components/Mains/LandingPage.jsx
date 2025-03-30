@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import NavigationLayout from "../../layouts/NavigationLayout.jsx";
+import ChatBot from "../ChatBot.jsx";
 
 const LandingPage = () => {
     const navigate = useNavigate();
@@ -149,6 +150,7 @@ const LandingPage = () => {
                     </button>
                 </footer>
             </section>
+            {/* <ChatBot/> */}
         </NavigationLayout>
     );
 };
