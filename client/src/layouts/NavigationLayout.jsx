@@ -7,9 +7,12 @@ import ConfirmLogout from "../components/Auth/ConfirmLogout.jsx";
 import DeleteAccount from "../components/Auth/DeleteAccount.jsx";
 import NewCollab from "../components/Collabs/NewCollab.jsx";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Profile from "../components/Profile/Profile.jsx";
 
 function NavigationLayout({ children }) {
-    const isLoggedIn = true;
+    const isLoggedIn = useSelector((state) => state?.auth?.isLoggedIn) || false;
+    const userData = useSelector((state) => state?.auth?.userData);
 
     
     const navigate = useNavigate();
@@ -24,6 +27,7 @@ function NavigationLayout({ children }) {
     const [ showLogoutModal, setShowLogoutModal ] = useState(false);
     const [ showDeleteAccountModal, setShowDeleteAccountModal ] = useState(false);
     const [ showNewCollabModal, setShowNewCollabModal ] = useState(false);
+    const [ showProfileModal, setShowProfileModal ] = useState(false);
 
     // Refs for handling outside clicks
     const dropdownRef = useRef(null);
@@ -69,6 +73,9 @@ function NavigationLayout({ children }) {
                     Together
                 </div>
                 <ul className="flex flex-row justify-center items-center gap-4">
+                    <li className="relative cursor-pointer" onClick={() => navigate("/")}>
+                        Home
+                    </li>
                     {isLoggedIn && (
                         <li className="relative" ref={collabDropdownRef}>
                             <span
@@ -90,7 +97,7 @@ function NavigationLayout({ children }) {
                     )}
                     {!isLoggedIn && (
                         <>
-                            <Link to={"/auth/sign-in"}>Log In</Link>
+                            <Link to={"/auth/login"}>Log In</Link>
                             <Link to={"/auth/sign-up"}>Sign Up</Link>
                         </>
                     )}
@@ -102,8 +109,8 @@ function NavigationLayout({ children }) {
                         <li className="relative" ref={dropdownRef}>
                             <img
                                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                                className="h-10 w-10 rounded-full border-gray-200 border-2 hover:cursor-pointer"
-                                src="https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-174669.jpg"
+                                className="h-10 w-10 rounded-full border-gray-200 border-2 object-center hover:cursor-pointer"
+                                src={userData?.avatar?.secure_url ||"https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-174669.jpg"}
                                 alt="User Avatar"
                             />
 
@@ -111,13 +118,20 @@ function NavigationLayout({ children }) {
                             {isDropdownOpen && (
                                 <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-md rounded-md py-2 z-20 border dark:border-gray-700">
                                     <DropdownItem label="Change Avatar" onClick={() => setShowEditAvatar(true)} />
-                                    <DropdownItem label="Edit Profile" onClick={() => setShowEditProfile(true)} />
+                                    {/* <DropdownItem label="Edit Profile" onClick={() => setShowEditProfile(true)} /> */}
+                                    <DropdownItem 
+                                        label="My Profile" 
+                                        onClick={() => {
+                                            setShowProfileModal(true)
+                                            setIsDropdownOpen(false)
+                                        }} 
+                                    />
                                     <DropdownItem
                                         label="Settings"
                                         onClick={() => setIsSettingsOpen(!isSettingsOpen)}
                                         hasSubmenu={true}
                                     />
-                                    <DropdownItem label="My Friends" onClick={() => navigate("/user/friends")} />
+                                    {/* <DropdownItem label="My Friends" onClick={() => navigate("/user/friends")} /> */}
                                     <DropdownItem label="Logout" onClick={() => setShowLogoutModal(true)} />
                                 </div>
                             )}
@@ -146,6 +160,11 @@ function NavigationLayout({ children }) {
             {
                 showEditAvatar && (
                     <ChangeAvatar showEditAvatar={setShowEditAvatar} setShowEditAvatar={setShowEditAvatar}/>
+                )
+            }
+            {
+                showProfileModal && (
+                    <Profile onClose={() => setShowProfileModal(false)} />
                 )
             }
             {

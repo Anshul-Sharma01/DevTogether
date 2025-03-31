@@ -7,11 +7,12 @@ import UserFriends from './components/Friends/UserFriends'
 import AllCollabs from './components/Collabs/AllCollabs'
 import NotFound from './components/Misc/NotFound'
 import Denied from './components/Misc/Denied'
-import SignIn from './components/Auth/SignIn'
 import SignUp from './components/Auth/SignUp'
 import ForgotPassword from './components/Auth/ForgotPassword'
 import DevelopersTeam from './pages/DevelopersTeam'
 import Contact from './pages/Contact'
+import LogIn from './components/Auth/LogIn'
+import RequireAuth from './helpers/RequireAuth'
 
 function App() {
 
@@ -20,13 +21,16 @@ function App() {
     <>
       <Routes>
         <Route path='/' element={<LandingPage/>}> </Route>
-        <Route path='/user/friends'  element={<UserFriends/>}></Route>
-        <Route path='/collabs/all-collabs'  element={<AllCollabs/>}></Route>
+
+        <Route element={<RequireAuth/>}>
+          <Route path='/user/friends'  element={<UserFriends/>}></Route>
+          <Route path='/collabs/all-collabs'  element={<AllCollabs/>}></Route>
+        </Route>
 
         <Route path='/contact' element={<Contact/>}></Route>
 
         {/* Auth Routes */}
-        <Route path='/auth/sign-in' element={<SignIn/>}></Route>
+        <Route path='/auth/login' element={<LogIn/>}></Route>
         <Route path='/auth/sign-up' element={<SignUp/>}></Route>
         <Route path='/auth/forgot-password' element={<ForgotPassword/>}></Route>
 

@@ -1,12 +1,17 @@
 import React from "react";
 import { RxCross2 } from "react-icons/rx";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { logoutUserThunk } from "../../Redux/Slices/authSlice";
 
 const ConfirmLogout = ({ showLogoutModal, setShowLogoutModal }) => {
 
-    const handleLogout = (event) => {
-        event.preventDefault();  // Prevent default form submission
-        toast.success("Logged out successfully!");  // Example toast notification
+    const dispatch = useDispatch();
+
+    const handleLogout = async (event) => {
+        event.preventDefault();
+        const res = await dispatch(logoutUserThunk()); // Prevent default form submission
+        console.log(res);
         setShowLogoutModal(false);
         // Implement actual logout logic here
     };

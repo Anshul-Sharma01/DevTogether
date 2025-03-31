@@ -1,11 +1,14 @@
 import { RxCross2 } from 'react-icons/rx';
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateProfilePictureThunk } from '../../Redux/Slices/authSlice';
 
 const ChangeAvatar = ({ showEditAvatar, setShowEditAvatar }) => {
-    const userAvatar = useSelector((state) => state?.auth?.userDetails?.userAvatar);
+    const userAvatar = useSelector((state) => state?.auth?.userData?.avatar?.secure_url);
     const [previewAvatar, setPreviewAvatar] = useState(userAvatar);
     const [selectedFile, setSelectedFile] = useState(null);
+
+    const dispatch = useDispatch();
 
     // Handle avatar change
     const handleAvatarChange = (event) => {
@@ -21,10 +24,16 @@ const ChangeAvatar = ({ showEditAvatar, setShowEditAvatar }) => {
     };
 
     // Handle submit (You might need to integrate with backend)
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log("Uploaded Avatar:", selectedFile);
-        // Implement API call to upload the selectedFile
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        // console.log("Uploaded Avatar:", selectedFile);
+        const formData = new FormData();
+        formData.append("avatar", selectedFile);
+        const res = await dispatch(updateProfilePictureThunk(formData));
+        console.log(res);
+        if(res?.payload?.statusCode === 200){
+            setShowEditAvatar(false);
+        }
     };
 
     return (
