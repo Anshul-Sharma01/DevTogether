@@ -4,6 +4,7 @@ import NavigationLayout from "../../layouts/NavigationLayout.jsx";
 const LandingPage = () => {
     const navigate = useNavigate();
     
+    
     return (
         <NavigationLayout>
             <section className="dark:bg-gray-900 w-full bg-white min-h-screen flex flex-col items-center justify-center px-4">
