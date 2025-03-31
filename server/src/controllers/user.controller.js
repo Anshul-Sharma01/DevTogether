@@ -88,12 +88,12 @@ const registerController = asyncHandler(async (req,res) => {
 })
 
 const loginController = asyncHandler(async (req,res) => {
-    const { username, email, password } = req.body;
+    const { inputValue, password } = req.body;
 
     // console.log(username, password);
 
     const checkUser = await User.findOne({
-        $or: [{username},{email}]
+        $or: [{username : inputValue},{email : inputValue}]
     })
 
     if(!checkUser) {
