@@ -97,7 +97,7 @@ function NavigationLayout({ children }) {
                     )}
                     {!isLoggedIn && (
                         <>
-                            <Link to={"/auth/login"}>Log In</Link>
+                            <Link to={"/auth/login"}>Sign In</Link>
                             <Link to={"/auth/sign-up"}>Sign Up</Link>
                         </>
                     )}
