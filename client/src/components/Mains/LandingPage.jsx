@@ -1,36 +1,37 @@
 import { useNavigate } from "react-router-dom";
 import NavigationLayout from "../../layouts/NavigationLayout.jsx";
-import ChatBot from "../ChatBot.jsx";
+import { motion } from "framer-motion";
 
 const LandingPage = () => {
     const navigate = useNavigate();
     
-    
     return (
         <NavigationLayout>
-            <section className="dark:bg-gray-900 w-full bg-white min-h-screen flex flex-col items-center justify-center px-4">
+            <section className="dark:bg-black w-full bg-gradient-to-b bg-white min-h-screen flex flex-col items-center justify-center px-4 relative overflow-hidden text-gray-900 dark:text-white">
+                {/* Background Effects */}
+                <div className="absolute inset-0 bg-gradient-to-br bg-white dark:border-l-gray-800 opacity-10 dark:opacity-30 blur-3xl"></div>
+                
                 {/* Hero Section */}
-                <div className="text-center max-w-3xl mt-12">
-                    <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-cyan-400 mb-4">
+                <motion.div initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="text-center max-w-3xl mt-12 z-10 relative">
+                    <h1 className="text-4xl sm:text-5xl font-extrabold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-blue-600 mb-4 drop-shadow-lg">
                         Real-Time Collaborative Web Development Compiler
                     </h1>
-                    <p className="text-lg text-gray-700 dark:text-gray-300 mb-8">
-                        Seamless real-time collaboration for students and teams. Code, preview, and communicate—all in one place.
+                    <p className="text-lg text-gray-800 dark:text-white mb-8">
+                        Seamless real-time collaboration for developers and teams. Code, preview, and communicate—all in one place.
                     </p>
                     <div className="flex justify-center space-x-4">
-                        <button className="px-6 py-3 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-800 transition duration-300 ease-in-out transform hover:scale-105">
+                        <motion.button whileHover={{ scale: 1.1 }} className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-md shadow-lg hover:shadow-xl transition duration-300">
                             Get Started
-                        </button>
-                        <button className="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-md shadow-md hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-300 ease-in-out transform hover:scale-105">
+                        </motion.button>
+                        <motion.button whileHover={{ scale: 1.1 }} className="px-6 py-3 bg-white text-gray-900 border border-gray-300 rounded-md shadow-md hover:shadow-xl transition duration-300">
                             Learn More
-                        </button>
+                        </motion.button>
                     </div>
-                </div>
+                </motion.div>
 
                 {/* Features Section */}
-                <section className="mt-20 grid gap-8 md:grid-cols-2 lg:grid-cols-3 max-w-6xl px-4">
-                    {[
-                        {
+                <section className="mt-20 grid gap-8 md:grid-cols-2 lg:grid-cols-3 max-w-6xl px-4 z-10 relative">
+                    {[{
                             title: "Real-Time Collaboration",
                             description: "Code with your team simultaneously. Changes are reflected instantly for everyone."
                         },
@@ -59,7 +60,7 @@ const LandingPage = () => {
                             key={index}
                             className="p-6 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md transition transform hover:-translate-y-2 hover:shadow-lg duration-300 ease-in-out"
                         >
-                            <h3 className="text-xl font-semibold text-gray-900 dark:text-cyan-400 mb-2">
+                            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                                 {feature.title}
                             </h3>
                             <p className="text-gray-700 dark:text-gray-300">{feature.description}</p>
@@ -67,91 +68,40 @@ const LandingPage = () => {
                     ))}
                 </section>
 
-                {/* How It Works Section */}
-                <section className="mt-20 max-w-4xl text-center px-4">
-                    <h2 className="text-3xl font-bold text-gray-900 dark:text-cyan-400 mb-6">
-                        How It Works
+                {/* New Sections */}
+                {/* Code Execution Section */}
+                <section className="mt-20 max-w-5xl text-center px-4 z-10 relative">
+                    <h2 className="text-3xl font-bold bg-gradient-to-r from-green-500 to-blue-500 bg-clip-text text-transparent mb-6">
+                        Instant Code Execution
                     </h2>
-                    <div className="grid gap-8 md:grid-cols-3">
-                        {[
-                            {
-                                step: "1",
-                                title: "Create an Account",
-                                description: "Sign up for free to get started with your projects."
-                            },
-                            {
-                                step: "2",
-                                title: "Form a Team",
-                                description: "Invite your friends or teammates to collaborate in real-time."
-                            },
-                            {
-                                step: "3",
-                                title: "Start Coding",
-                                description: "Code together with live previews, chat, and integrated tools."
-                            }
-                        ].map((item, index) => (
-                            <div key={index} className="p-6 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md transition transform hover:-translate-y-2 hover:shadow-lg duration-300 ease-in-out">
-                                <div className="w-12 h-12 flex items-center justify-center bg-blue-600 text-white rounded-full mx-auto mb-4 text-xl font-bold">
-                                    {item.step}
-                                </div>
-                                <h3 className="text-xl font-semibold text-gray-900 dark:text-cyan-400 mb-2">
-                                    {item.title}
-                                </h3>
-                                <p className="text-gray-700 dark:text-gray-300">{item.description}</p>
-                            </div>
-                        ))}
-                    </div>
+                    <p className="text-gray-800 dark:text-white mb-8">
+                        Run your code in real-time with instant feedback. No setup required—just write, execute, and debug.
+                    </p>
                 </section>
 
-                {/* Testimonials Section */}
-                <section className="mt-20 max-w-5xl text-center px-4">
-                    <h2 className="text-3xl font-bold text-gray-900 dark:text-cyan-400 mb-6">
-                        What Our Users Say
+                {/* Security and Privacy Section */}
+                <section className="mt-20 max-w-5xl text-center px-4 z-10 relative">
+                    <h2 className="text-3xl font-bold bg-gradient-to-r from-red-500 to-purple-500 bg-clip-text text-transparent mb-6">
+                        Security & Privacy
                     </h2>
-                    <div className="grid gap-8 md:grid-cols-2">
-                        {[
-                            {
-                                name: "Jane Doe",
-                                feedback: "This platform made group projects a breeze! We could code and discuss changes in real-time without switching apps."
-                            },
-                            {
-                                name: "John Smith",
-                                feedback: "I love the live preview feature. It helped me debug faster and collaborate effectively with my team."
-                            }
-                        ].map((testimonial, index) => (
-                            <div key={index} className="p-6 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md transition transform hover:-translate-y-2 hover:shadow-lg duration-300 ease-in-out">
-                                <p className="italic text-gray-700 dark:text-gray-300 mb-4">“{testimonial.feedback}”</p>
-                                <h4 className="font-semibold text-gray-900 dark:text-cyan-400">- {testimonial.name}</h4>
-                            </div>
-                        ))}
-                    </div>
+                    <p className="text-gray-800 dark:text-white mb-8">
+                        Your data is secure with end-to-end encryption, private repositories, and controlled access to your projects.
+                    </p>
                 </section>
 
                 {/* Contact Redirect Section */}
-                <section className="mt-20 max-w-4xl text-center px-4">
-                    <h2 className="text-3xl font-bold text-gray-900 dark:text-cyan-400 mb-6">
+                <section className="mt-20 max-w-4xl text-center px-4 z-10 relative">
+                    <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent mb-6">
                         Need Help?
                     </h2>
-                    <p className="text-gray-700 dark:text-gray-300 mb-8">
+                    <p className="text-gray-800 dark:text-white mb-8">
                         Visit our contact page for FAQs and to get in touch with our team.
                     </p>
-                    <button
-                        onClick={() => navigate("/contact")}
-                        className="px-6 py-3 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-800 transition duration-300 ease-in-out transform hover:scale-105"
-                    >
+                    <motion.button whileHover={{ scale: 1.1 }} onClick={() => navigate("/contact")} className="px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-md shadow-lg hover:shadow-xl transition duration-300">
                         Go to Contact Page
-                    </button>
+                    </motion.button>
                 </section>
-
-                {/* Call-to-Action Footer */}
-                <footer className="mt-20 w-full bg-blue-200 dark:bg-cyan-600 text-black py-8 text-center">
-                    <h3 className="text-2xl font-bold mb-4 dark:text-white">Ready to Collaborate?</h3>
-                    <button onClick={()=>navigate("/auth/sign-in")} className="px-8 py-3 bg-white text-blue-600 rounded-md shadow-md hover:bg-gray-100 transition duration-300 ease-in-out transform hover:scale-105">
-                        Join Now for Free
-                    </button>
-                </footer>
             </section>
-            {/* <ChatBot/> */}
         </NavigationLayout>
     );
 };
