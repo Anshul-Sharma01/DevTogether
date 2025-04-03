@@ -58,7 +58,7 @@ export default ThemeToggle;
   
   .dark {
     background-color: var(--background-dark);
-    color: var(--text-dark);
+    color: var(--text-dark); 
   }
   
   body {

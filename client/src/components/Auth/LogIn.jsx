@@ -22,9 +22,8 @@ function LogIn() {
             toast.error("Please fill in all fields!");
             return;
         }
-        
-        
-        const res = await dispatch(loginUserAccountThunk({ username : inputValue.input, password : inputValue.password }));
+
+        const res = await dispatch(loginUserAccountThunk({ inputValue : inputValue.input, password : inputValue.password }));
         console.log(res);
         if(res?.payload?.statusCode === 200){
             navigate("/");
