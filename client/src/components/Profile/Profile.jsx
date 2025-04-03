@@ -7,7 +7,7 @@ const Profile = ({ onClose }) => {
     const userData = useSelector((state) => state?.auth?.userData);
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 dark:bg-opacity-80 transition-all duration-300">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 dark:bg-opacity-80 transition-all duration-300 z-10">
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-2xl p-8 max-w-md w-full relative transform transition-all duration-300 scale-95 hover:scale-100">
                 <button
                     onClick={onClose}
