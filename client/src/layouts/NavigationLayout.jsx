@@ -59,7 +59,7 @@ function NavigationLayout({ children }) {
                 <div className="fixed inset-0 bg-black/40 backdrop-blur-md z-40"></div>
             )}
 
-            <nav className="flex flex-row justify-between pr-6 items-center dark:bg-gray-700 dark:text-white py-4 sticky top-0 z-50 bg-gray-200">
+            <nav className="flex flex-row justify-between pr-6 items-center dark:bg-black dark:bg-opacity-60 dark:backdrop-blur-md dark:text-white py-4 sticky top-0 z-50 bg-gray-300">
                 <Link to={"/"} className="w-40 h-10 flex flex-row justify-center items-center text-white">
                 <img
                     src="./slogo.svg"
