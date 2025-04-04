@@ -50,7 +50,9 @@ const Profile = ({ onClose }) => {
                         </div>
                     </div>
 
-                    <p className="text-gray-700 dark:text-gray-300 mt-4 text-center">{userData?.bio}</p>
+                    <p className="text-gray-700 dark:text-gray-300 mt-4 overflow-y-scroll h-[200px]  text-left">
+                    {userData?.bio}
+                    </p>
                 </div>
             </div>
         </div>

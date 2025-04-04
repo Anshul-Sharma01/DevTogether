@@ -10,11 +10,13 @@ const updateLocalStorage = (user) => {
 };
 
 
+const userDataRaw = localStorage.getItem("userData");
+
 const initialState = {
-    isLoggedIn : localStorage.getItem("isLoggedIn") === "true",
-    userRole : localStorage.getItem("userRole") !== undefined ? localStorage.getItem("userRole") : "",
-    userData : JSON.parse(localStorage.getItem("userData")) !== undefined ? JSON.parse(localStorage.getItem("userData")) : {},
-}
+    isLoggedIn: localStorage.getItem("isLoggedIn") === "true",
+    userRole: localStorage.getItem("userRole") || "",
+    userData: userDataRaw && userDataRaw !== "undefined" ? JSON.parse(userDataRaw) : {},
+};
 
 const toastHandler = (promise, loadingMsg, successMsg, errorMsg) => {
     return toast.promise(promise, {
@@ -66,6 +68,16 @@ export const updateProfilePictureThunk = createAsyncThunk("/auth/profile-picture
     }
 })
 
+export const updateProfileThunk = createAsyncThunk("/auth/update-profile", async(data) => {
+    try{
+        const res = axiosInstance.patch("user/update-profile", data);
+        toastHandler(res, "Updating your profile...", "Successfully updated profile", "Failed to update profile");
+        return (await res).data;
+    }catch(err){    
+        console.error(`Error occurred while updating profile : ${err}`);
+    }
+})
+
 const authSlice = createSlice({
     name : "auth",
     initialState,
@@ -112,6 +124,11 @@ const authSlice = createSlice({
             state.userData = action?.payload?.data;
             updateLocalStorage(action?.payload?.data);
         })
+        .addCase(updateProfileThunk.fulfilled, (state, action) => {
+            state.userData = action?.payload?.data;
+            updateLocalStorage(action?.payload?.data);
+        })
+        
     }
 })
 

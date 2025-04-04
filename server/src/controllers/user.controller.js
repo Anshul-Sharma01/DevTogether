@@ -167,9 +167,38 @@ const refreshAccessTokenController = asyncHandler(async (req,res) => {
 })
 
 const updateProfileController = asyncHandler(async (req,res) => {
-    const {username} = req.body
+    const { name, bio } = req.body
+    const userId = req.user?._id;
+
+    const updationFields = {};
+    if(name) updationFields.name = name;
+    if(bio) updationFields.bio = bio;
+
+    const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        {
+            $set: updationFields
+        },
+        {
+            new: true,
+            runValidators: true
+        }
+    ).select("-password -refreshToken")
+
+    //console.log(user);
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200, updatedUser, "Profile details updated successfully"))
     
+})
+
+const updateUserNameController = asyncHandler(async(req, res) => {
+    const userId = req.user?._id;
+    const { username } = req.body;
+
     usernameCheck(username)
+    
     if(!username) {
         throw new ApiError(400, "Username is required")
     }
@@ -177,6 +206,11 @@ const updateProfileController = asyncHandler(async (req,res) => {
     if(username == req.user?.username) {
         throw new ApiError(400, "Username is same as previous")
     }
+    const userNameExists = await User.find({ username : username });
+    if(userNameExists.length > 0) {
+        throw new ApiError(400, "Username already exists")
+    }
+
 
     const user = await User.findByIdAndUpdate(
         req.user?._id,
@@ -188,12 +222,14 @@ const updateProfileController = asyncHandler(async (req,res) => {
         }
     ).select("-password -refreshToken")
 
-    //console.log(user);
-
-    return res
-    .status(200)
-    .json(new ApiResponse(200, user, "Profile details updated successfully"))
-    
+    return res.status(200)
+    .json(
+        new ApiResponse(
+            200,
+            user,
+            "Username updated successfully"
+        )
+    )
 })
 
 const changePasswordController = asyncHandler(async (req,res) => {
@@ -315,5 +351,6 @@ export {
     fetchProfileController,
     logoutController,
     deleteAccountController,
-    updateProfilePictureController
+    updateProfilePictureController,
+    updateUserNameController
 }

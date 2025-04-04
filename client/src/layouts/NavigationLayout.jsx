@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import ThemeToggle from "../components/Misc/ThemeToggle";
 import EditProfile from "../components/Profile/EditProfile.jsx";
 import ChangeAvatar from "../components/Profile/ChangeAvatar.jsx";
-import UpdateBio from "../components/Profile/UpdateBio.jsx";
+import UpdateProfile from "../components/Profile/UpdateProfile.jsx";
 import ConfirmLogout from "../components/Auth/ConfirmLogout.jsx";
 import DeleteAccount from "../components/Auth/DeleteAccount.jsx";
 import NewCollab from "../components/Collabs/NewCollab.jsx";
@@ -61,11 +61,11 @@ function NavigationLayout({ children }) {
                 <Link to={"/"} className="w-40 h-10 flex flex-row justify-center items-center text-white">
                 <img
                     src="./slogo.svg"
-                     alt="Logo"
+                    alt="Logo"
                     className="w-12 h-12 mr-2 dark:mix-blend-color-burn dark:brightness-500
-                   light: mix-blend-darken"
+                    light: mix-blend-darken"
                     
-/>
+                />
 
                 </Link>
                 <div className="font-bold tracking-widest text-xl">
@@ -140,7 +140,7 @@ function NavigationLayout({ children }) {
                             {isSettingsOpen && isDropdownOpen && (
                                 <div className="absolute right-48 top-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-md rounded-md py-2 z-30 border dark:border-gray-700">
                                     <DropdownItem label="Change Password" />
-                                    <DropdownItem label="Update Bio"  onClick={() => setShowBioModal(true)}/>
+                                    <DropdownItem label="Update Profile"  onClick={() => setShowBioModal(true)}/>
                                     <DropdownItem label="Delete Account" onClick={() => setShowDeleteAccountModal(true)} />
                                 </div>
                             )}
@@ -169,7 +169,7 @@ function NavigationLayout({ children }) {
             }
             {
                 showBioModal && (
-                    <UpdateBio showBioModal={showBioModal} setShowBioModal={setShowBioModal}/>
+                    <UpdateProfile showBioModal={showBioModal} setShowBioModal={setShowBioModal}/>
                 )
             }
             {

@@ -1,17 +1,36 @@
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { updateProfileThunk } from "../../Redux/Slices/authSlice";
 
-const UpdateBio = ({ showBioModal, setShowBioModal }) => {
-    const bioFromStore = useSelector((state) => state?.auth?.userData?.bio);
+const UpdateProfile = ({ showBioModal, setShowBioModal }) => {
+    const userData = useSelector((state) => state?.auth?.userData);
 
-    // State for editable bio input
-    const [bioField, setBioField] = useState(bioFromStore || "Enter your bio...");
+    const dispatch = useDispatch();
+
+    
+    const [bioField, setBioField] = useState(userData?.bio || "Enter your bio...");
+    const [nameField, setNameField] = useState(userData?.name || "Enter your name..."); 
 
     // Handle form submission (e.g., send to API)
-    const handleSubmit = (event) => {
+    const handleSubmit = async(event) => {
         event.preventDefault();
-        console.log("Updated Bio:", bioField);
+        toast.dismiss();
+        if(userData?.bio === bioField && userData?.name === nameField){
+            toast.error("No changes made to the profile.");
+            setShowBioModal(false);
+            return;
+        }
+
+        const res = await dispatch(updateProfileThunk({ bio: bioField, name: nameField }));
+        if (res?.payload?.statusCode === 200) {
+            setShowBioModal(false);
+        } 
+        // Reset the fields after submission
+        setBioField(userData?.bio || "Enter your bio...");
+        setNameField(userData?.name || "Enter your name...");
+
         // API call to update the user profile (not implemented here)
     };
 
@@ -35,6 +54,15 @@ const UpdateBio = ({ showBioModal, setShowBioModal }) => {
 
                         {/* Form */}
                         <form onSubmit={handleSubmit} className="space-y-4">
+
+                            <input
+                                type="text"
+                                className="w-full p-4 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
+                                placeholder="Update your name..."
+                                value={nameField}
+                                onChange={(e) => setNameField(e.target.value)}
+                            />
+
                             <textarea
                                 className="w-full p-4 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white resize-none"
                                 placeholder="Update your bio..."
@@ -66,4 +94,4 @@ const UpdateBio = ({ showBioModal, setShowBioModal }) => {
     );
 };
 
-export default UpdateBio;
+export default UpdateProfile;
