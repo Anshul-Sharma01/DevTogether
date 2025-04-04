@@ -9,6 +9,7 @@ import NewCollab from "../components/Collabs/NewCollab.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Profile from "../components/Profile/Profile.jsx";
+import UpdateUsername from "../components/Profile/UpdateUsername.jsx";
 
 function NavigationLayout({ children }) {
     const isLoggedIn = useSelector((state) => state?.auth?.isLoggedIn) || false;
@@ -28,6 +29,7 @@ function NavigationLayout({ children }) {
     const [ showDeleteAccountModal, setShowDeleteAccountModal ] = useState(false);
     const [ showNewCollabModal, setShowNewCollabModal ] = useState(false);
     const [ showProfileModal, setShowProfileModal ] = useState(false);
+    const [ showUserNameModal, setShowUserNameModel ] = useState(false);
 
     // Refs for handling outside clicks
     const dropdownRef = useRef(null);
@@ -141,6 +143,7 @@ function NavigationLayout({ children }) {
                                 <div className="absolute right-48 top-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-md rounded-md py-2 z-30 border dark:border-gray-700">
                                     <DropdownItem label="Change Password" />
                                     <DropdownItem label="Update Profile"  onClick={() => setShowBioModal(true)}/>
+                                    <DropdownItem label="Update Username"  onClick={() => setShowUserNameModel(true)}/>
                                     <DropdownItem label="Delete Account" onClick={() => setShowDeleteAccountModal(true)} />
                                 </div>
                             )}
@@ -185,6 +188,11 @@ function NavigationLayout({ children }) {
             {
                 showNewCollabModal && (
                     <NewCollab showNewCollabModal={showNewCollabModal} setShowNewCollabModel={setShowNewCollabModal}/>
+                )
+            }
+            {
+                showUserNameModal && (
+                    <UpdateUsername setshowUserNameModal={setShowUserNameModel} showUserNameModal={showUserNameModal} />
                 )
             }
         </div>

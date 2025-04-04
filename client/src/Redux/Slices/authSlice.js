@@ -9,14 +9,11 @@ const updateLocalStorage = (user) => {
     localStorage.setItem("userRole", user?.role);
 };
 
-
-const userDataRaw = localStorage.getItem("userData");
-
 const initialState = {
-    isLoggedIn: localStorage.getItem("isLoggedIn") === "true",
-    userRole: localStorage.getItem("userRole") || "",
-    userData: userDataRaw && userDataRaw !== "undefined" ? JSON.parse(userDataRaw) : {},
-};
+    isLoggedIn : localStorage.getItem("isLoggedIn") === "true",
+    userRole : localStorage.getItem("userRole") !== undefined ? localStorage.getItem("userRole") : "",
+    userData : JSON.parse(localStorage.getItem("userData")) !== undefined ? JSON.parse(localStorage.getItem("userData")) : {},
+}
 
 const toastHandler = (promise, loadingMsg, successMsg, errorMsg) => {
     return toast.promise(promise, {
@@ -78,6 +75,16 @@ export const updateProfileThunk = createAsyncThunk("/auth/update-profile", async
     }
 })
 
+export const updateUsernameThunk = createAsyncThunk("/auth/update-username", async(data) => {
+    try{    
+        const res = axiosInstance.patch("user/update-username", data);
+        toastHandler(res, "Updating your username...", "Successfully updated username", "Failed to update username");
+        return (await res).data;
+    }catch(err){
+        console.error(`Error occurred while updating username  : ${err}`);
+    }
+})
+
 const authSlice = createSlice({
     name : "auth",
     initialState,
@@ -128,7 +135,12 @@ const authSlice = createSlice({
             state.userData = action?.payload?.data;
             updateLocalStorage(action?.payload?.data);
         })
-        
+        .addCase(updateUsernameThunk.fulfilled, (state, action) => {
+            if(action.payload?.statusCode === 200){
+                state.userData = action?.payload?.data;
+                updateLocalStorage(action?.payload?.data);
+            }
+        })
     }
 })
 
