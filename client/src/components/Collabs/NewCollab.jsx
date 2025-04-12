@@ -42,11 +42,11 @@ const NewCollab = ({ showNewCollabModal, setShowNewCollabModel }) => {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({
           title: collabName,
           roomId,
           language,
-          createdBy,
           description: "", // optional
         }),
       });
@@ -60,7 +60,7 @@ const NewCollab = ({ showNewCollabModal, setShowNewCollabModel }) => {
         toast.error(data.message || "Failed to create collab");
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
       toast.error("Server error. Please try again later.");
     }
   };

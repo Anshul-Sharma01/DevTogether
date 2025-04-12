@@ -1,8 +1,9 @@
-import { Collab } from "../models/collab.model";
-import { ApiError } from "../utils/ApiError";
-import { ApiResponse } from "../utils/ApiResponse";
+import { Collab } from "../models/collab.model.js";
+import { ApiError } from "../utils/ApiError.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
-const createCollab = async (req, res) => {
+const createCollab = asyncHandler(async (req, res) => {
 
     const { title, roomId, language, description } = req.body;
 
@@ -15,7 +16,7 @@ const createCollab = async (req, res) => {
         throw new ApiError(500, "Collab already existing")
     }
 
-    const newCollab = new Collab({
+    const newCollab = await Collab.create({
       title,
       roomId,
       language,
@@ -23,20 +24,19 @@ const createCollab = async (req, res) => {
       createdBy: req.user._id,
     });
 
-    await newCollab.save();
 
     return res
             .status(200)
-            .cookie("accessToken", accessToken, option)
-            .cookie("refreshToken", newRefreshToken, option)
             .json(
                 new ApiResponse(
                     200,
-                    {accessToken, refreshToken: newRefreshToken},
-                    "Access Token Refreshed"
+                    newCollab,
+                    "collab sucessfully made"
                 )
             )
     
-};
+})
 
-module.exports = { createCollab };
+export {
+     createCollab 
+};
