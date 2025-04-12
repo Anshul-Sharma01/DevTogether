@@ -137,7 +137,7 @@ const LandingPage = () => {
                     <p className="text-lg mb-6">Join thousands of developers and teams who trust our platform.</p>
                     <motion.button
                         whileHover={{ scale: 1.1 }}
-                        onClick={() => navigate("/signup")}
+                        onClick={() => navigate("/auth/sign-up")}
                         className="px-8 py-4 bg-white text-blue-700 font-semibold rounded-md shadow-md hover:bg-gray-100"
                     >
                         Create Your Free Account

@@ -3,6 +3,9 @@ import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { loginUserAccountThunk } from '../../Redux/Slices/authSlice';
+import { FaRegEyeSlash } from "react-icons/fa";
+import { FaRegEye } from "react-icons/fa6";
+
 
 function LogIn() {
 
@@ -11,6 +14,10 @@ function LogIn() {
         input: '',
         password: ''
     });
+    const [ showPassword, setShowPassword ] = useState(false);
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
     
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -66,13 +73,26 @@ function LogIn() {
                         <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                             Password
                         </label>
-                        <input
-                            type="password"
-                            value={inputValue.password}  // ✅ Use inputValue.password, not setInputValue.password
-                            onChange={(e) => setInputValue({ ...inputValue, password: e.target.value })}  // ✅ Correct syntax
-                            className="mt-2 block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-200"
-                            placeholder="Enter your password"
-                        />
+
+                        <div className="relative">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                id="password"
+                                value={inputValue.password}
+                                onChange={(e) => setInputValue({ ...inputValue, password: e.target.value })}
+                                className="mt-2 block w-full px-4 py-3 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-200"
+                                placeholder="Enter your password"
+                            />
+
+                            {/* Toggle visibility button */}
+                            <button
+                                type="button"
+                                onClick={togglePasswordVisibility}
+                                className="absolute top-1/2 right-4 transform -translate-y-1/2 text-gray-600 dark:text-gray-300 text-sm"
+                            >
+                                {showPassword ? <FaRegEyeSlash/> : <FaRegEye/>}
+                            </button>
+                        </div>
                     </div>
 
                     {/* Sign In Button */}
