@@ -2,6 +2,7 @@ import { Collab } from "../models/collab.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { User } from "../models/user.model.js";
 
 const createCollab = asyncHandler(async (req, res) => {
 
@@ -24,6 +25,11 @@ const createCollab = asyncHandler(async (req, res) => {
       createdBy: req.user._id,
     });
 
+    await User.findByIdAndUpdate(
+        req.user._id,
+        { $push: { allCollabs: newCollab._id } },
+        { new: true }
+    )
 
     return res
             .status(200)
