@@ -19,12 +19,20 @@ const NewCollab = ({ showNewCollabModal, setShowNewCollabModel }) => {
         setSelectedOption(id);
     };
 
-    const handleSubmit = () => {
-        toast.dismiss();
-        if(collabName === ""){
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (collabName === "") {
             toast.error("Please enter the collab title");
             return;
-        }
+          }
+        
+          if (!selectedOption) {
+            toast.error("Please select a collab type");
+            return;
+          } 
+  
+            toast.success("Collab created successfully");
+            window.location.href = `http://localhost:5174/?room=${Math.random().toString(36).substring(2, 8)}`;
     }
 
     return (
