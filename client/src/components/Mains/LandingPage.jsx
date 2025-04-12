@@ -254,6 +254,37 @@ const LandingPage = () => {
                 </section>
 
             </section>
+            {/* Contact Section */}
+            <section className="bg-white dark:bg-black py-20 px-6 text-center">
+    <h2 className="text-4xl font-bold mb-6">Get in Touch</h2>
+    <p className="text-lg max-w-2xl mx-auto text-gray-700 dark:text-gray-300 mb-8">
+        Questions? Feedback? We'd love to hear from you. Reach out to us anytime!
+    </p>
+
+    <div className="flex justify-center mb-8">
+        <motion.button
+            whileHover={{ scale: 1.05 }}
+            onClick={() => navigate("/contact")}
+            className="bg-blue-600 text-white px-6 py-3 rounded-md font-semibold hover:bg-blue-700 transition"
+        >
+            Contact Us
+        </motion.button>
+    </div>
+
+</section>
+
+{/* Footer */}
+<footer className="bg-gray-100 dark:bg-neutral-900 py-8 px-6 text-center text-gray-600 dark:text-gray-400">
+    <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center">
+        <p>&copy; {new Date().getFullYear()} DevTogether a branch of Udta Birdie Inc.. All rights reserved.</p>
+        <div className="flex gap-4 mt-4 sm:mt-0">
+            <a href="/privacy-policy" className="hover:underline">Privacy Policy</a>
+            <a href="/terms" className="hover:underline">Terms of Service</a>
+            <a href="/contact" className="hover:underline">Contact</a>
+        </div>
+    </div>
+</footer>
+
         </NavigationLayout>
     );
 };
