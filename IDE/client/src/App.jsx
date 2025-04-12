@@ -21,8 +21,8 @@ const App = () => {
   const [roomId, setRoomId] = useState(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const urlRoomId = urlParams.get('room');
-    setIsRoomOwner(!urlRoomId);
-    return urlRoomId || Math.random().toString(36).substring(2, 8);
+    setIsRoomOwner(true);
+    return urlRoomId ;
   });
 
   useEffect(() => {

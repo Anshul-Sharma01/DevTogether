@@ -13,7 +13,7 @@ const collabSchema = new Schema(
         default: ''
       },
 
-    collabId: {
+    roomId: {
         type: String,
         required: true,
         unique: true
