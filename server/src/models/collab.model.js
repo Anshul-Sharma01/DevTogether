@@ -20,7 +20,7 @@ const collabSchema = new Schema(
       },
 
     createdBy: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
       },
