@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import Profile from "../components/Profile/Profile.jsx";
 import UpdateUsername from "../components/Profile/UpdateUsername.jsx";
 import Footer from "./Footer.jsx";
+import Logo from "./Logo.jsx";
 
 function NavigationLayout({ children }) {
     const isLoggedIn = useSelector((state) => state?.auth?.isLoggedIn) || false;
@@ -62,27 +63,18 @@ function NavigationLayout({ children }) {
                 <div className="fixed inset-0 bg-black/40 backdrop-blur-md z-40"></div>
             )}
 
-            <nav className="fixed w-full z-50 bg-white dark:bg-black shadow-sm transition-all duration-75">
-                <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-                    <Link
-                        to="/"
-                        className={`text-2xl font-bold tracking-tight transition-all duration-75 ease-in-out ${scrolled ? 'transform scale-200' : 'transform scale-100'}`}
-                    >
-                        {scrolled ? (
-                            <>
-                                <span className="text-red-400">D</span>
-                                <span className="dark:text-white">T</span>
-                                <span className="transition-all duration-1000 transform translate-x-6 opacity-0">ogether</span>
-                            </>
-                        ) : (
-                            <>
-                                <span className="text-red-400">Dev</span>
-                                <span className="dark:text-white">Together</span>
-                            </>
-                        )}
-                    </Link>
+            <nav className="fixed w-full z-50 bg-white dark:bg-black/60 dark:backdrop-blur-md shadow-sm transition-all duration-75">
+                <div className="p-4 flex items-center justify-between gap-10">
+                <Link
+                    to="/"
+                    className={`text-2xl font-bold tracking-tight transform transition-transform duration-1000 ease-in-out scale-${scrolled ? '105' : '100'}`}
+                >
+                    <Logo scrolled={scrolled}/>
+                </Link>
 
-                    <ul className="flex gap-4 ml-auto">
+
+
+                    <ul className="flex gap-4 ml-auto justify-center items-center">
                         <li className="relative cursor-pointer dark:text-white" onClick={() => navigate("/")}>
                             Home
                         </li>
