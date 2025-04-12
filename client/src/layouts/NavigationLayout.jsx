@@ -62,11 +62,11 @@ function NavigationLayout({ children }) {
                 <div className="fixed inset-0 bg-black/40 backdrop-blur-md z-40"></div>
             )}
 
-            <nav className="fixed w-full z-50 bg-white dark:bg-black shadow-sm transition-all duration-300">
+            <nav className="fixed w-full z-50 bg-white dark:bg-black shadow-sm transition-all duration-75">
                 <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
                     <Link
                         to="/"
-                        className={`text-2xl font-bold tracking-tight transition-all duration-1000 ease-in-out ${scrolled ? 'transform scale-100' : 'transform scale-100'}`}
+                        className={`text-2xl font-bold tracking-tight transition-all duration-75 ease-in-out ${scrolled ? 'transform scale-200' : 'transform scale-100'}`}
                     >
                         {scrolled ? (
                             <>

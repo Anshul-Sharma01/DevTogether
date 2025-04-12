@@ -53,14 +53,7 @@ const AllCollabs = () => {
     <NavigationLayout>
       <div className="pt-24 px-4 md:px-8 bg-white dark:bg-black min-h-screen text-gray-900 dark:text-white transition-all duration-300">
         <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-          <button
-            onClick={handleSyncClick}
-            className="px-4 py-2 flex items-center gap-2 text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow transition-all"
-          >
-            <FiRefreshCcw className={`${isSpinning ? "animate-spin" : ""}`} />
-            <span>Sync / Refresh</span>
-          </button>
-
+         
           <button
             onClick={() => setIsModalOpen(true)}
             className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-xl shadow transition-all"
@@ -102,7 +95,7 @@ const AllCollabs = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
           <div className="relative z-50 bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-xl w-full max-w-md text-center">
-            <h2 className="text-2xl font-semibold mb-6">Create Collab</h2>
+            <h2 className="text-2xl font-semibold mb-6 dark:text-white">Create Collab</h2>
             <button onClick={() => setIsModalOpen(false)} aria-label="Close">
               <RxCross2 className="absolute top-4 right-4 text-2xl text-gray-600 dark:text-white hover:scale-110 transition-transform" />
             </button>
@@ -111,7 +104,7 @@ const AllCollabs = () => {
                 setIsModalOpen(false);
                 setIsAddCollabOpen(true);
               }}
-              className="w-full py-2 mb-3 border border-gray-400 rounded-xl hover:bg-blue-600 hover:text-white transition-all"
+              className="w-full py-2 mb-3 border border-gray-400 rounded-xl hover:bg-blue-600 hover:text-white transition-all dark:text-white"
             >
               Add Existing Collab
             </button>
@@ -120,7 +113,7 @@ const AllCollabs = () => {
                 setIsModalOpen(false);
                 setIsNewCollabOpen(true);
               }}
-              className="w-full py-2 border border-gray-400 rounded-xl hover:bg-blue-600 hover:text-white transition-all"
+              className="w-full py-2 border border-gray-400 rounded-xl hover:bg-blue-600 hover:text-white transition-all dark:text-white"
             >
               Create New Collab
             </button>
