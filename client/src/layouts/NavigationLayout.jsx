@@ -16,21 +16,30 @@ function NavigationLayout({ children }) {
     const isLoggedIn = useSelector((state) => state?.auth?.isLoggedIn) || false;
     const userData = useSelector((state) => state?.auth?.userData);
 
-    
+    const [scrolled, setScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 30);
+        };
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
     const navigate = useNavigate();
 
     // State for dropdowns
-    const [ isDropdownOpen, setIsDropdownOpen ] = useState(false);
-    const [ isSettingsOpen, setIsSettingsOpen ] = useState(false);
-    const [ isCollabDropdownOpen, setIsCollabDropdownOpen ] = useState(false);
-    const [ showEditProfile, setShowEditProfile ] = useState(false); // State for Edit Profile modal
-    const [ showEditAvatar, setShowEditAvatar ] = useState(false); // State for Edit Avatar modal
-    const [ showBioModal, setShowBioModal ] = useState(false);
-    const [ showLogoutModal, setShowLogoutModal ] = useState(false);
-    const [ showDeleteAccountModal, setShowDeleteAccountModal ] = useState(false);
-    const [ showNewCollabModal, setShowNewCollabModal ] = useState(false);
-    const [ showProfileModal, setShowProfileModal ] = useState(false);
-    const [ showUserNameModal, setShowUserNameModel ] = useState(false);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+    const [isCollabDropdownOpen, setIsCollabDropdownOpen] = useState(false);
+    const [showEditProfile, setShowEditProfile] = useState(false); 
+    const [showEditAvatar, setShowEditAvatar] = useState(false); 
+    const [showBioModal, setShowBioModal] = useState(false);
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
+    const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
+    const [showNewCollabModal, setShowNewCollabModal] = useState(false);
+    const [showProfileModal, setShowProfileModal] = useState(false);
+    const [showUserNameModal, setShowUserNameModel] = useState(false);
 
     // Refs for handling outside clicks
     const dropdownRef = useRef(null);
@@ -60,97 +69,99 @@ function NavigationLayout({ children }) {
                 <div className="fixed inset-0 bg-black/40 backdrop-blur-md z-40"></div>
             )}
 
-            <nav className="flex flex-row justify-between pr-6 items-center dark:bg-black dark:bg-opacity-60 dark:backdrop-blur-md dark:text-white py-4 sticky top-0 z-50 bg-gray-300">
-                <Link to={"/"} className="w-40 h-10 flex flex-row justify-center items-center text-white">
-                <img
-                    src="./slogo.svg"
-                    alt="Logo"
-                    className="w-12 h-12 mr-2 dark:mix-blend-color-burn dark:brightness-500
-                    light: mix-blend-darken"
-                    
-                />
+            <nav className="fixed w-full z-50 bg-white dark:bg-black shadow-sm transition-all duration-300">
+                <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+                    <div className={`text-2xl font-bold tracking-tight transition-all duration-1000 ease-in-out ${scrolled ? 'transform scale-100' : 'transform scale-100'}`}>
+                        {scrolled ? (
+                            <>
+                                <span className="text-red-400">D</span>
+                                <span className="dark:text-white">T</span>
+                                <span className="transition-all duration-1000 transform translate-x-6 opacity-0">ogether</span>
+                            </>
+                        ) : (
+                            <>
+                                <span className="text-red-400 " >Dev</span>
+                                <span className="dark:text-white">Together</span>
+                            </>
+                        )}
+                    </div>
 
-                </Link>
-                <div className="font-bold tracking-widest text-xl">
-                    <span className="dark:text-cyan-300 text-red-400 font-extrabold text-2xl">Dev</span>
-                    Together
+                    {/* Moved the nav items to the right */}
+                    <ul className="flex gap-4 ml-auto">
+                        <li className="relative cursor-pointer dark:text-white" onClick={() => navigate("/")}>
+                            Home
+                        </li>
+                        {isLoggedIn && (
+                            <li className="relative" ref={collabDropdownRef}>
+                                <span
+                                    onClick={() => setIsCollabDropdownOpen(!isCollabDropdownOpen)}
+                                    className="font-mono cursor-pointer dark:text-white"
+                                >
+                                    Collabs
+                                </span>
+
+                                {/* Collab Dropdown Menu */}
+                                {isCollabDropdownOpen && (
+                                    <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-md rounded-md py-2 z-20 border dark:border-gray-700 dark:text-white">
+                                        <DropdownItem label="Create New Collab" onClick={() => setShowNewCollabModal(true)} />
+                                        <DropdownItem label="Recent Collab" />
+                                        <DropdownItem label="All Collabs"  onClick={() => navigate('/collabs/all-collabs')} />
+                                    </div>
+                                )}
+                            </li>
+                        )}
+                        {!isLoggedIn && (
+                            <>
+                                <Link to={"/auth/login"}>Log In</Link>
+                                <Link to={"/auth/sign-up"}>Register</Link>
+                            </>
+                        )}
+                        <li>
+                            <ThemeToggle />
+                        </li>
+
+                        {isLoggedIn && (
+                            <li className="relative" ref={dropdownRef}>
+                                <img
+                                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                    className="h-10 w-10 rounded-full border-gray-200 border-2 object-center hover:cursor-pointer"
+                                    src={userData?.avatar?.secure_url || "https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-174669.jpg"}
+                                    alt="User Avatar"
+                                />
+
+                                {/* Dropdown Menu */}
+                                {isDropdownOpen && (
+                                    <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-md rounded-md py-2 z-20 border dark:border-gray-700 dark:text-white">
+                                        <DropdownItem label="Change Avatar" onClick={() => setShowEditAvatar(true)} />
+                                        <DropdownItem 
+                                            label="My Profile" 
+                                            onClick={() => {
+                                                setShowProfileModal(true)
+                                                setIsDropdownOpen(false)
+                                            }} 
+                                        />
+                                        <DropdownItem
+                                            label="Settings"
+                                            onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+                                            hasSubmenu={true}
+                                        />
+                                        <DropdownItem label="Logout" onClick={() => setShowLogoutModal(true)} />
+                                    </div>
+                                )}
+
+                                {/* Nested Settings Submenu */}
+                                {isSettingsOpen && isDropdownOpen && (
+                                    <div className="absolute right-48 top-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-md rounded-md py-2 z-30 border dark:border-gray-700">
+                                        <DropdownItem label="Change Password" />
+                                        <DropdownItem label="Update Profile"  onClick={() => setShowBioModal(true)} />
+                                        <DropdownItem label="Update Username"  onClick={() => setShowUserNameModel(true)} />
+                                        <DropdownItem label="Delete Account" onClick={() => setShowDeleteAccountModal(true)} />
+                                    </div>
+                                )}
+                            </li>
+                        )}
+                    </ul>
                 </div>
-                <ul className="flex flex-row justify-center items-center gap-4">
-                    <li className="relative cursor-pointer" onClick={() => navigate("/")}>
-                        Home
-                    </li>
-                    {isLoggedIn && (
-                        <li className="relative" ref={collabDropdownRef}>
-                            <span
-                                onClick={() => setIsCollabDropdownOpen(!isCollabDropdownOpen)}
-                                className="font-mono cursor-pointer"
-                            >
-                                Collabs
-                            </span>
-
-                            {/* Collab Dropdown Menu */}
-                            {isCollabDropdownOpen && (
-                                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-md rounded-md py-2 z-20 border dark:border-gray-700">
-                                    <DropdownItem label="Create New Collab" onClick={() => setShowNewCollabModal(true)} />
-                                    <DropdownItem label="Recent Collab" />
-                                    <DropdownItem label="All Collabs"  onClick={()=>navigate('/collabs/all-collabs')} />
-                                </div>
-                            )}
-                        </li>
-                    )}
-                    {!isLoggedIn && (
-                        <>
-                            <Link to={"/auth/login"}>Log In</Link>
-                            <Link to={"/auth/sign-up"}>Register</Link>
-                        </>
-                    )}
-                    <li>
-                        <ThemeToggle />
-                    </li>
-
-                    {isLoggedIn && (
-                        <li className="relative" ref={dropdownRef}>
-                            <img
-                                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                                className="h-10 w-10 rounded-full border-gray-200 border-2 object-center hover:cursor-pointer"
-                                src={userData?.avatar?.secure_url ||"https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-174669.jpg"}
-                                alt="User Avatar"
-                            />
-
-                            {/* Dropdown Menu */}
-                            {isDropdownOpen && (
-                                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-md rounded-md py-2 z-20 border dark:border-gray-700">
-                                    <DropdownItem label="Change Avatar" onClick={() => setShowEditAvatar(true)} />
-                                    {/* <DropdownItem label="Edit Profile" onClick={() => setShowEditProfile(true)} /> */}
-                                    <DropdownItem 
-                                        label="My Profile" 
-                                        onClick={() => {
-                                            setShowProfileModal(true)
-                                            setIsDropdownOpen(false)
-                                        }} 
-                                    />
-                                    <DropdownItem
-                                        label="Settings"
-                                        onClick={() => setIsSettingsOpen(!isSettingsOpen)}
-                                        hasSubmenu={true}
-                                    />
-                                    {/* <DropdownItem label="My Friends" onClick={() => navigate("/user/friends")} /> */}
-                                    <DropdownItem label="Logout" onClick={() => setShowLogoutModal(true)} />
-                                </div>
-                            )}
-
-                            {/* Nested Settings Submenu */}
-                            {isSettingsOpen && isDropdownOpen && (
-                                <div className="absolute right-48 top-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-md rounded-md py-2 z-30 border dark:border-gray-700">
-                                    <DropdownItem label="Change Password" />
-                                    <DropdownItem label="Update Profile"  onClick={() => setShowBioModal(true)}/>
-                                    <DropdownItem label="Update Username"  onClick={() => setShowUserNameModel(true)}/>
-                                    <DropdownItem label="Delete Account" onClick={() => setShowDeleteAccountModal(true)} />
-                                </div>
-                            )}
-                        </li>
-                    )}
-                </ul>
             </nav>
             <main className="w-full h-full">{children}</main>
             <Footer />

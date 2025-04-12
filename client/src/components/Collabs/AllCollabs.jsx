@@ -55,7 +55,7 @@ const AllCollabs = () => {
 
   return (
     <NavigationLayout>
-      <div className="p-6 bg-gray-100 dark:bg-gray-900 min-h-screen text-gray-900 dark:text-white transition-colors duration-300">
+      <div className="p-6 bg-gray-100 dark:bg-black min-h-screen text-gray-900 dark:text-white transition-colors duration-300">
         <div className="flex justify-between mb-6 space-x-4">
           <button
             className="px-4 py-2 bg-gray-500 text-white rounded shadow-md hover:bg-gray-700 transition-colors duration-300 flex items-center space-x-2 group"
