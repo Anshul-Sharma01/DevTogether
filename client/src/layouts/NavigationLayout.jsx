@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Profile from "../components/Profile/Profile.jsx";
 import UpdateUsername from "../components/Profile/UpdateUsername.jsx";
+import Footer from "./Footer.jsx";
 
 function NavigationLayout({ children }) {
     const isLoggedIn = useSelector((state) => state?.auth?.isLoggedIn) || false;
@@ -152,6 +153,7 @@ function NavigationLayout({ children }) {
                 </ul>
             </nav>
             <main className="w-full h-full">{children}</main>
+            <Footer />
 
             {/* Edit Profile Modal */}
             {

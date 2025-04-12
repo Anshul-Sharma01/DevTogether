@@ -273,17 +273,7 @@ const LandingPage = () => {
 
 </section>
 
-{/* Footer */}
-<footer className="bg-gray-100 dark:bg-neutral-900 py-8 px-6 text-center text-gray-600 dark:text-gray-400">
-    <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center">
-        <p>&copy; {new Date().getFullYear()} DevTogether a branch of Udta Birdie Inc.. All rights reserved.</p>
-        <div className="flex gap-4 mt-4 sm:mt-0">
-            <a href="/privacy-policy" className="hover:underline">Privacy Policy</a>
-            <a href="/terms" className="hover:underline">Terms of Service</a>
-            <a href="/contact" className="hover:underline">Contact</a>
-        </div>
-    </div>
-</footer>
+
 
         </NavigationLayout>
     );
