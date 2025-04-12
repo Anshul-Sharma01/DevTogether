@@ -256,22 +256,22 @@ const LandingPage = () => {
             </section>
             {/* Contact Section */}
             <section className="bg-white dark:bg-black py-20 px-6 text-center">
-    <h2 className="text-4xl font-bold mb-6">Get in Touch</h2>
-    <p className="text-lg max-w-2xl mx-auto text-gray-700 dark:text-gray-300 mb-8">
-        Questions? Feedback? We'd love to hear from you. Reach out to us anytime!
-    </p>
+                <h2 className="text-4xl font-bold mb-6 dark:text-white">Get in Touch</h2>
+                <p className="text-lg max-w-2xl mx-auto text-gray-700 dark:text-gray-300 mb-8">
+                    Questions? Feedback? We'd love to hear from you. Reach out to us anytime!
+                </p>
 
-    <div className="flex justify-center mb-8">
-        <motion.button
-            whileHover={{ scale: 1.05 }}
-            onClick={() => navigate("/contact")}
-            className="bg-blue-600 text-white px-6 py-3 rounded-md font-semibold hover:bg-blue-700 transition"
-        >
-            Contact Us
-        </motion.button>
-    </div>
+                <div className="flex justify-center mb-8">
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        onClick={() => navigate("/contact")}
+                        className="bg-blue-600 text-white px-6 py-3 rounded-md font-semibold hover:bg-blue-700 transition"
+                    >
+                        Contact Us
+                    </motion.button>
+                </div>
 
-</section>
+            </section>
 
 
 
