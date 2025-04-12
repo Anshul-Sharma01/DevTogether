@@ -15,7 +15,6 @@ import Footer from "./Footer.jsx";
 function NavigationLayout({ children }) {
     const isLoggedIn = useSelector((state) => state?.auth?.isLoggedIn) || false;
     const userData = useSelector((state) => state?.auth?.userData);
-
     const [scrolled, setScrolled] = useState(false);
 
     useEffect(() => {
@@ -28,7 +27,6 @@ function NavigationLayout({ children }) {
 
     const navigate = useNavigate();
 
-    // State for dropdowns
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const [isCollabDropdownOpen, setIsCollabDropdownOpen] = useState(false);
@@ -41,11 +39,9 @@ function NavigationLayout({ children }) {
     const [showProfileModal, setShowProfileModal] = useState(false);
     const [showUserNameModal, setShowUserNameModel] = useState(false);
 
-    // Refs for handling outside clicks
     const dropdownRef = useRef(null);
     const collabDropdownRef = useRef(null);
 
-    // Close dropdowns when clicking outside
     useEffect(() => {
         function handleClickOutside(event) {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -57,21 +53,21 @@ function NavigationLayout({ children }) {
             }
         }
         document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
+        return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
     return (
         <div className="w-full relative">
-            {/* Blurred Background when Modal is Open */}
             {showEditProfile && (
                 <div className="fixed inset-0 bg-black/40 backdrop-blur-md z-40"></div>
             )}
 
             <nav className="fixed w-full z-50 bg-white dark:bg-black shadow-sm transition-all duration-300">
                 <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-                    <div className={`text-2xl font-bold tracking-tight transition-all duration-1000 ease-in-out ${scrolled ? 'transform scale-100' : 'transform scale-100'}`}>
+                    <Link
+                        to="/"
+                        className={`text-2xl font-bold tracking-tight transition-all duration-1000 ease-in-out ${scrolled ? 'transform scale-100' : 'transform scale-100'}`}
+                    >
                         {scrolled ? (
                             <>
                                 <span className="text-red-400">D</span>
@@ -80,13 +76,12 @@ function NavigationLayout({ children }) {
                             </>
                         ) : (
                             <>
-                                <span className="text-red-400 " >Dev</span>
+                                <span className="text-red-400">Dev</span>
                                 <span className="dark:text-white">Together</span>
                             </>
                         )}
-                    </div>
+                    </Link>
 
-                    {/* Moved the nav items to the right */}
                     <ul className="flex gap-4 ml-auto">
                         <li className="relative cursor-pointer dark:text-white" onClick={() => navigate("/")}>
                             Home
@@ -99,13 +94,11 @@ function NavigationLayout({ children }) {
                                 >
                                     Collabs
                                 </span>
-
-                                {/* Collab Dropdown Menu */}
                                 {isCollabDropdownOpen && (
                                     <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-md rounded-md py-2 z-20 border dark:border-gray-700 dark:text-white">
                                         <DropdownItem label="Create New Collab" onClick={() => setShowNewCollabModal(true)} />
                                         <DropdownItem label="Recent Collab" />
-                                        <DropdownItem label="All Collabs"  onClick={() => navigate('/collabs/all-collabs')} />
+                                        <DropdownItem label="All Collabs" onClick={() => navigate('/collabs/all-collabs')} />
                                     </div>
                                 )}
                             </li>
@@ -119,7 +112,6 @@ function NavigationLayout({ children }) {
                         <li>
                             <ThemeToggle />
                         </li>
-
                         {isLoggedIn && (
                             <li className="relative" ref={dropdownRef}>
                                 <img
@@ -128,33 +120,19 @@ function NavigationLayout({ children }) {
                                     src={userData?.avatar?.secure_url || "https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-174669.jpg"}
                                     alt="User Avatar"
                                 />
-
-                                {/* Dropdown Menu */}
                                 {isDropdownOpen && (
                                     <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-md rounded-md py-2 z-20 border dark:border-gray-700 dark:text-white">
                                         <DropdownItem label="Change Avatar" onClick={() => setShowEditAvatar(true)} />
-                                        <DropdownItem 
-                                            label="My Profile" 
-                                            onClick={() => {
-                                                setShowProfileModal(true)
-                                                setIsDropdownOpen(false)
-                                            }} 
-                                        />
-                                        <DropdownItem
-                                            label="Settings"
-                                            onClick={() => setIsSettingsOpen(!isSettingsOpen)}
-                                            hasSubmenu={true}
-                                        />
+                                        <DropdownItem label="My Profile" onClick={() => { setShowProfileModal(true); setIsDropdownOpen(false); }} />
+                                        <DropdownItem label="Settings" onClick={() => setIsSettingsOpen(!isSettingsOpen)} hasSubmenu={true} />
                                         <DropdownItem label="Logout" onClick={() => setShowLogoutModal(true)} />
                                     </div>
                                 )}
-
-                                {/* Nested Settings Submenu */}
                                 {isSettingsOpen && isDropdownOpen && (
                                     <div className="absolute right-48 top-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-md rounded-md py-2 z-30 border dark:border-gray-700">
                                         <DropdownItem label="Change Password" />
-                                        <DropdownItem label="Update Profile"  onClick={() => setShowBioModal(true)} />
-                                        <DropdownItem label="Update Username"  onClick={() => setShowUserNameModel(true)} />
+                                        <DropdownItem label="Update Profile" onClick={() => setShowBioModal(true)} />
+                                        <DropdownItem label="Update Username" onClick={() => setShowUserNameModel(true)} />
                                         <DropdownItem label="Delete Account" onClick={() => setShowDeleteAccountModal(true)} />
                                     </div>
                                 )}
@@ -163,56 +141,22 @@ function NavigationLayout({ children }) {
                     </ul>
                 </div>
             </nav>
+
             <main className="w-full h-full">{children}</main>
             <Footer />
 
-            {/* Edit Profile Modal */}
-            {
-                showEditProfile && (
-                    <EditProfile showEditProfile={showEditProfile} setShowEditProfile={setShowEditProfile} />
-                )
-            }
-            {/* Edit Avatar Modal */}
-            {
-                showEditAvatar && (
-                    <ChangeAvatar showEditAvatar={setShowEditAvatar} setShowEditAvatar={setShowEditAvatar}/>
-                )
-            }
-            {
-                showProfileModal && (
-                    <Profile onClose={() => setShowProfileModal(false)} />
-                )
-            }
-            {
-                showBioModal && (
-                    <UpdateProfile showBioModal={showBioModal} setShowBioModal={setShowBioModal}/>
-                )
-            }
-            {
-                showLogoutModal && (
-                    <ConfirmLogout showLogoutModal={showLogoutModal} setShowLogoutModal={setShowLogoutModal} />
-                )
-            }
-            {
-                showDeleteAccountModal && (
-                    <DeleteAccount showDeleteAccountModal={showDeleteAccountModal} setShowDeleteAccountModal={setShowDeleteAccountModal} />
-                )
-            }
-            {
-                showNewCollabModal && (
-                    <NewCollab showNewCollabModal={showNewCollabModal} setShowNewCollabModel={setShowNewCollabModal}/>
-                )
-            }
-            {
-                showUserNameModal && (
-                    <UpdateUsername setshowUserNameModal={setShowUserNameModel} showUserNameModal={showUserNameModal} />
-                )
-            }
+            {showEditProfile && <EditProfile showEditProfile={showEditProfile} setShowEditProfile={setShowEditProfile} />}
+            {showEditAvatar && <ChangeAvatar showEditAvatar={setShowEditAvatar} setShowEditAvatar={setShowEditAvatar} />}
+            {showProfileModal && <Profile onClose={() => setShowProfileModal(false)} />}
+            {showBioModal && <UpdateProfile showBioModal={showBioModal} setShowBioModal={setShowBioModal} />}
+            {showLogoutModal && <ConfirmLogout showLogoutModal={showLogoutModal} setShowLogoutModal={setShowLogoutModal} />}
+            {showDeleteAccountModal && <DeleteAccount showDeleteAccountModal={showDeleteAccountModal} setShowDeleteAccountModal={setShowDeleteAccountModal} />}
+            {showNewCollabModal && <NewCollab showNewCollabModal={showNewCollabModal} setShowNewCollabModel={setShowNewCollabModal} />}
+            {showUserNameModal && <UpdateUsername setshowUserNameModal={setShowUserNameModel} showUserNameModal={showUserNameModal} />}
         </div>
     );
 }
 
-// Reusable Dropdown Item Component
 const DropdownItem = ({ label, onClick, hasSubmenu }) => {
     return (
         <div
