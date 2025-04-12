@@ -65,7 +65,7 @@ function SignUp() {
         <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
             <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md border border-gray-200 dark:border-gray-700">
                 <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white text-center">
-                    Sign Up
+                    Register
                 </h2>
 
                 {/* Avatar Upload */}
@@ -137,7 +137,7 @@ function SignUp() {
                         type="submit"
                         className="w-full px-4 py-3 text-white bg-indigo-500 rounded-md hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600 transition-all duration-200"
                     >
-                        Sign Up
+                        Register
                     </button>
                 </form>
             </div>

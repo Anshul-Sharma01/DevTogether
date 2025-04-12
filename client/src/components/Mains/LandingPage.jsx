@@ -109,7 +109,7 @@ const LandingPage = () => {
                     <h2 className="text-4xl font-bold mb-12">How It Works</h2>
                     <div className="max-w-4xl mx-auto space-y-10 text-left">
                         {[
-                            ["1. Sign Up", "Create an account in seconds — no credit card required."],
+                            ["1. Register", "Create an account in seconds — no credit card required."],
                             ["2. Create a Project", "Start a new coding environment and invite your team."],
                             ["3. Collaborate & Ship", "Write, run, debug, and communicate all in one place."],
                         ].map(([step, desc], idx) => (

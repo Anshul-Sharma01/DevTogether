@@ -50,7 +50,7 @@ function LogIn() {
     return (
         <section className="flex justify-center items-center h-screen bg-gradient-to-r from-gray-100 to-gray-300 dark:from-gray-700 dark:to-gray-900 transition-colors duration-300">
             <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl w-full max-w-md space-y-8">
-                <h1 className="text-4xl font-extrabold text-center text-gray-900 dark:text-gray-100">Sign In</h1>
+                <h1 className="text-4xl font-extrabold text-center text-gray-900 dark:text-gray-100">Log In</h1>
 
                 {/* ✅ Ensure form submission calls handleLogin */}
                 <form className="space-y-6" onSubmit={handleLogin}>   
@@ -95,19 +95,19 @@ function LogIn() {
                         </div>
                     </div>
 
-                    {/* Sign In Button */}
+                    {/* Log In Button */}
                     <button
                         type="submit"
                         className="w-full bg-gradient-to-r from-blue-500 to-blue-700 text-white py-3 rounded-lg hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-300"
                     >
-                        Sign In
+                        Log In
                     </button>
                 </form>
 
-                {/* Links for Sign Up and Forgot Password */}
+                {/* Links for Register and Forgot Password */}
                 <div className='flex flex-col justify-center items-center gap-2'>
                     <p className="text-center text-gray-600 dark:text-gray-400">
-                        Don't have an account? <Link to={"/auth/sign-up"} className="text-blue-500 dark:text-red-500 hover:underline">Sign Up</Link>
+                        Don't have an account? <Link to={"/auth/sign-up"} className="text-blue-500 dark:text-red-500 hover:underline">Register</Link>
                     </p>
                     <Link to={"/auth/forgot-password"} className='text-blue-500 dark:text-red-500 text-center hover:underline'>
                         Forgot Password?

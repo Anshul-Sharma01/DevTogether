@@ -2,12 +2,59 @@ import React, { useState } from "react";
 import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
 import NavigationLayout from "../layouts/NavigationLayout";
 import DevelopersTeam from "./DevelopersTeam.jsx";
+import toast from "react-hot-toast";
 
 const Contact = () => {
     const [openIndex, setOpenIndex] = useState(null);
 
+    const [ contactForm, setContactForm ] = useState({
+        name : "",
+        email : "",
+        message : ""
+    })
+
     const toggleAccordion = (index) => {
         setOpenIndex((prevIndex) => (prevIndex === index ? null : index));
+    };
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setContactForm(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const handleClick = async (e) => {
+        e.preventDefault();
+        if(!contactForm.name || !contactForm.email || !contactForm.message){
+            toast.error("Please fill all the details in the form");
+            return;
+        }
+
+        try {
+            const response = await fetch("https://formspree.io/f/xoveregg", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    name : contactForm.name,
+                    email : contactForm.email,
+                    message : contactForm.message
+                }), 
+            });
+            console.log("Response : ", response);
+            toast.success("Message sent successfully");
+            
+        } catch (error) {
+            console.error("Error:", error);
+            toast.error("Please try again");
+        }
+        setContactForm({
+            name : "",
+            email : "",
+            message : ""
+        })
     };
 
     return (
@@ -23,11 +70,40 @@ const Contact = () => {
                 {/* Contact Form Section */}
                 <section className="mt-12 max-w-3xl w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
                     <h2 className="text-3xl font-bold text-gray-900 dark:text-cyan-400 mb-6 text-center">Send Us a Message</h2>
-                    <form className="space-y-4">
-                        <input type="text" placeholder="Your Name" className="w-full px-4 py-3 border rounded-md focus:ring-2 focus:ring-blue-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200" />
-                        <input type="email" placeholder="Your Email" className="w-full px-4 py-3 border rounded-md focus:ring-2 focus:ring-blue-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200" />
-                        <textarea placeholder="Your Message" rows="4" className="w-full px-4 py-3 border rounded-md focus:ring-2 focus:ring-blue-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200"></textarea>
-                        <button type="submit" className="w-full px-6 py-3 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-800 transition duration-300 ease-in-out transform hover:scale-105">Send Message</button>
+                    <form className="space-y-4" onSubmit={handleClick}>
+                        <input 
+                            type="text" 
+                            name="name"
+                            placeholder="Your Name" 
+                            className="w-full px-4 py-3 border rounded-md focus:ring-2 focus:ring-blue-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200" 
+                            value={contactForm.name}
+                            onChange={handleChange}
+                        />
+
+                        <input 
+                            type="email" 
+                            name="email"
+                            placeholder="Your Email" 
+                            className="w-full px-4 py-3 border rounded-md focus:ring-2 focus:ring-blue-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200" 
+                            value={contactForm.email}
+                            onChange={handleChange}
+                        />
+
+                        <textarea 
+                            name="message"
+                            placeholder="Your Message" 
+                            rows="4" 
+                            className="w-full px-4 py-3 border rounded-md focus:ring-2 focus:ring-blue-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200"
+                            value={contactForm.message}
+                            onChange={handleChange}
+                        ></textarea>
+
+                        <button 
+                            type="submit" 
+                            className="w-full px-6 py-3 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-800 transition duration-300 ease-in-out transform hover:scale-105"
+                        >
+                            Send Message
+                        </button>
                     </form>
                 </section>
 
@@ -37,7 +113,7 @@ const Contact = () => {
                     <div className="space-y-4">
                         {[{
                             question: "How do I create an account?",
-                            answer: "Click on 'Sign Up' and follow the steps."
+                            answer: "Click on 'Register' and follow the steps."
                         },
                         {
                             question: "Is this service free?",
