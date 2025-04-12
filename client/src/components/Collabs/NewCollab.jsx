@@ -34,7 +34,7 @@ const NewCollab = ({ showNewCollabModal, setShowNewCollabModel }) => {
     }
 
     const language = options.find((opt) => opt.id === selectedOption)?.lang || "javascript";
-    const roomId = uuidv4(); // generate unique roomId
+    const collabId = uuidv4(); // generate unique roomId
 
     try {
       const response = await fetch("http://localhost:5000/api/v1/collab", {
@@ -45,7 +45,7 @@ const NewCollab = ({ showNewCollabModal, setShowNewCollabModel }) => {
         credentials: "include",
         body: JSON.stringify({
           title: collabName,
-          roomId,
+          collabId,
           language,
           description: "", // optional
         }),
@@ -55,7 +55,7 @@ const NewCollab = ({ showNewCollabModal, setShowNewCollabModel }) => {
 
       if (response.ok) {
         toast.success("Collab created successfully");
-        window.location.href = `http://localhost:5174/?room=${roomId}`;
+        window.location.href = `http://localhost:5174/collab=${collabId}`;
       } else {
         toast.error(data.message || "Failed to create collab");
       }

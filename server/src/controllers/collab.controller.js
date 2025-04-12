@@ -6,20 +6,20 @@ import { User } from "../models/user.model.js";
 
 const createCollab = asyncHandler(async (req, res) => {
 
-    const { title, roomId, language, description } = req.body;
+    const { title, collabId, language, description } = req.body;
 
-    if (!title || !roomId || !language) {
+    if (!title || !collabId || !language) {
        throw new ApiError(500, "Something went wrong while making collab in")
     }
 
-    const existingCollab = await Collab.findOne({ roomId });
+    const existingCollab = await Collab.findOne({ collabId });
     if (existingCollab) {
         throw new ApiError(500, "Collab already existing")
     }
 
     const newCollab = await Collab.create({
       title,
-      roomId,
+      collabId,
       language,
       description: description || "",
       createdBy: req.user._id,
