@@ -22,13 +22,15 @@ const toastHandler = (promise, loadingMsg, successMsg) => {
     });
 };
 
-export const createUserAccountThunk = createAsyncThunk("/auth/register", async (data) => {
+export const createUserAccountThunk = createAsyncThunk("/auth/register", async (data, {rejectWithValue}) => {
     try {
         const res = axiosInstance.post("user/register", data);
         toastHandler(res, "Creating your account..", "Account created successfully!");
         return (await res).data;
     } catch (err) {
-        console.error(`Error occurred in creating new account: ${err}`);
+        // console.error(`Error occurred in creating new account: ${err}`);
+        const message = err?.response?.data?.message || "Something is wrong";
+        return rejectWithValue(message);
     }
 });
 
@@ -38,51 +40,59 @@ export const loginUserAccountThunk = createAsyncThunk("/auth/login", async(data,
         toastHandler(res, "Authenticating your credentials", "Authentication Successfully");
         return (await res).data;
     }catch(err){
-        console.log("Error :,,", err );
+        // console.log("Error :,,", err );
         const message = err?.response?.data?.message || "Something went wrong during login";
         return rejectWithValue(message); 
     }
 })
 
-export const logoutUserThunk = createAsyncThunk("/auth/logout", async() => {
+export const logoutUserThunk = createAsyncThunk("/auth/logout", async( _, { rejectWithValue }) => {
     try{
         const res = axiosInstance.get("user/logout");
-        toastHandler(res, "Logging out", "Log Out Successfully", "Failed to Logout");
+        toastHandler(res, "Logging out", "Log Out Successfully");
         return (await res).data;
     }catch(err){
-        console.error(`Error occurred while logging out user : ${err}`);
+        // console.error(`Error occurred while logging out user : ${err}`);
+        const message = err?.response?.data?.message || "Something went wrong during logout";
+        return rejectWithValue(message); 
     }
 })
 
-export const updateProfilePictureThunk = createAsyncThunk("/auth/profile-picture", async(data) => {
+export const updateProfilePictureThunk = createAsyncThunk("/auth/profile-picture", async(data, {rejectWithValue}) => {
     try{
         
         const res = axiosInstance.post("user/update-picture", data);
-        toastHandler(res, "Updating your profile picture...", "Successfully updated profile picture", "Failed to update profile picture");
+        toastHandler(res, "Updating your profile picture...", "Successfully updated profile picture");
         return (await res).data;
 
     }catch(err){
-        console.error(`Error occurred while updating profile picture : ${err}`);
+        // console.error(`Error occurred while updating profile picture : ${err}`);
+        const message = err?.response?.data?.message || "Something went wrong during updating profile picture";
+        return rejectWithValue(message); 
     }
 })
 
-export const updateProfileThunk = createAsyncThunk("/auth/update-profile", async(data) => {
+export const updateProfileThunk = createAsyncThunk("/auth/update-profile", async(data, {rejectWithValue}) => {
     try{
         const res = axiosInstance.patch("user/update-profile", data);
-        toastHandler(res, "Updating your profile...", "Successfully updated profile", "Failed to update profile");
+        toastHandler(res, "Updating your profile...", "Successfully updated profile");
         return (await res).data;
     }catch(err){    
-        console.error(`Error occurred while updating profile : ${err}`);
+        // console.error(`Error occurred while updating profile : ${err}`);
+        const message = err?.response?.data?.message || "Something went wrong during updating profile details";
+        return rejectWithValue(message); 
     }
 })
 
-export const updateUsernameThunk = createAsyncThunk("/auth/update-username", async(data) => {
+export const updateUsernameThunk = createAsyncThunk("/auth/update-username", async(data, {rejectWithValue}) => {
     try{    
         const res = axiosInstance.patch("user/update-username", data);
-        toastHandler(res, "Updating your username...", "Successfully updated username", "Failed to update username");
+        toastHandler(res, "Updating your username...", "Successfully updated username");
         return (await res).data;
     }catch(err){
-        console.error(`Error occurred while updating username  : ${err}`);
+        // console.error(`Error occurred while updating username  : ${err}`);
+        const message = err?.response?.data?.message || "Something went wrong during updating username";
+        return rejectWithValue(message); 
     }
 })
 
@@ -101,11 +111,12 @@ const authSlice = createSlice({
                 state.userRole = user?.role;
             }
         })
-        .addCase(createUserAccountThunk.rejected, (state) => {
+        .addCase(createUserAccountThunk.rejected, (state, action) => {
             localStorage.clear();
             state.userData = {};
             state.isLoggedIn = false;
             state.userRole = "";
+            toast.error(action.payload || "Registration failed")
         })
         .addCase(loginUserAccountThunk.fulfilled, (state, action) => {
             if (action?.payload?.statusCode === 200) {
@@ -129,19 +140,35 @@ const authSlice = createSlice({
             state.isLoggedIn = false;
             state.userRole = "";
         })
+        .addCase(logoutUserThunk.rejected, (state, action) => {
+            localStorage.clear();
+            state.userData = {}
+            state.isLoggedIn = false;
+            state.userRole = "";
+            // toast.error(action.payload || "Logout failed");
+        })
         .addCase(updateProfilePictureThunk.fulfilled, (state, action) => {
             state.userData = action?.payload?.data;
             updateLocalStorage(action?.payload?.data);
         })
+        .addCase(updateProfilePictureThunk.rejected, (state, action) => {
+            toast.error(action.payload || "Profile picture update failed");
+        })
         .addCase(updateProfileThunk.fulfilled, (state, action) => {
             state.userData = action?.payload?.data;
             updateLocalStorage(action?.payload?.data);
+        })
+        .addCase(updateProfileThunk.rejected, (state, action) => {
+            toast.error(action.payload || "Profile update failed");
         })
         .addCase(updateUsernameThunk.fulfilled, (state, action) => {
             if(action.payload?.statusCode === 200){
                 state.userData = action?.payload?.data;
                 updateLocalStorage(action?.payload?.data);
             }
+        })
+        .addCase(updateUsernameThunk.rejected, (state, action) => {
+            toast.error(action.payload || "Username update failed");
         })
     }
 })
