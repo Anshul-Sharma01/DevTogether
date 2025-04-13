@@ -18,34 +18,30 @@ const uploadOnCloudinary = async (localFilePath) => {
             throw new Error("No file path provided");
         }
 
-
         const cloudinaryResponse = await cloudinary.uploader.upload(localFilePath, {
             resource_type: "auto",
             folder : "DevTogether"
-        }).catch((err) => {
-            console.log(`Cloudinary error : ${err.message}`);
-        })
+        });
 
-
+        // Only delete local file if upload was successful
         if (fs.existsSync(localFilePath)) {
             fs.unlinkSync(localFilePath); 
-            // console.log(`File ${localFilePath} successfully deleted..`);
+            console.log(`File ${localFilePath} successfully deleted..`);
         }
 
-        return cloudinaryResponse; 
-    } catch (err) {
-        // console.error(`Some error occurred at Cloudinary: ${err}`);
+        return cloudinaryResponse;
 
+    } catch (err) {
+        // Delete the file in case of any error (upload or otherwise)
         if (localFilePath && fs.existsSync(localFilePath)) {
             fs.unlinkSync(localFilePath);
-            // console.log(`File ${localFilePath} successfully deleted..`);
+            // console.log(`File ${localFilePath} successfully deleted after error..`);
         }
+
+        console.error(`Cloudinary Upload Error: ${err.message}`);
         throw new Error("Failed to upload file to Cloudinary");
     }
 };
-
-
-
 
 const deleteMultipleFromCloudinary = async (publicIds) => {
     try {
