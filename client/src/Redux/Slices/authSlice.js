@@ -15,31 +15,32 @@ const initialState = {
     userData : JSON.parse(localStorage.getItem("userData")) !== undefined ? JSON.parse(localStorage.getItem("userData")) : {},
 }
 
-const toastHandler = (promise, loadingMsg, successMsg, errorMsg) => {
+const toastHandler = (promise, loadingMsg, successMsg) => {
     return toast.promise(promise, {
         loading: loadingMsg,
         success: (data) => data?.data?.message || successMsg,
-        error: errorMsg,
     });
 };
 
 export const createUserAccountThunk = createAsyncThunk("/auth/register", async (data) => {
     try {
         const res = axiosInstance.post("user/register", data);
-        toastHandler(res, "Creating your account..", "Account created successfully!", "Failed to create a new account!");
+        toastHandler(res, "Creating your account..", "Account created successfully!");
         return (await res).data;
     } catch (err) {
         console.error(`Error occurred in creating new account: ${err}`);
     }
 });
 
-export const loginUserAccountThunk = createAsyncThunk("/auth/login", async(data) => {
+export const loginUserAccountThunk = createAsyncThunk("/auth/login", async(data, { rejectWithValue }) => {
     try{
         const res = axiosInstance.post("user/login", data);
-        toastHandler(res, "Authenticating your credentials", "Authentication Successfully", "Failed to Authenticate User, Wrong Credentials");
+        toastHandler(res, "Authenticating your credentials", "Authentication Successfully");
         return (await res).data;
     }catch(err){
-        console.error(`Error occurred while logging in : ${err}`);
+        console.log("Error :,,", err );
+        const message = err?.response?.data?.message || "Something went wrong during login";
+        return rejectWithValue(message); 
     }
 })
 
@@ -115,11 +116,12 @@ const authSlice = createSlice({
                 state.userRole = user?.role;
             }
         })
-        .addCase(loginUserAccountThunk.rejected, (state) => {
+        .addCase(loginUserAccountThunk.rejected, (state, action) => {
             localStorage.clear();
             state.userData = {};
             state.isLoggedIn = false;
             state.userRole = "";
+            toast.error(action.payload || "Login failed");
         })
         .addCase(logoutUserThunk.fulfilled, (state, action) => {
             localStorage.clear();

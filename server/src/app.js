@@ -20,10 +20,13 @@ app.use(express.static("public"));
 // routes imports
 import userRouter from "./routes/user.routes.js"
 import collabRouter from "./routes/collab.routes.js"
+import { errorHandler } from "./utils/errorHandler.js";
 
 
 app.use("/api/v1/user", userRouter)
 app.use("/api/v1", collabRouter)
+
+app.use(errorHandler);
 
 
 
