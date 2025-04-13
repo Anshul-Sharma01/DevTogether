@@ -49,7 +49,7 @@ const Logo = ({ scrolled }) => {
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: -10 }}
                             transition={{ duration: 0.6 }}
-                            className="text-blue-400"
+                            className="text-black dark:text-white"
                         >
                             T
                         </motion.span>
