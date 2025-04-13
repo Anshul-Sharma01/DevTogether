@@ -7,6 +7,8 @@ import os from "os"
 import chokidar from "chokidar"
 import fs from "fs/promises"
 import path from "path"
+import { authMiddleware } from "../../../server/src/middlewares/auth.middleware.js"
+
 
 const app = express()
 const server = http.createServer(app)
@@ -17,7 +19,7 @@ const io = new SocketServer({
 io.attach(server)
 
 app.use(cors())
-
+app.use(authMiddleware);
 
 app.use(express.urlencoded({extended : true}))
 app.use(express.static("public"))

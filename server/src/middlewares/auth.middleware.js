@@ -13,7 +13,7 @@ export const authMiddleware = asyncHandler(async (req, _, next) => {
         }
 
         const decodeToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
-1
+
         const user = await User.findById(decodeToken._id).select("-password -refreshToken")
         
         if(!user) {
