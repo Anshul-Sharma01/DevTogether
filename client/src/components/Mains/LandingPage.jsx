@@ -149,19 +149,32 @@ const LandingPage = () => {
                 </section>
 
                 {/* Demo Preview */}
-                <section className="bg-gray-100 dark:bg-black reveal py-20 px-6 text-center">
-                    <h2 className="text-4xl font-bold mb-6">See It In Action</h2>
-                    <p className="text-gray-700 dark:text-gray-300 max-w-2xl mx-auto mb-8">
-                        Here's a sneak peek of how coding feels in our collaborative playground.
-                    </p>
-                    <div className="rounded-lg overflow-hidden max-w-5xl mx-auto shadow-2xl">
-                        <img
-                            src="/images/editor-preview.gif"
-                            alt="Live Coding Demo"
-                            className="w-full h-auto"
-                        />
-                    </div>
-                </section>
+                <section className="bg-gradient-to-br from-gray-100 to-white dark:from-black dark:to-neutral-900 py-24 px-6 text-center reveal">
+  <h2 className="text-4xl md:text-5xl font-extrabold mb-6 text-gray-900 dark:text-white">
+    See It In Action
+  </h2>
+  <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 max-w-2xl mx-auto mb-12">
+    Here's a sneak peek of how coding feels in our collaborative playground.
+  </p>
+
+  <div className="relative max-w-6xl mx-auto rounded-xl overflow-hidden shadow-2xl border-4 border-white dark:border-neutral-800">
+    {/* Gradient glow border effect */}
+    <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-30 blur-xl rounded-xl z-0"></div>
+
+    {/* Video wrapper */}
+    <div className="relative z-10">
+      <video
+        src="https://res.cloudinary.com/dqnzstk72/video/upload/v1744569259/DevTogether/LightModeide_-_Made_with_Clipchamp_2_l8aqgd.mp4"
+        className="w-full h-auto rounded-xl"
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
+    </div>
+  </div>
+</section>
+
 
                 {/* Trusted Logos */}
                 <section className="py-24 bg-gray-50 reveal dark:bg-black text-center">
