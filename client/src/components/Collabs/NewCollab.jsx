@@ -55,7 +55,7 @@ const NewCollab = ({ showNewCollabModal, setShowNewCollabModel }) => {
 
       if (response.ok) {
         toast.success("Collab created successfully");
-        window.location.href = `http://localhost:5174/?room=${roomId}`;
+        window.location.href = `http://localhost:5174/room/${roomId}`;
       } else {
         toast.error(data.message || "Failed to create collab");
       }

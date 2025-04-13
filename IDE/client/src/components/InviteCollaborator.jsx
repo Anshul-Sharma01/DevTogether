@@ -4,7 +4,7 @@ import socket from '../socket.js';
 const InviteCollaborator = ({ roomId }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
-  const inviteLink = `${window.location.origin}?room=${roomId}`;
+  const inviteLink = `${window.location.href}?roomId=${roomId}`;
 
   const handleCopy = async () => {
     try {

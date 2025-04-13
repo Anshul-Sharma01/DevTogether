@@ -20,9 +20,10 @@ const App = () => {
   const [isRoomOwner, setIsRoomOwner] = useState(false);
   const [roomId, setRoomId] = useState(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    const urlRoomId = urlParams.get('room');
-    setIsRoomOwner(true);
-    return urlRoomId ;
+    console.log(urlParams);
+    const urlRoomId = urlParams.get('roomId');
+    setIsRoomOwner(!urlRoomId);
+      return urlRoomId || Math.random().toString(36).substring(2, 8);
   });
 
   useEffect(() => {
