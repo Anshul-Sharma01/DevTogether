@@ -1,9 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import NavigationLayout from "../../layouts/NavigationLayout.jsx";
 import { motion } from "framer-motion";
+import "./LandingPage.css"; 
+import useIntersectionObserver from "../hooks/useIntersectionObserver.jsx";
+
 
 const LandingPage = () => {
     const navigate = useNavigate();
+    useIntersectionObserver(".reveal");
 
     const logos = [
         {
@@ -43,7 +47,7 @@ const LandingPage = () => {
                     animate="visible"
                     transition={{ duration: 0.8 }}
                     variants={fadeUp}
-                    className="flex flex-col items-center justify-center text-center px-6 py-20"
+                    className="flex reveal flex-col items-center justify-center text-center px-6 py-20 h-screen"
                 >
                     <h1 className="text-5xl md:text-6xl font-extrabold leading-tight bg-gradient-to-r from-purple-500 to-blue-500 text-transparent bg-clip-text mb-4">
                         Build, Collaborate, Deploy — Instantly
@@ -64,7 +68,7 @@ const LandingPage = () => {
                 </motion.div>
 
                 {/* Stats Section */}
-                <section className="bg-gray-100 dark:bg-black py-14 px-6 text-center">
+                <section className="bg-gray-100 reveal dark:bg-black py-14 px-6 text-center">
                     <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-6">
                         {[
                             { value: "10K+", label: "Developers Joined" },
@@ -80,7 +84,7 @@ const LandingPage = () => {
                 </section>
 
                 {/* Features */}
-                <section className="py-20 px-6 bg-white dark:bg-black">
+                <section className="py-20 px-6 reveal bg-white dark:bg-black">
                     <h2 className="text-center text-4xl font-bold mb-12">Why Use Our Platform?</h2>
                     <div className="grid gap-10 md:grid-cols-3 max-w-6xl mx-auto">
                         {[
@@ -105,7 +109,7 @@ const LandingPage = () => {
                 </section>
 
                 {/* How It Works */}
-                <section className="py-20 bg-gradient-to-br from-purple-100 to-blue-100 dark:from-black dark:to-neutral-900 text-center">
+                <section className="py-20 bg-gradient-to-br reveal from-purple-100 to-blue-100 dark:from-black dark:to-neutral-900 text-center">
                     <h2 className="text-4xl font-bold mb-12">How It Works</h2>
                     <div className="max-w-4xl mx-auto space-y-10 text-left">
                         {[
@@ -122,7 +126,7 @@ const LandingPage = () => {
                 </section>
 
                 {/* Testimonial */}
-                <section className="bg-white dark:bg-black py-20 px-6">
+                <section className="bg-white reveal dark:bg-black py-20 px-6">
                     <div className="max-w-3xl mx-auto text-center">
                         <blockquote className="italic text-2xl text-gray-800 dark:text-gray-200">
                             “This platform is a game-changer for remote developers. It’s like Google Docs, but for code!”
@@ -132,7 +136,7 @@ const LandingPage = () => {
                 </section>
 
                 {/* Final CTA */}
-                <section className="py-20 px-6 text-center dark:bg-black">
+                <section className="py-20 px-6 text-center reveal dark:bg-black">
                     <h2 className="text-4xl font-bold mb-4">Start Collaborating Today</h2>
                     <p className="text-lg mb-6">Join thousands of developers and teams who trust our platform.</p>
                     <motion.button
@@ -145,7 +149,7 @@ const LandingPage = () => {
                 </section>
 
                 {/* Demo Preview */}
-                <section className="bg-gray-100 dark:bg-black py-20 px-6 text-center">
+                <section className="bg-gray-100 dark:bg-black reveal py-20 px-6 text-center">
                     <h2 className="text-4xl font-bold mb-6">See It In Action</h2>
                     <p className="text-gray-700 dark:text-gray-300 max-w-2xl mx-auto mb-8">
                         Here's a sneak peek of how coding feels in our collaborative playground.
@@ -160,7 +164,7 @@ const LandingPage = () => {
                 </section>
 
                 {/* Trusted Logos */}
-                <section className="py-24 bg-gray-50 dark:bg-black text-center">
+                <section className="py-24 bg-gray-50 reveal dark:bg-black text-center">
                     <motion.h2
                         initial={{ opacity: 0, y: -20 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -193,7 +197,7 @@ const LandingPage = () => {
                 </section>
 
                 {/* Roadmap */}
-                <section className="bg-white dark:bg-black py-20 px-6">
+                <section className="bg-white reveal dark:bg-black py-20 px-6">
                     <h2 className="text-4xl font-bold text-center mb-12">What's Coming Next</h2>
                     <div className="max-w-4xl mx-auto space-y-10">
                         {[
@@ -220,7 +224,7 @@ const LandingPage = () => {
                 </section>
 
                 {/* Use Cases */}
-                <section className="bg-white dark:bg-black py-20 px-6">
+                <section className="bg-white dark:bg-black py-20 reveal px-6">
                     <h2 className="text-4xl font-bold text-center mb-12">Made for All Kinds of Teams</h2>
                     <div className="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto">
                         {[
@@ -242,7 +246,7 @@ const LandingPage = () => {
                 </section>
 
                 {/* Community Section */}
-                <section className="py-20 px-6 bg-black text-white text-center">
+                <section className="py-20 px-6 bg-black reveal text-white text-center">
                     <h2 className="text-4xl font-bold mb-6">Join Our Global Community</h2>
                     <p className="text-lg max-w-2xl mx-auto mb-8">
                         From open-source contributors to indie hackers — we’re all building together. Get involved on Discord, follow us on X, or check out what folks are building.
@@ -255,7 +259,7 @@ const LandingPage = () => {
 
             </section>
             {/* Contact Section */}
-            <section className="bg-white dark:bg-black py-20 px-6 text-center">
+            <section className="bg-white dark:bg-black reveal py-20 px-6 text-center">
                 <h2 className="text-4xl font-bold mb-6 dark:text-white">Get in Touch</h2>
                 <p className="text-lg max-w-2xl mx-auto text-gray-700 dark:text-gray-300 mb-8">
                     Questions? Feedback? We'd love to hear from you. Reach out to us anytime!
