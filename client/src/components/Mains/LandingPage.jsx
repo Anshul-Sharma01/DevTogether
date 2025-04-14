@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import "./LandingPage.css"; 
 import useIntersectionObserver from "../hooks/useIntersectionObserver.jsx";
 import SeeItInAction from "./SetItInAction.jsx";
+import { useRef, useState, useEffect } from "react";
 
 
 const LandingPage = () => {
@@ -37,6 +38,43 @@ const LandingPage = () => {
         hidden: { opacity: 0, y: 20 },
         visible: { opacity: 1, y: 0 },
     };
+    
+    const seeItRef = useRef(null);
+    const [hasScrolled, setHasScrolled] = useState(false);
+
+    useEffect(() => {
+        let hasScrolledOnce = false;
+    
+        const handleUserScroll = () => {
+            if (!hasScrolledOnce && seeItRef.current) {
+                hasScrolledOnce = true;
+    
+                setTimeout(() => {
+                    requestAnimationFrame(() => {
+                        console.log("📦 Scrolling to SeeItInAction (on first interaction)");
+                        seeItRef.current.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start",
+                        });
+                    });
+                }, 100);
+            }
+        };
+    
+        // Attach all listeners
+        window.addEventListener("wheel", handleUserScroll);
+        window.addEventListener("touchstart", handleUserScroll);
+        window.addEventListener("keydown", handleUserScroll);
+    
+        // Cleanup
+        return () => {
+            window.removeEventListener("wheel", handleUserScroll);
+            window.removeEventListener("touchstart", handleUserScroll);
+            window.removeEventListener("keydown", handleUserScroll);
+        };
+    }, []);
+    
+    
 
     return (
         <NavigationLayout>
@@ -50,10 +88,10 @@ const LandingPage = () => {
                     variants={fadeUp}
                     className="flex reveal flex-col items-center justify-center text-center px-6 py-20 h-screen"
                 >
-                    <h1 className="text-5xl md:text-6xl font-extrabold leading-tight bg-gradient-to-r from-purple-500 to-blue-500 text-transparent bg-clip-text mb-4">
+                    <h1 className="text-5xl h-[80px] md:text-6xl font-extrabold leading-tight bg-gradient-to-r from-purple-500 to-blue-500 text-transparent bg-clip-text mb-4">
                         Build, Collaborate, Deploy — Instantly
                     </h1>
-                    <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 max-w-2xl">
+                    <p className="text-lg md:text-xl text-gray-700 mt-2 dark:text-gray-300 max-w-2xl">
                         The all-in-one collaborative coding platform with live preview, real-time teamwork, and zero setup.
                     </p>
                     <div className="flex space-x-4 mt-8">
@@ -67,6 +105,10 @@ const LandingPage = () => {
                         </motion.button>
                     </div>
                 </motion.div>
+
+                <div ref={seeItRef}>
+                    <SeeItInAction/>
+                </div>
 
                 {/* Stats Section */}
                 <section className="bg-gray-100 reveal dark:bg-black py-14 px-6 text-center">
@@ -150,7 +192,6 @@ const LandingPage = () => {
                 </section>
 
                 {/* Demo Preview */}
-                <SeeItInAction/>
 
 
                 {/* Trusted Logos */}

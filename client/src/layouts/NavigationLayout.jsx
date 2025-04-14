@@ -58,7 +58,7 @@ function NavigationLayout({ children }) {
     }, []);
 
     return (
-        <div className="w-full relative">
+        <div className="w-full relative dark:text-white">
             {showEditProfile && (
                 <div className="fixed inset-0 bg-black/40 backdrop-blur-md z-40"></div>
             )}
