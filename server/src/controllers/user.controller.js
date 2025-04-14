@@ -342,6 +342,31 @@ const deleteAccountController = asyncHandler(async (req,res) => {
     .json(new ApiResponse(200, {}, "User account deleted successfully"))
 })
 
+const deactivateAccountController = asyncHandler(async (req, res) => {
+    const userId = req.user?._id;
+
+    const expiryDays = 7;
+    const deactivationExpiry = new Date(Date.now() + expiryDays * 24 * 60 * 60 * 1000);
+
+    const user = await User.findByIdAndUpdate(
+        userId,
+        {
+            $set: {
+                isAccountDeactivated: true,
+                accountDeactivatedExpiry: deactivationExpiry
+            }
+        },
+        {
+            new: true
+        }
+    );
+
+    return res.status(200).json(
+        new ApiResponse(200, user, "User account deactivated successfully")
+    );
+});
+
+
 export {
     registerController, 
     loginController, 
