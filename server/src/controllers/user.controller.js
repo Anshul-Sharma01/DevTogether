@@ -333,13 +333,24 @@ const logoutController = asyncHandler(async (req,res) => {
 })
 
 const deleteAccountController = asyncHandler(async (req,res) => {
-    await User.findByIdAndDelete(req.user._id)
+    try {
+        const userExists = await User.findByIdAndDelete(req.user._id)
+        if(!userExists){
+            throw new ApiError(404, "User not found");
+        }
 
-    return res
-    .status(200)
-    .clearCookie("accessToken", option)
-    .clearCookie("refreshToken", option)
-    .json(new ApiResponse(200, {}, "User account deleted successfully"))
+        console.log("Account deleted successfull");
+        
+    
+        return res
+        .status(200)
+        .clearCookie("accessToken", cookieOptions)
+        .clearCookie("refreshToken", cookieOptions)
+        .json(new ApiResponse(200, {}, "User account deleted successfully"))
+    } catch (error) {
+        console.error(`Error occurred while deleting the account : ${error}`);
+        throw new ApiError(400, "Error occurred while deleting the account");
+    }
 })
 
 const deactivateAccountController = asyncHandler(async (req, res) => {

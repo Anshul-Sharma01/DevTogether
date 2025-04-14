@@ -62,7 +62,7 @@ const Contact = () => {
             <section className="dark:bg-gray-900 bg-gray-50 min-h-screen flex flex-col items-center justify-center px-6 py-12">
 
                 {/* Hero Section */}
-                <section className="max-w-4xl w-full text-center mb-12">
+                <section className="max-w-4xl w-full text-center mt-12">
                     <h1 className="text-5xl font-extrabold text-gray-900 dark:text-cyan-400 mb-4">Get in Touch</h1>
                     <p className="text-lg text-gray-700 dark:text-gray-300">We’d love to hear from you! Reach out with any questions or feedback.</p>
                 </section>

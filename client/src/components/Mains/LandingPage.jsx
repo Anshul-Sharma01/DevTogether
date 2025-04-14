@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import NavigationLayout from "../../layouts/NavigationLayout.jsx";
 import { motion } from "framer-motion";
 import "./LandingPage.css"; 
@@ -88,7 +88,7 @@ const LandingPage = () => {
                     variants={fadeUp}
                     className="flex reveal flex-col items-center justify-center text-center px-6 py-20 h-screen"
                 >
-                    <h1 className="text-5xl h-[80px] md:text-6xl font-extrabold leading-tight bg-gradient-to-r from-purple-500 to-blue-500 text-transparent bg-clip-text mb-4">
+                    <h1 className="text-5xl md:text-6xl font-extrabold leading-tight bg-gradient-to-r from-purple-500 to-blue-500 text-transparent bg-clip-text mb-4">
                         Build, Collaborate, Deploy — Instantly
                     </h1>
                     <p className="text-lg md:text-xl text-gray-700 mt-2 dark:text-gray-300 max-w-2xl">
@@ -299,10 +299,9 @@ const LandingPage = () => {
                 <div className="flex justify-center mb-8">
                     <motion.button
                         whileHover={{ scale: 1.05 }}
-                        onClick={() => navigate("/contact")}
                         className="bg-blue-600 text-white px-6 py-3 rounded-md font-semibold hover:bg-blue-700 transition"
                     >
-                        Contact Us
+                        <Link to="/contact">Contact Us</Link>
                     </motion.button>
                 </div>
 
