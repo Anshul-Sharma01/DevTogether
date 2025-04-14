@@ -387,6 +387,7 @@ export {
     fetchProfileController,
     logoutController,
     deleteAccountController,
+    deactivateAccountController,
     updateProfilePictureController,
     updateUserNameController
 }
