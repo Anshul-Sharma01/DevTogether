@@ -10,7 +10,7 @@ const Editor = ({ selectedFile, roomId }) => {
 
   const getFileContent = async () => {
     try {
-      const response = await axios.get(`http://localhost:9000/api/file-content?path=${selectedFile}`);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/file-content?path=${selectedFile}`);
       setFileContent(response.data.content);
     } catch (error) {
       console.error("Error fetching file content:", error);

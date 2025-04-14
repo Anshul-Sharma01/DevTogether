@@ -93,7 +93,7 @@ const FileTree = ({ onSelect, setSelectedFolder, selectedFile, roomId }) => {
 
   const getFileTree = async () => {
     try {
-      const response = await axios.get("http://localhost:9000/api/file-path");
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/file-path`);
       setFileTree(response.data.tree);
     } catch (error) {
       console.error("Error fetching file tree:", error);
