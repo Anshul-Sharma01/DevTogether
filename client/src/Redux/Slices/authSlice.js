@@ -96,6 +96,17 @@ export const updateUsernameThunk = createAsyncThunk("/auth/update-username", asy
     }
 })
 
+export const deleteAccountThunk = createAsyncThunk("/auth/delete-account", async(data, { rejectWithValue }) =>{
+    try{
+        const res = axiosInstance.delete("user/delete-account");
+        toastHandler(res, "Deleting your account...", "Account deleted successfully");
+        return (await res).data;
+    }catch(err){
+        const message = err?.response?.data?.message || "Something went wrong during deleting account";
+        return rejectWithValue(message);
+    }
+})
+
 const authSlice = createSlice({
     name : "auth",
     initialState,
@@ -169,6 +180,15 @@ const authSlice = createSlice({
         })
         .addCase(updateUsernameThunk.rejected, (state, action) => {
             toast.error(action.payload || "Username update failed");
+        })
+        .addCase(deleteAccountThunk.fulfilled, (state, action) => {
+            localStorage.clear();
+            state.userData = {}
+            state.isLoggedIn = false;
+            state.userRole = "";
+        })
+        .addCase(deleteAccountThunk.rejected, (state, action) => {
+            toast.error(action.payload || "Account deletion failed");
         })
     }
 })

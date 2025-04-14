@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { deleteAccountThunk } from "../../Redux/Slices/authSlice";
 
 const DeleteAccount = ({ showDeleteAccountModal, setShowDeleteAccountModal }) => {
     const [deleteText, setDeleteText] = useState("");
+    const dispatch = useDispatch();
 
-    const handleDeleteAccount = () => {
+    const handleDeleteAccount = async(e) => {
+        e.preventDefault();
         toast.dismiss();
         if (deleteText === "") {
             toast.error("Please enter 'DELETE' to confirm deletion.");
@@ -15,7 +19,10 @@ const DeleteAccount = ({ showDeleteAccountModal, setShowDeleteAccountModal }) =>
             toast.error("Please enter 'DELETE' to confirm deletion.");
             return;
         }
-        toast.success("Account deleted successfully!");
+
+        const res = await dispatch(deleteAccountThunk());
+        console.log("Account Deletion Response : ", res)
+        
         setShowDeleteAccountModal(false); // Close the modal after successful deletion
     };
 
@@ -27,7 +34,7 @@ const DeleteAccount = ({ showDeleteAccountModal, setShowDeleteAccountModal }) =>
                     <div className="absolute inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-md transition-opacity duration-300 ease-in-out"></div>
 
                     {/* Modal Container */}
-                    <div className="relative bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-lg w-full max-w-md text-center z-50 transform transition-transform duration-300 ease-in-out scale-100">
+                    <form onSubmit={handleDeleteAccount} className="relative bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-lg w-full max-w-md text-center z-50 transform transition-transform duration-300 ease-in-out scale-100">
                         <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Delete Account</h2>
                         <p className="mb-4 text-gray-700 dark:text-gray-300">Are you sure you want to delete your account? This action cannot be undone.</p>
                         <input
@@ -50,7 +57,6 @@ const DeleteAccount = ({ showDeleteAccountModal, setShowDeleteAccountModal }) =>
                         {/* Buttons Row */}
                         <div className="flex justify-center gap-6 mt-8 mb-4">
                             <button
-                                onClick={handleDeleteAccount}
                                 className="bg-red-500 text-white px-8 py-3 rounded-full hover:bg-red-700 transition duration-300 ease-in-out shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-red-400"
                             >
                                 Delete
@@ -62,7 +68,7 @@ const DeleteAccount = ({ showDeleteAccountModal, setShowDeleteAccountModal }) =>
                                 Cancel
                             </button>
                         </div>
-                    </div>
+                    </form>
                 </div>
             )}
         </>
