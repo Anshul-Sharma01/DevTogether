@@ -42,12 +42,12 @@ const userSchema = new Schema(
             type : String,
             required : [true, "Bio is required"],
         },
-        isAccountDeleted : {
+        isAccountDeactivated : {
             type : Boolean,
             default : false,
             enum : [true, false]
         },
-        accoutnDeletionExpiry : {
+        accountDeactivatedExpiry : {
             type : Date,
         },
         allCollabs : [
