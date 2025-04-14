@@ -42,7 +42,7 @@ const userSchema = new Schema(
             type : String,
             required : [true, "Bio is required"],
         },
-        accountDeleted : {
+        isAccountDeleted : {
             type : Boolean,
             default : false,
             enum : [true, false]
