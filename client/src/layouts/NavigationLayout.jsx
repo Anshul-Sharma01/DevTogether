@@ -12,6 +12,7 @@ import Profile from "../components/Profile/Profile.jsx";
 import UpdateUsername from "../components/Profile/UpdateUsername.jsx";
 import Footer from "./Footer.jsx";
 import Logo from "./Logo.jsx";
+import ChangePassword from "../components/Auth/ChangePassword.jsx";
 
 function NavigationLayout({ children }) {
     const isLoggedIn = useSelector((state) => state?.auth?.isLoggedIn) || false;
@@ -39,6 +40,7 @@ function NavigationLayout({ children }) {
     const [showNewCollabModal, setShowNewCollabModal] = useState(false);
     const [showProfileModal, setShowProfileModal] = useState(false);
     const [showUserNameModal, setShowUserNameModel] = useState(false);
+    const [showPasswordModal, setShowPasswordModal] = useState(false);
 
     const dropdownRef = useRef(null);
     const collabDropdownRef = useRef(null);
@@ -122,7 +124,7 @@ function NavigationLayout({ children }) {
                                 )}
                                 {isSettingsOpen && isDropdownOpen && (
                                     <div className="absolute right-48 top-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-md rounded-md py-2 z-30 border dark:border-gray-700">
-                                        <DropdownItem label="Change Password" />
+                                        <DropdownItem label="Change Password" onClick={() => setShowPasswordModal(true)} />
                                         <DropdownItem label="Update Profile" onClick={() => setShowBioModal(true)} />
                                         <DropdownItem label="Update Username" onClick={() => setShowUserNameModel(true)} />
                                         <DropdownItem label="Delete Account" onClick={() => setShowDeleteAccountModal(true)} />
@@ -145,6 +147,7 @@ function NavigationLayout({ children }) {
             {showDeleteAccountModal && <DeleteAccount showDeleteAccountModal={showDeleteAccountModal} setShowDeleteAccountModal={setShowDeleteAccountModal} />}
             {showNewCollabModal && <NewCollab showNewCollabModal={showNewCollabModal} setShowNewCollabModel={setShowNewCollabModal} />}
             {showUserNameModal && <UpdateUsername setshowUserNameModal={setShowUserNameModel} showUserNameModal={showUserNameModal} />}
+            {showPasswordModal && <ChangePassword showPasswordModal={showPasswordModal} setShowPasswordModal={setShowPasswordModal} />}
         </div>
     );
 }

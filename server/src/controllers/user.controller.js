@@ -234,22 +234,29 @@ const updateUserNameController = asyncHandler(async(req, res) => {
 
 const changePasswordController = asyncHandler(async (req,res) => {
     const { currentPassword, newPassword} = req.body
-     //console.log(req.body);
+    // console.log(req.body);
     
-    passwordCheck(newPassword)
     if(!currentPassword || !newPassword) {
         throw new ApiError(400, "Current Password and New Password is required")
     }
-
+    // console.log("here 1");
+    
+    
     const user = await User.findById(req.user?._id)
+    // console.log("user : ", user);
+    // console.log("not here 2");
     const checkPassword = await user.isPasswordCorrect(currentPassword)
-
-
+    // console.log("checked-password : ", checkPassword);
+    
+    // console.log("saved 3");
     if(!checkPassword) {
-        throw new ApiError(400, " Invalid current password")
+        throw new ApiError(400, "Invalid current password")
     }
-
+    
+    // console.log("saved 5");
+    passwordCheck(newPassword)
     user.password = newPassword
+
 
     await user.save({validateBeforeSave:false})
 
@@ -338,6 +345,8 @@ const deleteAccountController = asyncHandler(async (req,res) => {
         if(!userExists){
             throw new ApiError(404, "User not found");
         }
+
+        await deleteFromCloudinary(userExists?.avatar?.public_id)
 
         console.log("Account deleted successfull");
         

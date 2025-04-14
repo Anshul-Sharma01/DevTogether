@@ -107,6 +107,18 @@ export const deleteAccountThunk = createAsyncThunk("/auth/delete-account", async
     }
 })
 
+export const changePasswordThunk = createAsyncThunk("/auth/change-password", async(data, { rejectWithValue }) => {
+    try{
+        const res = axiosInstance.patch("user/change-password", data);
+        toastHandler(res, "Changing your password", "Password Changed Successfully");
+        return (await res).data;
+    }catch(err){
+        console.log(err);
+        const message = err?.response?.data?.message || "Something went wrong during changing password";
+        return rejectWithValue(message);
+    }
+})
+
 const authSlice = createSlice({
     name : "auth",
     initialState,
@@ -189,6 +201,9 @@ const authSlice = createSlice({
         })
         .addCase(deleteAccountThunk.rejected, (state, action) => {
             toast.error(action.payload || "Account deletion failed");
+        })
+        .addCase(changePasswordThunk.rejected, (_, action) => {
+            toast.error(action.payload || "Password change failed");
         })
     }
 })

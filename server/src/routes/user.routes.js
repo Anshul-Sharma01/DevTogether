@@ -28,12 +28,11 @@ router.use(authMiddleware);
 
 router.route("/update-username").patch(updateUserNameController);
 router.route("/update-profile").patch( updateProfileController)
-router.route("/update-picture")
-.post(upload.single("avatar"), updateProfilePictureController);
-router.route('/change-password').patch( changePasswordController)
+router.route("/update-picture").post(upload.single("avatar"), updateProfilePictureController);
+router.route("/change-password").patch( changePasswordController)
 router.route("/me").get( fetchProfileController)
 router.route("/logout").get( logoutController)
 router.route("/delete-account").delete( deleteAccountController)
-router.post("/deactivate-account", deactivateAccountController);
+router.route("/deactivate-account").patch(deactivateAccountController);
 
 export default router;

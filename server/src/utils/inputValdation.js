@@ -44,14 +44,16 @@ const passwordSchema = z.string()
 
     const passwordCheck = (password) => {
         try {
-        const validateResult = passwordSchema.safeParse(password);
-        
-        if(!validateResult.success){
-            const errorMessages = validateResult.error.issues.map(issue => issue.message);
-            console.log(errorMessages.error);
-            
-            throw new ApiError(400, errorMessages);
-        }
+          const validateResult = passwordSchema.safeParse(password);
+          
+          if(!validateResult.success){
+              const errorMessages = validateResult.error.issues.map(issue => issue.message);
+              // console.log("here at");
+              console.log(errorMessages[0]);
+              // console.log("here at");
+              
+              throw new ApiError(400, errorMessages[0]);
+          }
         } catch (error) {
             throw new ApiError(400, error?.message || "Invalid password")
         }
