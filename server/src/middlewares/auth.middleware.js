@@ -25,7 +25,7 @@ export const authMiddleware = asyncHandler(async (req, _, next) => {
             const expiry = user.accountDeactivatedExpiry;
 
             // Still within deactivation period
-            if (!expiry || expiry > now) {
+            if (user.isAccountDeactivated && expiry > now) {
                 throw new ApiError(403, "Account is currently deactivated");
             }
 

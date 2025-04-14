@@ -107,6 +107,17 @@ export const deleteAccountThunk = createAsyncThunk("/auth/delete-account", async
     }
 })
 
+export const deactivateAccountThunk = createAsyncThunk("/auth/deactivate-account", async(_, { rejectWithValue }) => {
+    try{
+        const res = axiosInstance.patch("user/deactivate-account");
+        toastHandler(res, "Deactivating your account...", "Account deactivated successfully");
+        return (await res).data;
+    }catch(err){
+        const message = err?.response?.data?.message || "Something went wrong during deactivating account";
+        return rejectWithValue(message);
+    }
+})
+
 export const changePasswordThunk = createAsyncThunk("/auth/change-password", async(data, { rejectWithValue }) => {
     try{
         const res = axiosInstance.patch("user/change-password", data);
@@ -204,6 +215,9 @@ const authSlice = createSlice({
         })
         .addCase(changePasswordThunk.rejected, (_, action) => {
             toast.error(action.payload || "Password change failed");
+        })
+        .addCase(deactivateAccountThunk.rejected, (state, action) => {
+            toast.error(action.payload || "Account deactivation failed");
         })
     }
 })

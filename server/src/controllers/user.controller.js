@@ -106,6 +106,20 @@ const loginController = asyncHandler(async (req,res) => {
         throw new ApiError(400, "Invalid password")
     }
 
+    if (checkUser.isAccountDeactivated) {
+        const now = new Date();
+        const expiry = checkUser.accountDeactivatedExpiry;
+
+        if (expiry && expiry > now) {
+            throw new ApiError(402, "Account is currently deactivated. Try again after " + expiry.toDateString());
+        }
+
+        // Auto-reactivate if deactivation expired
+        checkUser.isAccountDeactivated = false;
+        checkUser.accountDeactivatedExpiry = null;
+        await checkUser.save({ validateBeforeSave: false });
+    }
+
     const { accessToken, refreshToken } = await generateAccessTokenAndRefreshToken(checkUser)
 
     const loginUser  = await User.findById(checkUser._id).select(
@@ -381,7 +395,10 @@ const deactivateAccountController = asyncHandler(async (req, res) => {
         }
     );
 
-    return res.status(200).json(
+    return res.status(200)
+    .clearCookie("accessToken", cookieOptions)
+    .clearCookie("refreshToken", cookieOptions)
+    .json(
         new ApiResponse(200, user, "User account deactivated successfully")
     );
 });

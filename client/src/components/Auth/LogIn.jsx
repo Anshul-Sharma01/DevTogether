@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';  // ✅ Import useState
+import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
@@ -6,54 +6,50 @@ import { loginUserAccountThunk } from '../../Redux/Slices/authSlice';
 import { FaRegEyeSlash } from "react-icons/fa";
 import { FaRegEye } from "react-icons/fa6";
 
-
 function LogIn() {
-
-    
     const [inputValue, setInputValue] = useState({
         input: '',
         password: ''
     });
-    const [ showPassword, setShowPassword ] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
-    
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    
+
     const handleLogin = async (e) => {
         e.preventDefault();
         toast.dismiss();
-        if(!inputValue.input || !inputValue.password) {
+        if (!inputValue.input || !inputValue.password) {
             toast.error("Please fill in all fields!");
             return;
         }
 
-        const res = await dispatch(loginUserAccountThunk({ inputValue : inputValue.input, password : inputValue.password }));
+        const res = await dispatch(loginUserAccountThunk({ inputValue: inputValue.input, password: inputValue.password }));
         console.log(res);
-        if(res?.payload?.statusCode === 200){
+        if (res?.payload?.statusCode === 200) {
             navigate("/");
         }
-        
     };
+
     const isLoggedIn = useSelector((state) => state?.auth?.isLoggedIn);
 
     useEffect(() => {
-        if(isLoggedIn){
+        if (isLoggedIn) {
             console.log("already logged in");
             window.alert("You are already logged in!");
             navigate("/");
         }
-    }, [])
+    }, []);
 
     return (
-        <section className="flex justify-center items-center h-screen bg-gradient-to-r from-gray-100 to-gray-300 dark:from-gray-700 dark:to-gray-900 transition-colors duration-300">
-            <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl w-full max-w-md space-y-8">
-                <h1 className="text-4xl font-extrabold text-center text-gray-900 dark:text-gray-100">Log In</h1>
+        <section className="flex justify-center items-center h-screen bg-white dark:bg-black transition-colors duration-300">
+            <div className="bg-white dark:bg-black/60 dark:backdrop-blur-lg border dark:border-white dark:border-solid dark:border-2 p-8 rounded-2xl shadow-xl w-full max-w-md space-y-8 transition-all duration-500">
+                <h1 className="text-4xl font-extrabold text-center text-gray-900 dark:text-white">Log In</h1>
 
-                {/* ✅ Ensure form submission calls handleLogin */}
-                <form className="space-y-6" onSubmit={handleLogin}>   
+                <form className="space-y-6" onSubmit={handleLogin}>
                     {/* Email/Username Field */}
                     <div>
                         <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -62,8 +58,8 @@ function LogIn() {
                         <input
                             type="text"
                             value={inputValue.input}
-                            onChange={(e) => setInputValue({ ...inputValue, input: e.target.value })}  // ✅ Correctly updates state
-                            className="mt-2 block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-200"
+                            onChange={(e) => setInputValue({ ...inputValue, input: e.target.value })}
+                            className="mt-2 block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-100"
                             placeholder="Enter your email or username"
                         />
                     </div>
@@ -73,24 +69,21 @@ function LogIn() {
                         <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                             Password
                         </label>
-
                         <div className="relative">
                             <input
                                 type={showPassword ? "text" : "password"}
                                 id="password"
                                 value={inputValue.password}
                                 onChange={(e) => setInputValue({ ...inputValue, password: e.target.value })}
-                                className="mt-2 block w-full px-4 py-3 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-200"
+                                className="mt-2 block w-full px-4 py-3 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-100"
                                 placeholder="Enter your password"
                             />
-
-                            {/* Toggle visibility button */}
                             <button
                                 type="button"
                                 onClick={togglePasswordVisibility}
-                                className="absolute top-1/2 right-4 transform -translate-y-1/2 text-gray-600 dark:text-gray-300 text-sm"
+                                className="absolute top-1/2 right-4 transform -translate-y-1/2 text-gray-600 dark:text-gray-300"
                             >
-                                {showPassword ? <FaRegEyeSlash/> : <FaRegEye/>}
+                                {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
                             </button>
                         </div>
                     </div>
@@ -104,12 +97,15 @@ function LogIn() {
                     </button>
                 </form>
 
-                {/* Links for Register and Forgot Password */}
-                <div className='flex flex-col justify-center items-center gap-2'>
+                {/* Register & Forgot Password Links */}
+                <div className="flex flex-col items-center gap-2">
                     <p className="text-center text-gray-600 dark:text-gray-400">
-                        Don't have an account? <Link to={"/auth/sign-up"} className="text-blue-500 dark:text-red-500 hover:underline">Register</Link>
+                        Don't have an account?{' '}
+                        <Link to="/auth/sign-up" className="text-blue-600 dark:text-red-400 hover:underline">
+                            Register
+                        </Link>
                     </p>
-                    <Link to={"/auth/forgot-password"} className='text-blue-500 dark:text-red-500 text-center hover:underline'>
+                    <Link to="/auth/forgot-password" className="text-blue-600 dark:text-red-400 hover:underline text-center">
                         Forgot Password?
                     </Link>
                 </div>
