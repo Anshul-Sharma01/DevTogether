@@ -19,6 +19,22 @@ export const authMiddleware = asyncHandler(async (req, _, next) => {
         if(!user) {
             throw new ApiError(401, "Invalid Access Token")
         }
+
+        if (user.isAccountDeactivated) {
+            const now = new Date();
+            const expiry = user.accountDeactivatedExpiry;
+
+            // Still within deactivation period
+            if (!expiry || expiry > now) {
+                throw new ApiError(403, "Account is currently deactivated");
+            }
+
+            // If deactivation period has passed, auto-reactivate
+            user.isAccountDeactivated = false;
+            user.accountDeactivatedExpiry = null;
+            await user.save({ validateBeforeSave: false });
+        }
+        
         req.user=user
         next()
         
