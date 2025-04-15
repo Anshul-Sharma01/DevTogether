@@ -60,14 +60,21 @@ const allCollabs =  asyncHandler(async (req,res) => {
       throw new ApiError(400, "Unauthorized Request")
     }
 
-    const allCollab = {}
-
+    const allCollab = await Promise.all(Object.values(collabs).map(async (value) => {
+      return await Collab.findById(value).select("-createdBy")
+    })
+)
+    // console.log(allCollab);
     
+    if(!allCollab) {
+      throw new ApiError(400, "Error in AllCollabs")
+    }
+
 
     return res
     .status(200)
     .json(
-      new ApiResponse(200)
+      new ApiResponse(200, allCollab, "Succesfully shown AllCollabs")
     )
       
 })
