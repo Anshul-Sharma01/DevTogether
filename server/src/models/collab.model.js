@@ -27,6 +27,16 @@ const collabSchema = new Schema(
 
       language: {
         type: String,
+      },
+
+      backendPort: {
+        type:Number,
+        required: true,
+      },
+
+      frontendPort: {
+        type:Number,
+        required: true
       }
     },
 
