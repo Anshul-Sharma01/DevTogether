@@ -39,6 +39,39 @@ export const createNewCollabThunk = createAsyncThunk("/collab/create", async(dat
     }
 })
 
+export const deleteCollabThunk = createAsyncThunk("/collab/delete-collab", async({roomId}, { rejectWithValue }) => {
+    try{
+        const res = axiosInstance.delete(`collab/delete-collab/${roomId}`);
+        toastHandler(res, "Deleting the collab", "Collab Deleted Successfully");
+        return (await res).data;
+    }catch(err){
+        const message = err?.response?.data?.message || "Error occurred while deleting a collab";
+        rejectWithValue(message);
+    }
+})
+
+export const startPlayGroundThunk = createAsyncThunk("/collab/start-playground", async({roomId}, {rejectWithValue}) => {
+    try{
+        const res = axiosInstance.post(`collab/playground/${roomId}`);
+        toastHandler("Starting Collab Playground", "PlayGround Started Successfully");
+        return (await res).data;
+    }catch(err){
+        const message = err?.response?.data?.messaege || "Error occurred while starting playing a collab";
+        rejectWithValue(message);
+    }
+})
+
+export const stopCollabThunk = createAsyncThunk("/collab/stop-collab", async({roomId}, {rejectWithValue}) => {
+    try{
+        const res = axiosInstance.post(`collab/stop-collab/${roomId}`);
+        return (await res).data;
+    }catch(err){
+        const message = err?.response?.data?.message || "Error occurred while stopping collab";
+        rejectWithValue(message);
+    }
+})
+
+
 
 const collabSlice = createSlice({
     name : "collab",
@@ -59,6 +92,19 @@ const collabSlice = createSlice({
             })
             .addCase(createNewCollabThunk.rejected, (state, action) => {
                 toast.error(action?.payload || "Error occurred while creating a new collab");
+            })
+            .addCase(deleteCollabThunk.fulfilled, (state, action) => {
+                const deletedRoomId = action?.payload?.data?.roomId;
+                state.allCollabs = state.allCollabs.filter((collab) => collab.roomId != deletedRoomId);
+            })
+            .addCase(deleteCollabThunk.rejected, (_, action) => {
+                toast.error(action?.payload || "Error occurred while deleting the collab");
+            })
+            .addCase(startPlayGroundThunk.rejected, (_, action) => {
+                toast.error(action?.payload);
+            })
+            .addCase(stopCollabThunk.rejected, (_, action) => {
+                toast.error(action?.payload);
             })
     } 
 })

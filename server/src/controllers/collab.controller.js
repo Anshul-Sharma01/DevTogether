@@ -152,10 +152,11 @@ const deleteCollab = asyncHandler(async (req,res) => {
       { new: true }
     )
 
+
     return res
     .status(200)
     .json(
-      new ApiResponse(200, null, "Collab successfully deleted")
+      new ApiResponse(200, collab, "Collab successfully deleted")
     )
 })
 
