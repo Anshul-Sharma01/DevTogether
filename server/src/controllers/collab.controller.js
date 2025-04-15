@@ -42,12 +42,37 @@ const createCollab = asyncHandler(async (req, res) => {
         { new: true }
     );
 
-    return res.status(200).json(
+    return res
+    .status(200)
+    .json(
       new ApiResponse(200, newCollab, "Collab successfully made")
     );
 });
 
 
+const allCollabs =  asyncHandler(async (req,res) => {
+     const user = await User.findById(req.user._id);
+
+     const  collabs = user.allCollabs;
+    //  console.log(collabs);
+
+    if(!collabs) {
+      throw new ApiError(400, "Unauthorized Request")
+    }
+
+    const allCollab = {}
+
+    
+
+    return res
+    .status(200)
+    .json(
+      new ApiResponse(200)
+    )
+      
+})
+
 export {
-     createCollab 
+     createCollab,
+     allCollabs 
 };
