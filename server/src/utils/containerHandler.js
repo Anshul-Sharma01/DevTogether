@@ -102,8 +102,26 @@ const startContainer = async (containerId) => {
   }
 }
 
+const deleteContainer = async (containerId) => {
+    try {
+      const container = docker.getContainer(containerId)
+
+      await container.remove({ force: true }, function (err, data) {
+        if (err) {
+          console.error('Error removing container:', err);
+        } else {
+          console.log('Container removed successfully');
+        }
+      });
+
+    } catch (error) {
+      console.log(error.message)
+    }
+}
+
 export {
     setup,
     stopContainer,
-    startContainer
+    startContainer,
+    deleteContainer
 }

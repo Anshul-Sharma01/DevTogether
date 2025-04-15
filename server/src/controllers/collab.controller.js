@@ -3,7 +3,11 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { User } from "../models/user.model.js";
-import { setup, startContainer, stopContainer } from "../utils/containerHandler.js";
+import { deleteContainer,
+         setup, 
+         startContainer, 
+         stopContainer 
+       } from "../utils/containerHandler.js";
 
 
 const createCollab = asyncHandler(async (req, res) => {
@@ -128,10 +132,38 @@ const startCollab = asyncHandler(async (req,res) => {
    )
 })
 
+const deleteCollab = asyncHandler(async (req,res) => {
+   const { roomId } = req.params
+
+   if(!roomId) {
+    throw new ApiError(400, "Missing room ID")
+   }
+
+    const collab = await Collab.findOne({ roomId })
+
+    await deleteContainer(collab.frontendContainerId)
+    await deleteContainer(collab.backendContainerId)
+
+    await Collab.findByIdAndDelete(collab._id)
+
+    await User.findByIdAndUpdate(
+      req.user._id,
+      { $pull: { allCollabs: collab._id } },
+      { new: true }
+    )
+
+    return res
+    .status(200)
+    .json(
+      new ApiResponse(200, null, "Collab successfully deleted")
+    )
+})
+
 
 export {
      createCollab,
      allCollabs,
      stopCollab,
-     startCollab
+     startCollab,
+     deleteCollab
 };
