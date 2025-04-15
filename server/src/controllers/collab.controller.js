@@ -75,6 +75,7 @@ async function setup() {
   console.log('\nContainers ready:');
   console.log(`Backend → http://localhost:${backend.hostPort}`);
   console.log(`Frontend → http://localhost:${frontend.hostPort}`);
+  return { frontend , backend }
 }
 
 
@@ -93,7 +94,11 @@ const createCollab = asyncHandler(async (req, res) => {
         throw new ApiError(409, "Collab with same room ID already exists");
     }
 
-    await setup().catch(console.error);
+    const {frontend,backend} = await setup();
+
+    if(!frontend || !backend) {
+      throw new ApiError(400, "Container not formed")
+    }
 
     const newCollab = await Collab.create({
       title,
@@ -101,6 +106,8 @@ const createCollab = asyncHandler(async (req, res) => {
       language,
       description: description || "",
       createdBy: req.user._id,
+      frontendPort: frontend.hostPort,
+      backendPort: backend.hostPort
     });
 
     await User.findByIdAndUpdate(
