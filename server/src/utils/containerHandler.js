@@ -78,7 +78,7 @@ const setup = async () =>  {
   return { frontend , backend }
 
   } catch (error) {
-    console.log(err.message);
+    console.log(error.message);
   }
 }
 
