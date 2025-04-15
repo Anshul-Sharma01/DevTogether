@@ -92,7 +92,18 @@ const stopContainer = async (containerId) => {
    }
 }
 
+const startContainer = async (containerId) => {
+  try {
+    const container = docker.getContainer(containerId)
+    await container.start()
+
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
 export {
     setup,
-    stopContainer
+    stopContainer,
+    startContainer
 }

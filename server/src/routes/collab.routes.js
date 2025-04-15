@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { allCollabs,
-            createCollab,
-            stopCollab,
+         createCollab,
+         stopCollab,
+         startCollab
     } from "../controllers/collab.controller.js";
 
 import { authMiddleware } from "../middlewares/auth.middleware.js";
@@ -9,6 +10,8 @@ import { authMiddleware } from "../middlewares/auth.middleware.js";
 const router = Router();
 
 router.route("/stop-collab/:roomId").post(stopCollab)
+router.route("/playground/:roomId").post(startCollab)
+
 
 router.use(authMiddleware)
 
