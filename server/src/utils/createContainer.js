@@ -45,7 +45,11 @@ const createDynamicContainer = async (namePrefix, image, containerPort, envVars 
 
   await container.start();
   console.log(`${containerName} started → http://localhost:${hostPort}`);
-  return { containerName, hostPort };
+  return { 
+    containerName, 
+    hostPort,
+    containerId: container.id,
+   };
 }
 
 // Boot everything
