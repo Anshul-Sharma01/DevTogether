@@ -2,7 +2,11 @@ import express from "express"
 import cors from "cors"
 import http from "http"
 import { Server as SocketServer}  from "socket.io"
-
+import pty from "node-pty-prebuilt-multiarch"
+import os from "os"
+import chokidar from "chokidar"
+import fs from "fs/promises"
+import path from "path"
 
 
 
