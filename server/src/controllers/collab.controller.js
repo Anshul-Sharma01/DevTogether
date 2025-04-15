@@ -3,10 +3,8 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { User } from "../models/user.model.js";
-import { setup } from "../utils/createContainer.js";
-import Docker from "dockerode";
+import { setup, stopContainer } from "../utils/containerHandler.js";
 
-const docker = new Docker();
 
 const createCollab = asyncHandler(async (req, res) => {
     const { title, roomId, language, description } = req.body;
@@ -36,7 +34,9 @@ const createCollab = asyncHandler(async (req, res) => {
       description: description || "",
       createdBy: req.user._id,
       frontendPort: frontend.hostPort,
-      backendPort: backend.hostPort
+      backendPort: backend.hostPort,
+      frontendContainerId: frontend.containerId,
+      backendContainerId: backend.containerId
     });
 
     await User.findByIdAndUpdate(
@@ -82,9 +82,32 @@ const allCollabs =  asyncHandler(async (req,res) => {
       
 })
 
+const stopCollab = asyncHandler(async (req,res) => {
+    const { roomId } = req.params
+
+    if(!roomId) {
+      throw new ApiError(400, "Missing room ID") 
+    }
+
+    const collab = await Collab.findOne({ roomId })
+
+    if(!collab) {
+      throw new ApiError(404, "Collab not found")
+    }
+
+    await stopContainer(collab.frontendContainerId)
+    await stopContainer(collab.backendContainerId)
+
+    return res
+    .status(200)
+    .json(
+      new ApiResponse(200, null, "Collab successfully stopped")
+    )
+})
 
 
 export {
      createCollab,
-     allCollabs 
+     allCollabs,
+     stopCollab
 };

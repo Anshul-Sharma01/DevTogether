@@ -82,6 +82,17 @@ const setup = async () =>  {
   }
 }
 
+const stopContainer = async (containerId) => {
+   try {
+     const container = docker.getContainer(containerId)
+     await container.stop();
+    
+   } catch (error) {
+      console.log(error.message);
+   }
+}
+
 export {
-    setup
+    setup,
+    stopContainer
 }
