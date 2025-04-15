@@ -37,6 +37,16 @@ const collabSchema = new Schema(
       frontendPort: {
         type:Number,
         required: true
+      },
+
+      frontendContainerId: {
+        type:String,
+        required:true,
+      },
+      
+      backendContainerId: {
+        type:String,
+        required:true
       }
     },
 

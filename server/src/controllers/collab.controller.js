@@ -4,6 +4,9 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { User } from "../models/user.model.js";
 import { setup } from "../utils/createContainer.js";
+import Docker from "dockerode";
+
+const docker = new Docker();
 
 const createCollab = asyncHandler(async (req, res) => {
     const { title, roomId, language, description } = req.body;
@@ -78,6 +81,8 @@ const allCollabs =  asyncHandler(async (req,res) => {
     )
       
 })
+
+
 
 export {
      createCollab,
