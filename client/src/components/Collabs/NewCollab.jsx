@@ -4,6 +4,8 @@ import { FaHtml5, FaReact, FaNodeJs } from "react-icons/fa";
 import { FaDev } from "react-icons/fa6";
 import toast from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
+import { useDispatch } from "react-redux";
+import { createNewCollabThunk } from "../../Redux/Slices/collabSlice";
 
 const NewCollab = ({ showNewCollabModal, setShowNewCollabModel }) => {
   const [collabName, setCollabName] = useState("");
@@ -19,6 +21,7 @@ const NewCollab = ({ showNewCollabModal, setShowNewCollabModel }) => {
   const handleOptionClick = (id) => {
     setSelectedOption(id);
   };
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,32 +39,18 @@ const NewCollab = ({ showNewCollabModal, setShowNewCollabModel }) => {
     const language = options.find((opt) => opt.id === selectedOption)?.lang || "javascript";
     const roomId = uuidv4(); // generate unique roomId
 
-    try {
-      const response = await fetch("http://localhost:5000/api/v1/collab/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          title: collabName,
-          roomId,
-          language,
-          description: "", // optional
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        toast.success("Collab created successfully");
-        window.location.href = `http://localhost:${data.data.frontendPort}/room/${roomId}`;
-      } else {
-        toast.error(data.message || "Failed to create collab");
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("Server error. Please try again later.");
+    const res = await dispatch(createNewCollabThunk({
+      title: collabName,
+      roomId,
+      language,
+      description: "", // optional
+    }));
+    console.log("Res after creating a new collab : ", res);
+    if(res?.payload?.statusCode === 200){
+      setCollabName("");
+      setSelectedOption(null);
+      setShowNewCollabModel(false);
+      window.location.href = `http://localhost:${res?.payload?.data?.frontendPort}/room/${roomId}`;
     }
   };
 
