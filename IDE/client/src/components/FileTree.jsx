@@ -118,7 +118,7 @@ const FileTree = ({ onSelect, setSelectedFolder, selectedFile, roomId }) => {
   return (
     <div className="h-full overflow-y-auto scrollbar-thin scrollbar-thumb-[#444444] scrollbar-track-[#252525]">
       <FileTreeNode
-        treeName="File Box"
+        treeName="User"
         nodes={fileTree}
         path=""
         setSelectedFolder={setSelectedFolder}
