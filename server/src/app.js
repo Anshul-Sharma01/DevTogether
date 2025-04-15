@@ -24,7 +24,7 @@ import { errorHandler } from "./utils/errorHandler.js";
 
 
 app.use("/api/v1/user", userRouter)
-app.use("/api/v1", collabRouter)
+app.use("/api/v1/collab", collabRouter)
 
 app.use(errorHandler);
 

@@ -37,7 +37,7 @@ const NewCollab = ({ showNewCollabModal, setShowNewCollabModel }) => {
     const roomId = uuidv4(); // generate unique roomId
 
     try {
-      const response = await fetch("http://localhost:5000/api/v1/collab", {
+      const response = await fetch("http://localhost:5000/api/v1/collab/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

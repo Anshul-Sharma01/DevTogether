@@ -6,6 +6,6 @@ import { authMiddleware } from "../middlewares/auth.middleware.js";
 const router = Router();
 
 
-router.route("/collab").post( authMiddleware,createCollab)
+router.route("/create").post( authMiddleware,createCollab)
 
 export default router;
