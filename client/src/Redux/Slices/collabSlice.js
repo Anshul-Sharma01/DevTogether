@@ -53,7 +53,7 @@ export const deleteCollabThunk = createAsyncThunk("/collab/delete-collab", async
 export const startPlayGroundThunk = createAsyncThunk("/collab/start-playground", async({roomId}, {rejectWithValue}) => {
     try{
         const res = axiosInstance.post(`collab/playground/${roomId}`);
-        toastHandler("Starting Collab Playground", "PlayGround Started Successfully");
+        toastHandler(res, "Starting Collab Playground", "PlayGround Started Successfully");
         return (await res).data;
     }catch(err){
         const message = err?.response?.data?.messaege || "Error occurred while starting playing a collab";
@@ -101,7 +101,7 @@ const collabSlice = createSlice({
                 toast.error(action?.payload || "Error occurred while deleting the collab");
             })
             .addCase(startPlayGroundThunk.rejected, (_, action) => {
-                toast.error(action?.payload);
+                toast.error(action?.payload || "Error occurred ");
             })
             .addCase(stopCollabThunk.rejected, (_, action) => {
                 toast.error(action?.payload);

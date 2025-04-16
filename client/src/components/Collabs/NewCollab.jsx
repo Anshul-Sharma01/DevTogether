@@ -124,7 +124,7 @@ const NewCollab = ({ showNewCollabModal, setShowNewCollabModel }) => {
                   onChange={(e) => setCollabName(e.target.value)}
                   placeholder="Enter your collab name"
                   required
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600"
+                  className="w-full dark:bg-gray-800 dark:text-white px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600"
                 />
                 <span
                   onClick={generateRandomName}

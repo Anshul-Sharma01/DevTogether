@@ -8,36 +8,10 @@ import { Link } from "react-router-dom";
 import NewCollab from "./NewCollab";
 import AddCollab from "./AddCollab";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllCollabsThunk } from "../../Redux/Slices/collabSlice";
+import { fetchAllCollabsThunk, startPlayGroundThunk } from "../../Redux/Slices/collabSlice";
 import DeleteCollab from "./DeleteCollab";
 
 
-const collabs = [
-  {
-    id: 1,
-    title: "AI Chatbot",
-    description: "An AI-powered chatbot for customer support.",
-    participants: 5,
-    collabOwner: "John Doe",
-    techStack: ["React", "Node.js", "TensorFlow"],
-  },
-  {
-    id: 2,
-    title: "E-commerce Platform",
-    description: "A scalable e-commerce solution for online businesses.",
-    participants: 8,
-    collabOwner: "Jane Smith",
-    techStack: ["Next.js", "TailwindCSS", "MongoDB"],
-  },
-  {
-    id: 3,
-    title: "Street Cafe",
-    description: "A scalable e-commerce solution for online businesses.",
-    participants: 2,
-    collabOwner: "Vansh Patial",
-    techStack: ["Next.js", "TailwindCSS", "MongoDB"],
-  },
-];
 
 const AllCollabs = () => {
 
@@ -48,6 +22,16 @@ const AllCollabs = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isNewCollabOpen, setIsNewCollabOpen] = useState(false);
   const [isAddCollabOpen, setIsAddCollabOpen] = useState(false);
+
+  const startPlayGround = async(collab) => {
+    const res = await dispatch(startPlayGroundThunk({ roomId : collab.roomId }));
+    console.log("Res : ", res);
+    if(res?.payload?.statusCode === 200){
+      console.log("Successfully started the playground");
+      window.location.href = `http://localhost:${res?.payload?.data?.frontendPort}/room/${res?.payload?.data?.roomId}`;
+      console.log("Redirecting ??");
+    }
+  }
 
   useEffect(() => {
     async function fetchCollabs(){
@@ -85,9 +69,9 @@ const AllCollabs = () => {
         {allCollabs?.map((collab) => (
           <div key={collab._id} className="relative group bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow hover:shadow-lg transition-all p-6 flex flex-col gap-4">
             <DeleteCollab collab={collab}/>
-            <Link
-              to={`/collab/${collab._id}`}
+            <button
               className="flex flex-col gap-4"
+              onClick={() => startPlayGround(collab)}
             >
               <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400 group-hover:underline">
                 {collab.title}
@@ -99,7 +83,7 @@ const AllCollabs = () => {
                 {collab.language === 'html' && <SiHtml5 className="text-orange-500" />}
                 {collab.language === 'custom' && <BsCodeSlash className="text-purple-500" />}
               </div>
-            </Link>
+            </button>
           </div>
         ))}
 

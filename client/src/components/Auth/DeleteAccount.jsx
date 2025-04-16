@@ -89,7 +89,7 @@ const DeleteAccount = ({ showDeleteAccountModal, setShowDeleteAccountModal }) =>
                                 <h2 className="text-2xl font-bold mb-3 text-gray-900 dark:text-white">Deactivate Account</h2>
                                 <p className="mb-4 text-gray-700 dark:text-gray-300">
                                     Your account will be <span className="font-semibold text-yellow-500">temporarily</span> deactivated for 7 days.
-                                    You can log in again at any time to reactivate it.
+                                    You will only be able to login after 7 days
                                 </p>
                             </>
                         )}
