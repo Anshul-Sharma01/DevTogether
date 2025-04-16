@@ -3,6 +3,9 @@ import toast from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { updateProfileThunk } from "../../Redux/Slices/authSlice";
+import { RiAiGenerate2 } from "react-icons/ri";
+import generateBio from "./GenerateBio";
+import { FaSpinner } from 'react-icons/fa';
 
 const UpdateProfile = ({ showBioModal, setShowBioModal }) => {
     const userData = useSelector((state) => state?.auth?.userData);
@@ -12,6 +15,7 @@ const UpdateProfile = ({ showBioModal, setShowBioModal }) => {
     
     const [bioField, setBioField] = useState(userData?.bio || "Enter your bio...");
     const [nameField, setNameField] = useState(userData?.name || "Enter your name..."); 
+    const [loading, setIsLoading] = useState(false);
 
     // Handle form submission (e.g., send to API)
     const handleSubmit = async(event) => {
@@ -33,6 +37,18 @@ const UpdateProfile = ({ showBioModal, setShowBioModal }) => {
 
         // API call to update the user profile (not implemented here)
     };
+
+    const handleBioGeneration = async() => {
+        if(bioField == ""){
+            toast.error("First enter the unstrucutred bio to enhance it from ai");
+            return;
+        }
+        setIsLoading(true);
+        
+        const res = await generateBio(bioField);
+        setIsLoading(false);
+        setBioField(res);
+    }
 
     return (
         <>
@@ -63,13 +79,25 @@ const UpdateProfile = ({ showBioModal, setShowBioModal }) => {
                                 onChange={(e) => setNameField(e.target.value)}
                             />
 
-                            <textarea
-                                className="w-full p-4 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white resize-none"
-                                placeholder="Update your bio..."
-                                value={bioField}
-                                onChange={(e) => setBioField(e.target.value)}
-                                rows="6"
-                            ></textarea>
+                            <div className="relative">
+                                <textarea
+                                    value={bioField}
+                                    onChange={(e) => setBioField(e.target.value)}
+                                    className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                                    required
+                                    rows={6}
+                                />
+                                {
+                                    loading ? (
+                                    <FaSpinner className="text-xl animate-spin absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500 dark:text-white" />
+                                    ) : (
+                                    <RiAiGenerate2
+                                        onClick={handleBioGeneration}
+                                        className="text-xl hover:text-blue-500 cursor-pointer absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500 dark:text-white"
+                                    />
+                                    )
+                                }
+                            </div>
 
                             {/* Submit Button */}
                             <button
