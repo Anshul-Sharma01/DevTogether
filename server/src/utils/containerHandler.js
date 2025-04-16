@@ -23,13 +23,13 @@ const ensureNetworkExists = async (networkName) => {
 const  createContainerWithExposedPorts = async (imageName) => {
   const exposedPorts = {
     '3000/tcp': {},
-    '5173/tcp': {},
+    '5175/tcp': {},
     '8080/tcp': {},
   };
 
   const portBindings = {
     '3000/tcp': [{ HostPort: '3000' }],
-    '5173/tcp': [{ HostPort: '5173' }],
+    '5175/tcp': [{ HostPort: '5175' }],
     '8080/tcp': [{ HostPort: '8080' }],
   };
 
