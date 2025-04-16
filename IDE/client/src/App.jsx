@@ -18,14 +18,18 @@ const App = () => {
   const [isDraggingSidebar, setIsDraggingSidebar] = useState(false);
   const [isDraggingTerminal, setIsDraggingTerminal] = useState(false);
   const [isRoomOwner, setIsRoomOwner] = useState(false);
+  const [clientRoomId, setClientRoomId] = useState("");
   const [roomId, setRoomId] = useState(() => {
     const urlParams = new URLSearchParams(window.location.search);
     console.log(urlParams);
     const urlRoomId = urlParams.get('roomId');
+    setClientRoomId(urlRoomId);
     setIsRoomOwner(!urlRoomId);
       return urlRoomId || Math.random().toString(36).substring(2, 8);
   });
 
+  const url = 
++
   useEffect(() => {
     // Join the collaboration room
     socket.emit('join-room', roomId);
@@ -77,6 +81,20 @@ const App = () => {
         }
       }
     };
+
+    useEffect(() => {
+      const handleUnload = () => {
+        const data = JSON.stringify({ roomId : clientRoomId });
+        navigator.sendBeacon('/api/v1/collab/stop-collab/' + clientRoomId, data);
+      };
+    
+      window.addEventListener('beforeunload', handleUnload);
+    
+      return () => {
+        window.removeEventListener('beforeunload', handleUnload);
+      };
+    }, [clientRoomId]);
+    
 
     const handleMouseUp = () => {
       setIsDraggingSidebar(false);

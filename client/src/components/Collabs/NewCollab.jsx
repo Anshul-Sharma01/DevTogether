@@ -130,7 +130,7 @@ Make it pop. Make it clever. Make it memorable.
     e.preventDefault();
 
     if (collabName === "" || collabDescription === "") {
-      toast.error("Please enter the collab title & descriptio");
+      toast.error("Please enter the collab title & description");
       return;
     }
 
