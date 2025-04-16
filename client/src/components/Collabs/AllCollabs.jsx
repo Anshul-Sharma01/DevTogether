@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import NavigationLayout from "../../layouts/NavigationLayout";
 import { RxCross2 } from "react-icons/rx";
-import { FaReact } from 'react-icons/fa';
+import { FaReact, FaTrash } from 'react-icons/fa';
 import { SiHtml5 } from 'react-icons/si';
 import { BsCodeSlash } from 'react-icons/bs';
 import { Link } from "react-router-dom";
@@ -9,6 +9,7 @@ import NewCollab from "./NewCollab";
 import AddCollab from "./AddCollab";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllCollabsThunk } from "../../Redux/Slices/collabSlice";
+import DeleteCollab from "./DeleteCollab";
 
 
 const collabs = [
@@ -80,24 +81,28 @@ const AllCollabs = () => {
         </div>
 
         <div className={view === "grid" ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" : "space-y-6"}>
+
         {allCollabs?.map((collab) => (
-          <Link
-            key={collab._id}
-            to={`/collab/${collab._id}`}
-            className="group bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow hover:shadow-lg transition-all p-6 flex flex-col gap-4"
-          >
-            <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400 group-hover:underline">
-              {collab.title}
-            </h2>
-            <p className="text-gray-700 dark:text-gray-300">{collab.description}</p>
-            <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
-              <p>🛠️ Tech Stack:</p>
-              {collab.language === 'react' && <FaReact className="text-blue-500" />}
-              {collab.language === 'html' && <SiHtml5 className="text-orange-500" />}
-              {collab.language === 'custom' && <BsCodeSlash className="text-purple-500" />}
-            </div>
-          </Link>
+          <div key={collab._id} className="relative group bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow hover:shadow-lg transition-all p-6 flex flex-col gap-4">
+            <DeleteCollab collab={collab}/>
+            <Link
+              to={`/collab/${collab._id}`}
+              className="flex flex-col gap-4"
+            >
+              <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400 group-hover:underline">
+                {collab.title}
+              </h2>
+              <p className="text-gray-700 dark:text-gray-300">{collab.description}</p>
+              <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
+                <p>🛠️ Tech Stack:</p>
+                {collab.language === 'react' && <FaReact className="text-blue-500" />}
+                {collab.language === 'html' && <SiHtml5 className="text-orange-500" />}
+                {collab.language === 'custom' && <BsCodeSlash className="text-purple-500" />}
+              </div>
+            </Link>
+          </div>
         ))}
+
         </div>
       </div>
 
