@@ -6,9 +6,11 @@ import toast from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch } from "react-redux";
 import { createNewCollabThunk } from "../../Redux/Slices/collabSlice";
+import { RiAiGenerate2 } from "react-icons/ri";
 
 const NewCollab = ({ showNewCollabModal, setShowNewCollabModel }) => {
   const [collabName, setCollabName] = useState("");
+  const [collabDescription, setCollabDescription] = useState("");
   const [selectedOption, setSelectedOption] = useState(null);
 
   const options = [
@@ -18,6 +20,48 @@ const NewCollab = ({ showNewCollabModal, setShowNewCollabModel }) => {
     { id: 4, label: "Custom", icon: <FaDev />, lang: "custom" },
   ];
 
+  const generateRandomName = async () => {
+    // console.log("MODAL_NAME : ", import.meta.env.VITE_HF_MODAL_NAME);
+    // const url = `https://api-inference.huggingface.co/models/${import.meta.env.VITE_HF_MODAL_NAME}`;
+    
+    // const headers = {
+    //   "Authorization": `Bearer ${import.meta.env.VITE_HF_API_KEY}`,
+    //   "Content-Type": "application/json",
+    // };
+  
+    // List of random name sets for more variability
+    const examplesList = [
+      "CodeSync, DevNest, CollabCrate, HackHive, BuildFlow, DevDrop",
+      "IdeaBridge, CodeWeld, CollabDrift, CloudCraze, DevWorx, ProjectPulse",
+      "CodeTunnel, TeamForge, DevNova, IdeaLoop, SyncFlick, CodeWarp",
+      "DevLoop, CodeSpring, HiveCloud, CollabForge, SyncNest, FlowBay",
+      "CodePond, HackOrbit, DevMint, ProjectZen, CollabBloom, LaunchNest",
+      "CodeRush, DevChain, HackNest, TeamSpark, CodeLift, DevBloom",
+      "CloudCircuit, TaskPulse, CodeRise, ThinkLift, DevSparks, MergeMind",
+      "HackBranch, CollabPulse, CodeSway, ProjectCore, DevBrew, TeamBay",
+      "FusionLab, CodeTrail, IdeaNexus, CodeCrave, ThinkStorm, CollabVibe",
+      "DevCore, SyncCrate, CodePing, LaunchLink, HiveFlow, TeamStream"
+    ];
+  
+    // Randomly select a set of examples
+    const randomExamples = examplesList[Math.floor(Math.random() * examplesList.length)];
+  
+    // Split into individual names
+    const nameOptions = randomExamples.split(',').map(name => name.trim());
+  
+    // Pick a random name from the selected example set
+    const randomName = nameOptions[Math.floor(Math.random() * nameOptions.length)];
+  
+    console.log("✅ Selected Random Name:", randomName);
+    setCollabName(randomName);
+    return randomName;
+  };
+  
+  
+  
+  
+  
+
   const handleOptionClick = (id) => {
     setSelectedOption(id);
   };
@@ -26,8 +70,8 @@ const NewCollab = ({ showNewCollabModal, setShowNewCollabModel }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (collabName === "") {
-      toast.error("Please enter the collab title");
+    if (collabName === "" || collabDescription === "") {
+      toast.error("Please enter the collab title & descriptio");
       return;
     }
 
@@ -43,7 +87,7 @@ const NewCollab = ({ showNewCollabModal, setShowNewCollabModel }) => {
       title: collabName,
       roomId,
       language,
-      description: "", // optional
+      description: collabDescription
     }));
     console.log("Res after creating a new collab : ", res);
     if(res?.payload?.statusCode === 200){
@@ -73,14 +117,31 @@ const NewCollab = ({ showNewCollabModal, setShowNewCollabModel }) => {
             </button>
 
             <form noValidate className="space-y-4">
-              <input
-                type="text"
-                value={collabName}
-                onChange={(e) => setCollabName(e.target.value)}
-                placeholder="Enter your collab name"
-                required
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600"
-              />
+              <div className="relative">
+                <input
+                  type="text"
+                  value={collabName}
+                  onChange={(e) => setCollabName(e.target.value)}
+                  placeholder="Enter your collab name"
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600"
+                />
+                <span
+                  onClick={generateRandomName}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer hover:text-blue-500"
+                  title="Generate funky name"
+                >
+                  <RiAiGenerate2 size={20} />
+                </span>
+              </div>
+              <textarea
+                  className="w-full p-4 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white resize-none"
+                  placeholder="Enter Collab Description..."
+                  value={collabDescription}
+                  onChange={(e) => setCollabDescription(e.target.value)}
+                  rows="3"
+              ></textarea>
+
 
               <div className="flex flex-wrap flex-row justify-center gap-4 dark:text-white">
                 {options.map((option) => (
