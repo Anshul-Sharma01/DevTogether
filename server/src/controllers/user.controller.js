@@ -23,6 +23,7 @@ const cookieOptions = {
 }
 
 const registerController = asyncHandler(async (req,res) => {
+    console.log("Started");
     const { username, email, name, password, bio } = req.body;
 
     //console.log(username);
