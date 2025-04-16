@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useDispatch } from "react-redux";
 import { createNewCollabThunk } from "../../Redux/Slices/collabSlice";
 import { RiAiGenerate2 } from "react-icons/ri";
+import axios from "axios";
 
 const NewCollab = ({ showNewCollabModal, setShowNewCollabModel }) => {
   const [collabName, setCollabName] = useState("");
@@ -20,16 +21,11 @@ const NewCollab = ({ showNewCollabModal, setShowNewCollabModel }) => {
     { id: 4, label: "Custom", icon: <FaDev />, lang: "custom" },
   ];
 
+
   const generateRandomName = async () => {
-    // console.log("MODAL_NAME : ", import.meta.env.VITE_HF_MODAL_NAME);
-    // const url = `https://api-inference.huggingface.co/models/${import.meta.env.VITE_HF_MODAL_NAME}`;
-    
-    // const headers = {
-    //   "Authorization": `Bearer ${import.meta.env.VITE_HF_API_KEY}`,
-    //   "Content-Type": "application/json",
-    // };
+    const API_KEY = import.meta.env.VITE_GEMINI_API_KEY; // Store your Gemini API key in .env
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
   
-    // List of random name sets for more variability
     const examplesList = [
       "CodeSync, DevNest, CollabCrate, HackHive, BuildFlow, DevDrop",
       "IdeaBridge, CodeWeld, CollabDrift, CloudCraze, DevWorx, ProjectPulse",
@@ -43,18 +39,81 @@ const NewCollab = ({ showNewCollabModal, setShowNewCollabModel }) => {
       "DevCore, SyncCrate, CodePing, LaunchLink, HiveFlow, TeamStream"
     ];
   
-    // Randomly select a set of examples
-    const randomExamples = examplesList[Math.floor(Math.random() * examplesList.length)];
+    // Join examples into a context string
+    const exampleNames = examplesList.flatMap(item => item.split(',')).map(name => name.trim());
+    const exampleText = exampleNames.map(name => `- ${name}`).join('\n');
   
-    // Split into individual names
-    const nameOptions = randomExamples.split(',').map(name => name.trim());
+    const prompt = `
+You are a professional product naming expert working at a top branding agency. Your task is to generate **a single, creative, catchy, short, and unique name** for a new-age product or developer-focused collaboration platform. The name should be **modern, one to two words**, preferably a **portmanteau** or a **newly invented word**, that feels **techy, brandable, and futuristic** — suitable for startups, SaaS platforms, or devtools.
+
+Below are example names for inspiration. These were previously generated and should NOT be repeated, reused, or used as a base.
+
+**Existing Names (Do NOT use or remix):**
+- CodeSync
+- DevNest
+- CollabCrate
+- HackHive
+- BuildFlow
+- DevDrop
+- IdeaBridge
+- CodeWeld
+- CollabDrift
+- CloudCraze
+- ProjectPulse
+- CodeTunnel
+- TeamForge
+- DevNova
+- SyncFlick
+- CodeWarp
+- CodeRush
+- DevChain
+- HackNest
+- TeamSpark
+- MergeMind
+- ThinkStorm
+- CodeLift
+- HiveCloud
+- DevMint
+- ProjectZen
+- DevSparks
+- CodeTrail
+- IdeaNexus
+- CodeCrave
+- CollabVibe
+- LaunchLink
+
+⚠️ Your job is to generate a **completely new** name that:
+- Sounds futuristic and original
+- Is short and easy to remember
+- Feels like a brand or company name (e.g., Zoom, Slack, Notion, Figma)
+- Could realistically be available as a domain or app name
+-If u can try to add a suffix such as  "collab", "container", "group", "team" creatively in name or the terms related to these words
+🎯 Output: Return **just one name**, not a list, with no explanations or extra text.
+
+Make it pop. Make it clever. Make it memorable.
+
+  `;
   
-    // Pick a random name from the selected example set
-    const randomName = nameOptions[Math.floor(Math.random() * nameOptions.length)];
+    try {
+      const response = await axios.post(url, {
+        contents: [{ parts: [{ text: prompt }] }]
+      }, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
   
-    console.log("✅ Selected Random Name:", randomName);
-    setCollabName(randomName);
-    return randomName;
+      const modelOutput = response.data.candidates?.[0]?.content?.parts?.[0]?.text || "No name generated.";
+      const randomName = modelOutput.trim();
+  
+      console.log("✨ Gemini Generated Name:", randomName);
+      setCollabName(randomName); // Assuming you have this setter from useState
+      return randomName;
+  
+    } catch (error) {
+      console.error("❌ Error generating name via Gemini:", error.message);
+      return null;
+    }
   };
   
   
