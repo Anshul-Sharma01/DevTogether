@@ -6,6 +6,7 @@ const docker = new Docker();
 const NETWORK_NAME = `Network-${Date.now()}`;
 const FRONTEND_IMAGE = 'frontend-ide';
 const BACKEND_IMAGE = 'backend-ide';
+const PORT_IMAGE = "port-ide"
 
 // Create the Docker network if it doesn't exist
 const ensureNetworkExists = async (networkName) => {
@@ -16,6 +17,42 @@ const ensureNetworkExists = async (networkName) => {
     await docker.createNetwork({ Name: networkName });
   } else {
     console.log(`Network '${networkName}' already exists`);
+  }
+}
+
+const  createContainerWithExposedPorts = async (imageName) => {
+  const exposedPorts = {
+    '3000/tcp': {},
+    '5000/tcp': {},
+    '8080/tcp': {},
+  };
+
+  const portBindings = {
+    '3000/tcp': [{ HostPort: '3000' }],
+    '5000/tcp': [{ HostPort: '5000' }],
+    '8080/tcp': [{ HostPort: '8080' }],
+  };
+
+  try {
+    const container = await docker.createContainer({
+      Image: imageName,
+      name: `container-${Date.now()}`,
+      ExposedPorts: exposedPorts,
+      HostConfig: {
+        PortBindings: portBindings,
+      },
+      NetworkingConfig: {
+        EndpointsConfig: {
+          [NETWORK_NAME]: {}
+        }
+      }
+    });
+
+    await container.start();
+    console.log(`🚀 Container started with ports 3000, 5000, and 8080 mapped!`);
+    return container.id;
+  } catch (err) {
+    console.error('❌ Error creating container:', err);
   }
 }
 
@@ -71,7 +108,11 @@ const setup = async () =>  {
     5174,
     { VITE_API_URL: `http://localhost:${backend.hostPort}` }
   );
+  
+  const userContainer = await createContainerWithExposedPorts(PORT_IMAGE)
 
+  console.log(userContainer);
+  
   console.log('\nContainers ready:');
   console.log(`Backend → http://localhost:${backend.hostPort}`);
   console.log(`Frontend → http://localhost:${frontend.hostPort}`);
