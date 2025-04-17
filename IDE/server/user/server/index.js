@@ -1,18 +1,18 @@
-const express = require("express")
-const app = express()
+import express from 'express';
 
-app.get("/",(req,res) => {
-  res.json({
-    message:"Welcome to DevTogether"
-  })
-})
 
-app.get("/api",(req,res) => {
-  res.json({
-    message:"welcome to api"
-  })
-})
+const app = express();
+const PORT = 3000;
 
-app.listen(3000,() =>{
-  console.log("server listenning on port 3000")
-})
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+
+app.get('/', (req, res) => {
+    res.send('Welcome to DevTogether!');
+});
+
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});
