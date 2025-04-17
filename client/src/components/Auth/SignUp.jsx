@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import generateBio from "../Profile/GenerateBio.js";
 import { RiAiGenerate, RiEyeFill, RiEyeOffFill } from "react-icons/ri";
 import { FaSpinner } from "react-icons/fa";
+import { FiCheck, FiX } from "react-icons/fi";
 
 const initialState = {
     avatar: null,
@@ -47,10 +48,29 @@ function SignUp() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [step, setStep] = useState(1);
+    const [passwordFocused, setPasswordFocused] = useState(false);
 
     const isLoggedIn = useSelector((state) => state?.auth?.isLoggedIn);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    // Password validation states
+    const [passwordValidation, setPasswordValidation] = useState({
+        length: false,
+        uppercase: false,
+        number: false,
+        special: false
+    });
+
+    // Update password validation on password change
+    useEffect(() => {
+        setPasswordValidation({
+            length: state.password.length >= 8,
+            uppercase: /[A-Z]/.test(state.password),
+            number: /[0-9]/.test(state.password),
+            special: /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(state.password)
+        });
+    }, [state.password]);
 
     const handleAvatarChange = (e) => {
         const file = e.target.files[0];
@@ -73,6 +93,13 @@ function SignUp() {
         }
         if (state.confirmPassword !== state.password) {
             toast.error("Password and confirm Password do not match !!");
+            return;
+        }
+
+        // Check if all password requirements are met
+        const allRequirementsMet = Object.values(passwordValidation).every(value => value === true);
+        if (!allRequirementsMet) {
+            toast.error("Password does not meet all requirements");
             return;
         }
 
@@ -112,6 +139,21 @@ function SignUp() {
             toast.error("Please fill in all fields before proceeding");
             return;
         }
+
+        // Check password requirements before proceeding from step 2
+        if (step === 2) {
+            const allRequirementsMet = Object.values(passwordValidation).every(value => value === true);
+            if (!allRequirementsMet) {
+                toast.error("Password does not meet all requirements");
+                return;
+            }
+            
+            if (state.password !== state.confirmPassword) {
+                toast.error("Passwords do not match");
+                return;
+            }
+        }
+        
         setStep((prev) => prev + 1);
     };
 
@@ -126,40 +168,64 @@ function SignUp() {
         }
     }, [isLoggedIn, navigate]);
 
+    // Password match check
+    const passwordsMatch = state.password === state.confirmPassword;
+    const showPasswordMatch = state.confirmPassword.length > 0;
+
+    // New simplified step labels
+    const stepLabels = ["Profile", "Security", "Bio"];
+
     return (
-        <section className="flex flex-col items-center min-h-screen bg-gradient-to-r dark:bg-black transition-colors duration-300">
-            <div className="w-full max-w-2xl p-8">
-                <div className="flex justify-center mb-8">
-                    <div className="flex items-center space-x-6 relative">
-                        <div className="flex items-center">
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 1 ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-600"}`}>1</div>
-                            <div className={`w-24 h-1 ${step > 1 ? "bg-blue-500" : "bg-gray-300"}`}></div>
-                        </div>
-                        <div className="flex items-center">
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 2 ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-600"}`}>2</div>
-                            <div className={`w-24 h-1 ${step > 2 ? "bg-blue-500" : "bg-gray-300"}`}></div>
-                        </div>
-                        <div className="flex items-center">
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 3 ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-600"}`}>3</div>
-                        </div>
-                        <div className="absolute left-0 w-full h-1 bg-gray-300 top-1/2 transform -translate-y-1/2"></div>
+        <section className="flex flex-col items-center min-h-screen w-full bg-gradient-to-r from-gray-50 to-white dark:from-gray-950 dark:to-black transition-colors duration-300 py-10">
+            <div className="w-full max-w-2xl p-4 md:p-8">
+                {/* Simplified Step Indicator */}
+                <div className="flex justify-center mb-10">
+                    <div className="flex gap-6 md:gap-12">
+                        {[1, 2, 3].map((stepNumber) => (
+                            <div key={stepNumber} className="flex flex-col items-center">
+                                <div 
+                                    className={`w-12 h-12 rounded-full flex items-center justify-center text-base font-medium shadow-md transition-all duration-300 ${
+                                        step === stepNumber 
+                                            ? "bg-blue-500 text-white scale-110" 
+                                            : step > stepNumber
+                                            ? "bg-green-500 text-white"
+                                            : "bg-gray-200 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
+                                    }`}
+                                >
+                                    {step > stepNumber ? (
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    ) : (
+                                        stepNumber
+                                    )}
+                                </div>
+                                <span className={`mt-2 text-sm font-medium ${
+                                    step >= stepNumber 
+                                        ? "text-blue-600 dark:text-blue-400" 
+                                        : "text-gray-500 dark:text-gray-500"
+                                }`}>
+                                    {stepLabels[stepNumber - 1]}
+                                </span>
+                            </div>
+                        ))}
                     </div>
                 </div>
 
-                <div className="bg-white dark:bg-black/60 dark:backdrop-blur-md border-white border-solid border-2 p-8 rounded-xl shadow-xl">
-                    <h1 className="text-4xl font-extrabold text-center text-gray-900 dark:text-gray-100 mb-8">Register</h1>
+                <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-6 md:p-8 rounded-2xl shadow-xl transition-all duration-300">
+                    <h1 className="text-3xl md:text-4xl font-extrabold text-center text-gray-900 dark:text-white mb-8">Create Your Account</h1>
 
                     {step === 1 && (
-                        <div>
+                        <div className="animate-fadeIn">
                             {/* Avatar Upload */}
-                            <div className="flex justify-center mb-6">
+                            <div className="flex justify-center mb-8">
                                 <label htmlFor="avatar" className="relative cursor-pointer group">
-                                    <div className="w-24 h-24 rounded-full border-4 border-gray-300 dark:border-gray-600 shadow-md flex items-center justify-center overflow-hidden bg-gray-200 dark:bg-gray-700">
+                                    <div className="w-28 h-28 rounded-full border-4 border-gray-200 dark:border-gray-700 shadow-md flex items-center justify-center overflow-hidden bg-gray-100 dark:bg-gray-800 transition-transform group-hover:scale-105 duration-300">
                                         {state.previewAvatar ? (
                                             <img src={state.previewAvatar} alt="Avatar" className="w-full h-full object-cover" />
                                         ) : (
                                             <svg
-                                                className="w-12 h-12 text-gray-500 dark:text-gray-400"
+                                                className="w-14 h-14 text-gray-400 dark:text-gray-500"
                                                 fill="currentColor"
                                                 viewBox="0 0 20 20"
                                             >
@@ -171,29 +237,32 @@ function SignUp() {
                                             </svg>
                                         )}
                                     </div>
-                                    <div className="absolute bottom-0 right-0 w-7 h-7 bg-gray-600 dark:bg-gray-500 text-white text-sm flex items-center justify-center rounded-full border-2 border-white group-hover:bg-blue-500 transition-all">
-                                        📷
+                                    <div className="absolute bottom-0 right-0 w-8 h-8 bg-blue-500 text-white text-sm flex items-center justify-center rounded-full border-2 border-white dark:border-gray-900 shadow-lg group-hover:bg-blue-600 transition-all duration-300">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
                                     </div>
                                 </label>
                                 <input type="file" id="avatar" className="hidden" onChange={handleAvatarChange} />
                             </div>
 
                             {/* Step 1 Form */}
-                            <form className="space-y-4">
+                            <form className="space-y-5">
                                 {[
-                                    { label: "Name", type: "text", value: state.name, setValue: (value) => dispatchState({ type: "SET_NAME", payload: value }) },
+                                    { label: "Full Name", type: "text", value: state.name, setValue: (value) => dispatchState({ type: "SET_NAME", payload: value }) },
                                     { label: "Username", type: "text", value: state.username, setValue: (value) => dispatchState({ type: "SET_USERNAME", payload: value }) },
-                                    { label: "Email", type: "email", value: state.email, setValue: (value) => dispatchState({ type: "SET_EMAIL", payload: value }) },
+                                    { label: "Email Address", type: "email", value: state.email, setValue: (value) => dispatchState({ type: "SET_EMAIL", payload: value }) },
                                 ].map((field, index) => (
-                                    <div key={index}>
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    <div key={index} className="group">
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 ml-1">
                                             {field.label}
                                         </label>
                                         <input
                                             type={field.type}
                                             value={field.value}
                                             onChange={(e) => field.setValue(e.target.value)}
-                                            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                                            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white transition-all duration-300 group-hover:border-blue-400 dark:group-hover:border-gray-600"
                                             placeholder={`Enter your ${field.label.toLowerCase()}`}
                                             required
                                         />
@@ -202,70 +271,132 @@ function SignUp() {
                                 <button
                                     type="button"
                                     onClick={nextStep}
-                                    className="w-full bg-gradient-to-r from-blue-500 to-blue-700 text-white py-3 rounded-lg hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-300"
+                                    className="w-full mt-6 bg-blue-500 hover:bg-blue-600 text-white py-3.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-300 transform hover:translate-y-[-2px] font-medium text-sm"
                                 >
-                                    Next
+                                    Continue to Security
                                 </button>
                             </form>
                         </div>
                     )}
 
                     {step === 2 && (
-                        <div>
+                        <div className="animate-fadeIn">
                             {/* Step 2 Form */}
-                            <form className="space-y-4">
-                                {[
-                                    {
-                                        label: "Password",
-                                        type: showPassword ? "text" : "password",
-                                        value: state.password,
-                                        setValue: (value) => dispatchState({ type: "SET_PASSWORD", payload: value }),
-                                        icon: showPassword ? RiEyeOffFill : RiEyeFill,
-                                        toggle: () => setShowPassword(!showPassword),
-                                    },
-                                    {
-                                        label: "Confirm Password",
-                                        type: showConfirmPassword ? "text" : "password",
-                                        value: state.confirmPassword,
-                                        setValue: (value) => dispatchState({ type: "SET_CONFIRM_PASSWORD", payload: value }),
-                                        icon: showConfirmPassword ? RiEyeOffFill : RiEyeFill,
-                                        toggle: () => setShowConfirmPassword(!showConfirmPassword),
-                                    },
-                                ].map((field, index) => (
-                                    <div key={index} className="relative">
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                            {field.label}
-                                        </label>
+                            <form className="space-y-5">
+                                {/* Password field with live validation */}
+                                <div className="relative group">
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 ml-1">
+                                        Password
+                                    </label>
+                                    <div className="relative">
                                         <input
-                                            type={field.type}
-                                            value={field.value}
-                                            onChange={(e) => field.setValue(e.target.value)}
-                                            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-                                            placeholder={`Enter your ${field.label.toLowerCase()}`}
+                                            type={showPassword ? "text" : "password"}
+                                            value={state.password}
+                                            onChange={(e) => dispatchState({ type: "SET_PASSWORD", payload: e.target.value })}
+                                            onFocus={() => setPasswordFocused(true)}
+                                            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white transition-all duration-300 group-hover:border-blue-400 dark:group-hover:border-gray-600"
+                                            placeholder="Enter your password"
                                             required
                                         />
-                                        {field.icon && (
-                                            <field.icon
-                                                onClick={field.toggle}
-                                                className="text-xl hover:text-blue-500 cursor-pointer absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500 dark:text-white"
+                                        {showPassword ? (
+                                            <RiEyeOffFill
+                                                onClick={() => setShowPassword(!showPassword)}
+                                                className="text-xl text-gray-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-gray-300 cursor-pointer absolute top-1/2 right-3.5 transform -translate-y-1/2 transition-colors duration-200"
+                                            />
+                                        ) : (
+                                            <RiEyeFill
+                                                onClick={() => setShowPassword(!showPassword)}
+                                                className="text-xl text-gray-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-gray-300 cursor-pointer absolute top-1/2 right-3.5 transform -translate-y-1/2 transition-colors duration-200"
                                             />
                                         )}
                                     </div>
-                                ))}
-                                <div className="flex justify-between">
+                                </div>
+
+                                {/* Confirm Password field with live validation */}
+                                <div className="relative group">
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 ml-1">
+                                        Confirm Password
+                                    </label>
+                                    <div className="relative">
+                                        <input
+                                            type={showConfirmPassword ? "text" : "password"}
+                                            value={state.confirmPassword}
+                                            onChange={(e) => dispatchState({ type: "SET_CONFIRM_PASSWORD", payload: e.target.value })}
+                                            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white transition-all duration-300 group-hover:border-blue-400 dark:group-hover:border-gray-600"
+                                            placeholder="Confirm your password"
+                                            required
+                                        />
+                                        {showConfirmPassword ? (
+                                            <RiEyeOffFill
+                                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                                className="text-xl text-gray-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-gray-300 cursor-pointer absolute top-1/2 right-3.5 transform -translate-y-1/2 transition-colors duration-200"
+                                            />
+                                        ) : (
+                                            <RiEyeFill
+                                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                                className="text-xl text-gray-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-gray-300 cursor-pointer absolute top-1/2 right-3.5 transform -translate-y-1/2 transition-colors duration-200"
+                                            />
+                                        )}
+                                    </div>
+                                    
+                                    {/* Password match indicator - only shown when confirm password has content */}
+                                    {showPasswordMatch && (
+                                        <div className={`flex items-center mt-2 ml-1 text-sm ${passwordsMatch ? 'text-green-500' : 'text-red-500'}`}>
+                                            {passwordsMatch ? (
+                                                <>
+                                                    <FiCheck className="mr-1" />
+                                                    <span>Passwords match</span>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <FiX className="mr-1" />
+                                                    <span>Passwords don't match</span>
+                                                </>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+                                
+                                {/* Password requirements - only shown when password field has content */}
+                                {(state.password.length > 0 || passwordFocused) && (
+                                    <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-3 text-xs">
+                                        <p className="font-medium mb-2 text-gray-700 dark:text-gray-300">Password requirements:</p>
+                                        <ul className="space-y-1 ml-1">
+                                            {[
+                                                { id: 'length', label: 'At least 8 characters long', valid: passwordValidation.length },
+                                                { id: 'uppercase', label: 'Contains at least one uppercase letter', valid: passwordValidation.uppercase },
+                                                { id: 'number', label: 'Contains at least one number', valid: passwordValidation.number },
+                                                { id: 'special', label: 'Contains at least one special character', valid: passwordValidation.special }
+                                            ].map((req) => (
+                                                <li key={req.id} className="flex items-center">
+                                                    {req.valid ? (
+                                                        <FiCheck className="text-green-500 mr-2 flex-shrink-0" />
+                                                    ) : (
+                                                        <FiX className="text-red-500 mr-2 flex-shrink-0" />
+                                                    )}
+                                                    <span className={req.valid ? 'text-green-500' : 'text-gray-600 dark:text-gray-400'}>
+                                                        {req.label}
+                                                    </span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                                
+                                <div className="flex justify-between pt-4">
                                     <button
                                         type="button"
                                         onClick={prevStep}
-                                        className="bg-gray-500 text-white py-3 px-6 rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition-colors duration-300"
+                                        className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-700 py-3 px-6 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 transition-colors duration-300 font-medium"
                                     >
                                         Back
                                     </button>
                                     <button
                                         type="button"
                                         onClick={nextStep}
-                                        className="bg-gradient-to-r from-blue-500 to-blue-700 text-white py-3 px-6 rounded-lg hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-300"
+                                        className="bg-blue-500 hover:bg-blue-600 text-white py-3 px-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-300 transform hover:translate-y-[-2px] font-medium"
                                     >
-                                        Next
+                                        Continue
                                     </button>
                                 </div>
                             </form>
@@ -273,54 +404,77 @@ function SignUp() {
                     )}
 
                     {step === 3 && (
-                        <div>
+                        <div className="animate-fadeIn">
                             {/* Step 3 Form */}
-                            <form className="space-y-4" onSubmit={handleSubmit}>
+                            <form className="space-y-5" onSubmit={handleSubmit}>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Bio
-                                    </label>
-                                    <div className="relative">
-                                        <textarea
-                                            value={state.bio}
-                                            onChange={(e) => dispatchState({ type: "SET_BIO", payload: e.target.value })}
-                                            className="w-full pr-12 py-3 pl-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-                                            placeholder="Enter your bio"
-                                            required
-                                            rows={10}
-                                        />
-                                        <div className="absolute top-1/2 right-3 transform -translate-y-1/2 flex items-center">
+                                    <div className="flex items-center justify-between mb-1.5">
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 ml-1">
+                                            Your Bio
+                                        </label>
+                                        <button
+                                            type="button"
+                                            onClick={handleBioGeneration}
+                                            disabled={loading || !state.bio}
+                                            className="flex items-center justify-center space-x-1.5 text-xs bg-gray-100 dark:bg-gray-800 text-blue-600 dark:text-blue-400 py-1 px-2.5 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed border border-gray-200 dark:border-gray-700"
+                                        >
                                             {loading ? (
-                                                <FaSpinner className="text-xl animate-spin text-gray-500 dark:text-white" />
+                                                <FaSpinner className="animate-spin mr-1" />
                                             ) : (
-                                                <RiAiGenerate
-                                                    onClick={handleBioGeneration}
-                                                    className="text-xl hover:text-blue-500 cursor-pointer text-gray-500 dark:text-white"
-                                                />
+                                                <RiAiGenerate className="mr-1" />
                                             )}
-                                        </div>
+                                            <span>Enhance with AI</span>
+                                        </button>
                                     </div>
+                                    <textarea
+                                        value={state.bio}
+                                        onChange={(e) => dispatchState({ type: "SET_BIO", payload: e.target.value })}
+                                        className="w-full p-4 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white transition-all duration-300 hover:border-blue-400 dark:hover:border-gray-600"
+                                        placeholder="Tell us about yourself..."
+                                        required
+                                        rows={8}
+                                    />
                                 </div>
-                                <div className="flex justify-between">
+                                
+                                <div className="flex justify-between pt-4">
                                     <button
                                         type="button"
                                         onClick={prevStep}
-                                        className="bg-gray-500 text-white py-3 px-6 rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition-colors duration-300"
+                                        className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-700 py-3 px-6 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 transition-colors duration-300 font-medium"
                                     >
                                         Back
                                     </button>
                                     <button
                                         type="submit"
-                                        className="bg-gradient-to-r from-blue-500 to-blue-700 text-white py-3 px-6 rounded-lg hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-300"
+                                        className="bg-blue-500 hover:bg-blue-600 text-white py-3.5 px-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-300 transform hover:translate-y-[-2px] font-medium shadow-lg"
                                     >
-                                        Register
+                                        Complete Registration
                                     </button>
                                 </div>
                             </form>
                         </div>
                     )}
+                    
+                    {/* Sign in link */}
+                    <div className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
+                        Already have an account?{" "}
+                        <a href="/login" className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors duration-200">
+                            Sign in
+                        </a>
+                    </div>
                 </div>
             </div>
+            
+            {/* Add custom animation styles */}
+            <style jsx>{`
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                .animate-fadeIn {
+                    animation: fadeIn 0.3s ease-out forwards;
+                }
+            `}</style>
         </section>
     );
 }
