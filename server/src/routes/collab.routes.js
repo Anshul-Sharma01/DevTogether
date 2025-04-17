@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { allCollabs,
-         createCollab,
-         stopCollab,
-         startCollab,
-         deleteCollab
+        createCollab,
+        stopCollab,
+        startCollab,
+        deleteCollab
     } from "../controllers/collab.controller.js";
 
 import { authMiddleware } from "../middlewares/auth.middleware.js";

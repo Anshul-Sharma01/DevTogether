@@ -7,17 +7,20 @@ import ConfirmLogout from "../components/Auth/ConfirmLogout.jsx";
 import DeleteAccount from "../components/Auth/DeleteAccount.jsx";
 import NewCollab from "../components/Collabs/NewCollab.jsx";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Profile from "../components/Profile/Profile.jsx";
 import UpdateUsername from "../components/Profile/UpdateUsername.jsx";
 import Footer from "./Footer.jsx";
 import Logo from "./Logo.jsx";
 import ChangePassword from "../components/Auth/ChangePassword.jsx";
+import { startPlayGroundThunk } from "../Redux/Slices/collabSlice.js";
 
 function NavigationLayout({ children }) {
     const isLoggedIn = useSelector((state) => state?.auth?.isLoggedIn) || false;
     const userData = useSelector((state) => state?.auth?.userData);
     const [scrolled, setScrolled] = useState(false);
+    const dispatch = useDispatch();
+    const recentCollab = useSelector((state) => state?.collab?.recentCollab);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -28,6 +31,7 @@ function NavigationLayout({ children }) {
     }, []);
 
     const navigate = useNavigate();
+
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -58,6 +62,16 @@ function NavigationLayout({ children }) {
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
+
+    const startPlayGround = async(collab) => {
+        const res = await dispatch(startPlayGroundThunk({ roomId : recentCollab?.roomId }));
+        console.log("Res : ", res);
+        if(res?.payload?.statusCode === 200){
+            console.log("Successfully started the playground");
+            window.location.href = `http://localhost:${res?.payload?.data?.frontendPort}/room/${res?.payload?.data?.roomId}`;
+            console.log("Redirecting");
+        }
+    }
 
     return (
         <div className="w-full relative dark:text-white">
@@ -91,7 +105,11 @@ function NavigationLayout({ children }) {
                                 {isCollabDropdownOpen && (
                                     <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-md rounded-md py-2 z-20 border dark:border-gray-700 dark:text-white">
                                         <DropdownItem label="Create New Collab" onClick={() => setShowNewCollabModal(true)} />
-                                        <DropdownItem label="Recent Collab" />
+                                        {
+                                            recentCollab && (
+                                                <DropdownItem label="Recent Collab" onClick={startPlayGround} />
+                                            )
+                                        }
                                         <DropdownItem label="All Collabs" onClick={() => navigate('/collabs/all-collabs')} />
                                     </div>
                                 )}
