@@ -1,49 +1,52 @@
+import React, { lazy, Suspense } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import RequireAuth from './helpers/RequireAuth';
+import Loader from './components/Misc/Loader';
 
-import { Routes, Route } from 'react-router-dom'
 
-// components imports
-import LandingPage from './components/Mains/LandingPage'
-import UserFriends from './components/Friends/UserFriends'
-import AllCollabs from './components/Collabs/AllCollabs'
-import NotFound from './components/Misc/NotFound'
-import Denied from './components/Misc/Denied'
-import SignUp from './components/Auth/SignUp'
-import ForgotPassword from './components/Auth/ForgotPassword'
-import DevelopersTeam from './pages/DevelopersTeam'
-import Contact from './pages/Contact'
-import LogIn from './components/Auth/LogIn'
-import RequireAuth from './helpers/RequireAuth'
+
+// Lazy-loaded components
+const LandingPage = lazy(() => import('./components/Mains/LandingPage'));
+const UserFriends = lazy(() => import('./components/Friends/UserFriends'));
+const AllCollabs = lazy(() => import('./components/Collabs/AllCollabs'));
+const NotFound = lazy(() => import('./components/Misc/NotFound'));
+const Denied = lazy(() => import('./components/Misc/Denied'));
+const SignUp = lazy(() => import('./components/Auth/SignUp'));
+const ForgotPassword = lazy(() => import('./components/Auth/ForgotPassword'));
+const DevelopersTeam = lazy(() => import('./pages/DevelopersTeam'));
+const Contact = lazy(() => import('./pages/Contact'));
+const LogIn = lazy(() => import('./components/Auth/LogIn'));
+
 
 function App() {
-
-
   return (
-    <>
+    <Suspense fallback={<Loader/>}>
       <Routes>
-        <Route path='/' element={<LandingPage/>}> </Route>
+        <Route path='/' element={<LandingPage />} />
 
-        <Route element={<RequireAuth/>}>
-          <Route path='/user/friends'  element={<UserFriends/>}></Route>
-          <Route path='/collabs/all-collabs'  element={<AllCollabs/>}></Route>
+        <Route element={<RequireAuth />}>
+          <Route path='/user/friends' element={<UserFriends />} />
+          <Route path='/collabs/all-collabs' element={<AllCollabs />} />
         </Route>
 
-        <Route path='/contact' element={<Contact/>}></Route>
+        <Route path='/contact' element={<Contact />} />
 
         {/* Auth Routes */}
-        <Route path='/auth/login' element={<LogIn/>}></Route>
-        <Route path='/auth/sign-up' element={<SignUp/>}></Route>
-        <Route path='/auth/forgot-password' element={<ForgotPassword/>}></Route>
-
+        <Route path='/auth/login' element={<LogIn />} />
+        <Route path='/auth/sign-up' element={<SignUp />} />
+        <Route path='/auth/forgot-password' element={<ForgotPassword />} />
 
         {/* Denied Route */}
-        <Route path='/denied' element={<Denied/>}></Route>
+        <Route path='/denied' element={<Denied />} />
 
-        {/* Not found route */}
-        <Route path='*' element={<NotFound/>}></Route>
-
+        {/* Not Found Route */}
+        <Route path='*' element={<NotFound />} />
       </Routes>
-    </>
-  )
+    </Suspense>
+  );
 }
 
-export default App
+export default App;
+
+
+

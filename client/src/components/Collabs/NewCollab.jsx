@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { createNewCollabThunk } from "../../Redux/Slices/collabSlice";
 import { RiAiGenerate2 } from "react-icons/ri";
 import axios from "axios";
+import Loader from "../Misc/Loader";
 
 const NewCollab = ({ showNewCollabModal, setShowNewCollabModel }) => {
   const [collabName, setCollabName] = useState("");
@@ -23,7 +24,7 @@ const NewCollab = ({ showNewCollabModal, setShowNewCollabModel }) => {
 
 
   const generateRandomName = async () => {
-    const API_KEY = import.meta.env.VITE_GEMINI_API_KEY; // Store your Gemini API key in .env
+    const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
   
     const examplesList = [
@@ -153,10 +154,15 @@ Make it pop. Make it clever. Make it memorable.
       setCollabName("");
       setSelectedOption(null);
       setShowNewCollabModel(false);
-      window.location.href = `http://localhost:${res?.payload?.data?.frontendPort}/room/${roomId}`;
+
+      setTimeout(() => {
+        window.location.href = `http://localhost:${res?.payload?.data?.frontendPort}/room/${roomId}`;
+      }, 200);
       // window.location.href = `http://localhost:${5174}/room/${roomId}`;
     }
   };
+
+
 
   return (
     <>
