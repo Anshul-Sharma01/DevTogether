@@ -82,18 +82,18 @@ const App = () => {
       }
     };
 
-    useEffect(() => {
-      const handleUnload = () => {
-        const data = JSON.stringify({ roomId : clientRoomId });
-        navigator.sendBeacon('/api/v1/collab/stop-collab/' + clientRoomId, data);
-      };
+    // useEffect(() => {
+    //   const handleUnload = () => {
+    //     const data = JSON.stringify({ roomId : clientRoomId });
+    //     navigator.sendBeacon('/api/v1/collab/stop-collab/' + clientRoomId, data);
+    //   };
     
-      window.addEventListener('beforeunload', handleUnload);
+    //   window.addEventListener('beforeunload', handleUnload);
     
-      return () => {
-        window.removeEventListener('beforeunload', handleUnload);
-      };
-    }, [clientRoomId]);
+    //   return () => {
+    //     window.removeEventListener('beforeunload', handleUnload);
+    //   };
+    // }, [clientRoomId]);
     
 
     const handleMouseUp = () => {

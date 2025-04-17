@@ -13,6 +13,6 @@ app.get("/api",(req,res) => {
   })
 })
 
-app.listen(8000,() =>{
-  console.log("server listenning on port 8000")
+app.listen(3000,() =>{
+  console.log("server listenning on port 3000")
 })
