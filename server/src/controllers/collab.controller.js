@@ -4,17 +4,17 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { User } from "../models/user.model.js";
 import { deleteContainer,
-         setup, 
-         startContainer, 
-         stopContainer 
-       } from "../utils/containerHandler.js";
+          setup, 
+          startContainer, 
+          stopContainer 
+        } from "../utils/containerHandler.js";
 
 
 const createCollab = asyncHandler(async (req, res) => {
     const { title, roomId, language, description } = req.body;
 
     if (!title || !roomId || !language) {
-       throw new ApiError(400, "Missing required fields");
+      throw new ApiError(400, "Missing required fields");
     }
 
     console.log("Room ID:", roomId);

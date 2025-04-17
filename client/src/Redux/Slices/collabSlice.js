@@ -5,7 +5,14 @@ import toast from "react-hot-toast";
 
 const initialState = {
     allCollabs : [],
-    recentCollab : null
+    recentCollab: (() => {
+        try {
+            const item = localStorage.getItem("recentCollab");
+            return item ? JSON.parse(item) : null;
+        } catch {
+            return null;
+        }
+    })()    
 }
 
 
@@ -89,8 +96,9 @@ const collabSlice = createSlice({
             })
             .addCase(createNewCollabThunk.fulfilled, (state, action) => {
                 state.recentCollab = action?.payload?.data;
+                localStorage.setItem("recentCollab", JSON.stringify(state.recentCollab));
             })
-            .addCase(createNewCollabThunk.rejected, (state, action) => {
+            .addCase(createNewCollabThunk.rejected, (_, action) => {
                 toast.error(action?.payload || "Error occurred while creating a new collab");
             })
             .addCase(deleteCollabThunk.fulfilled, (state, action) => {
