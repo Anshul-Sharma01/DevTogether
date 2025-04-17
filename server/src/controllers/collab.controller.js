@@ -87,7 +87,10 @@ const allCollabs =  asyncHandler(async (req,res) => {
 })
 
 const stopCollab = asyncHandler(async (req,res) => {
-    const { roomId } = req.params
+
+    console.log("Collab stop requested from fronted !!");
+    const { roomId } = req.params;
+    console.log("Room Id : ", roomId);
 
     if(!roomId) {
       throw new ApiError(400, "Missing room ID") 
