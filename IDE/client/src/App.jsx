@@ -19,16 +19,19 @@ const App = () => {
   const [isDraggingTerminal, setIsDraggingTerminal] = useState(false);
   const [isRoomOwner, setIsRoomOwner] = useState(false);
   const [clientRoomId, setClientRoomId] = useState("");
-  const [roomId, setRoomId] = useState('');
-  
-  useEffect(() => {
+  const [roomId, setRoomId] = useState(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    const urlRoomId = urlParams.get('roomId');
-    const generatedId = urlRoomId || Math.random().toString(36).substring(2, 8);
-    setClientRoomId(generatedId);
-    setRoomId(generatedId);
+    const urlRoomId = urlParams.get('room');
     setIsRoomOwner(!urlRoomId);
+    return urlRoomId || Math.random().toString(36).substring(2, 8);
+  });
+
+  useEffect(() => {
+    const pathParts = window.location.pathname.split("/");
+    const lastPart = pathParts[pathParts.length - 1];
+    setClientRoomId(lastPart);
   }, []);
+
   
 
 
