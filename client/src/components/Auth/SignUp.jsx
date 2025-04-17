@@ -458,7 +458,7 @@ function SignUp() {
                     {/* Sign in link */}
                     <div className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
                         Already have an account?{" "}
-                        <a href="/login" className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors duration-200">
+                        <a href="/auth/login" className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors duration-200">
                             Sign in
                         </a>
                     </div>

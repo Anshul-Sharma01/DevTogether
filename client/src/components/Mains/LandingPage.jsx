@@ -95,11 +95,11 @@ const LandingPage = () => {
                         The all-in-one collaborative coding platform with live preview, real-time teamwork, and zero setup.
                     </p>
                     <div className="flex space-x-4 mt-8">
-                        <motion.button whileHover={{ scale: 1.1 }} onClick={() => navigate("/signup")}
+                        <motion.button whileHover={{ scale: 1.1 }} onClick={() => navigate("/auth/sign-up")}
                             className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-md shadow-lg hover:shadow-xl transition duration-300">
                             Get Started Free
                         </motion.button>
-                        <motion.button whileHover={{ scale: 1.1 }} onClick={() => navigate("/learn-more")}
+                        <motion.button whileHover={{ scale: 1.1 }} onClick={() => navigate("/contact")}
                             className="px-6 py-3 border border-gray-400 text-gray-900 dark:text-white dark:border-gray-700 rounded-md hover:bg-gray-100 dark:hover:bg-neutral-900 transition">
                             Learn More
                         </motion.button>
