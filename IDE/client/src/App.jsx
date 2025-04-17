@@ -19,17 +19,19 @@ const App = () => {
   const [isDraggingTerminal, setIsDraggingTerminal] = useState(false);
   const [isRoomOwner, setIsRoomOwner] = useState(false);
   const [clientRoomId, setClientRoomId] = useState("");
-  const [roomId, setRoomId] = useState(() => {
+  const [roomId, setRoomId] = useState('');
+  
+  useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    console.log(urlParams);
     const urlRoomId = urlParams.get('roomId');
-    setClientRoomId(urlRoomId);
+    const generatedId = urlRoomId || Math.random().toString(36).substring(2, 8);
+    setClientRoomId(generatedId);
+    setRoomId(generatedId);
     setIsRoomOwner(!urlRoomId);
-      return urlRoomId || Math.random().toString(36).substring(2, 8);
-  });
+  }, []);
+  
 
-  const url = 
-+
+
   useEffect(() => {
     // Join the collaboration room
     socket.emit('join-room', roomId);
@@ -82,19 +84,6 @@ const App = () => {
       }
     };
 
-    // useEffect(() => {
-    //   const handleUnload = () => {
-    //     const data = JSON.stringify({ roomId : clientRoomId });
-    //     navigator.sendBeacon('/api/v1/collab/stop-collab/' + clientRoomId, data);
-    //   };
-    
-    //   window.addEventListener('beforeunload', handleUnload);
-    
-    //   return () => {
-    //     window.removeEventListener('beforeunload', handleUnload);
-    //   };
-    // }, [clientRoomId]);
-    
 
     const handleMouseUp = () => {
       setIsDraggingSidebar(false);
@@ -112,6 +101,45 @@ const App = () => {
     };
   }, [isDraggingSidebar, isDraggingTerminal]);
 
+  useEffect(() => {
+    const handleUnload = () => {
+      fetch('http://localhost:5000/api/v1/collab/stop-collab/' + clientRoomId, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ roomId: clientRoomId }),
+        keepalive: true,
+      }).then(res => {
+        console.log("Sent unload request:", res.status);
+      }).catch(err => {
+        console.error("Unload error:", err);
+      });
+    };
+  
+    window.addEventListener('beforeunload', handleUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleUnload);
+    };
+  }, [clientRoomId]);
+  
+  
+
+  useEffect(() => {
+    const handlePageHide = () => {
+      const data = JSON.stringify({ roomId: clientRoomId });
+      navigator.sendBeacon('/api/v1/collab/stop-collab/' + clientRoomId, data);
+    };
+  
+    window.addEventListener("pagehide", handlePageHide); // more reliable on mobile + SPA
+  
+    return () => {
+      window.removeEventListener("pagehide", handlePageHide);
+    };
+  }, [clientRoomId]);
+  
+  
+
   if (isLoading) {
     return <LoadingScreen onLoadComplete={handleLoadComplete} />;
   }
@@ -126,7 +154,7 @@ const App = () => {
           style={{ width: `${sidebarWidth}px` }}
         >
           {/* Explorer header */}
-          <div className="flex items-center h-8 bg-[#252525] border-b border-[#333333] text-xs text-[#ffffff] font-medium h-11 px-4">
+          <div className="flex items-center bg-[#252525] border-b border-[#333333] text-xs text-[#ffffff] font-medium h-11 px-4">
             <div className="p-1"><span className="uppercase tracking-wider">EXPLORER</span></div>
             <div className="flex-1"></div>
             <div className="flex space-x-2">
