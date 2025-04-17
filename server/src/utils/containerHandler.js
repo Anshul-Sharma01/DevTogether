@@ -20,17 +20,15 @@ const ensureNetworkExists = async (networkName) => {
   }
 }
 
-const  createContainerWithExposedPorts = async (imageName) => {
+const createContainerWithExposedPorts = async (imageName) => {
   const exposedPorts = {
     '3000/tcp': {},
-    '5175/tcp': {},
-    '8080/tcp': {},
+    '5175/tcp': {}
   };
 
   const portBindings = {
     '3000/tcp': [{ HostPort: '3000' }],
-    '5175/tcp': [{ HostPort: '5175' }],
-    '8080/tcp': [{ HostPort: '8080' }],
+    '5175/tcp': [{ HostPort: '5175' }]
   };
 
   try {
@@ -49,12 +47,12 @@ const  createContainerWithExposedPorts = async (imageName) => {
     });
 
     await container.start();
-    console.log(`🚀 Container started with ports 3000, 5000, and 8080 mapped!`);
+    console.log(`🚀 User container started. Access ports → 3000 & 5175`);
     return container.id;
   } catch (err) {
     console.error('❌ Error creating container:', err);
   }
-}
+};
 
 // Create a container with a unique name and dynamic port
 const createDynamicContainer = async (namePrefix, image, containerPort, envVars = {}) => {
