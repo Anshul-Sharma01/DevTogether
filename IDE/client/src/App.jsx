@@ -105,26 +105,23 @@ const App = () => {
   }, [isDraggingSidebar, isDraggingTerminal]);
 
   useEffect(() => {
-    const handleUnload = () => {
-      fetch('http://localhost:5000/api/v1/collab/stop-collab/' + clientRoomId, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ roomId: clientRoomId }),
-        keepalive: true,
-      }).then(res => {
-        console.log("Sent unload request:", res.status);
-      }).catch(err => {
-        console.error("Unload error:", err);
-      });
+    const handlePageHide = () => {
+      const url = `http://localhost:5000/api/v1/collab/stop-collab/${clientRoomId}`;
+      const data = JSON.stringify({ roomId: clientRoomId });
+  
+      const blob = new Blob([data], { type: 'application/json' });
+  
+      navigator.sendBeacon(url, blob);
     };
   
-    window.addEventListener('beforeunload', handleUnload);
+    window.addEventListener("pagehide", handlePageHide);
+  
     return () => {
-      window.removeEventListener('beforeunload', handleUnload);
+      window.removeEventListener("pagehide", handlePageHide);
     };
   }, [clientRoomId]);
+  
+  
   
   
 
