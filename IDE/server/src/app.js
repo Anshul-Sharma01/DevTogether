@@ -70,6 +70,8 @@ io.on("connection" , (socket) => {
 
     socket.on("terminal:create", (terminalId) => {
         // console.log("terminal created", terminalId);
+
+
         createTerminal(terminalId)
     })
     
@@ -81,59 +83,39 @@ io.on("connection" , (socket) => {
       socket.join(roomId);
       console.log(`User ${socket.id} joined room ${roomId}`);
     });
-//      // Add these handlers to your existing socket.io server
-// socket.on('join-video-call', (roomId) => {
-//   try {
-//     console.log(`User ${socket.id} joining video call in room ${roomId}`);
-//     socket.join(roomId);
+
+
+    // Add Video Call Code:
+
+    // WebRTC Signaling for Video Call
+    socket.on("video:join", (roomId) => {
+      console.log(`${socket.id} joined room ${roomId}`);
+      socket.join(roomId);
+      socket.to(roomId).emit("video:user-joined", socket.id);
+    });
     
-//     const room = io.sockets.adapter.rooms.get(roomId);
-//     if (room) {
-//       const usersInRoom = Array.from(room).filter(id => id !== socket.id);
-//       console.log(`Sending all-users to ${socket.id} with users:`, usersInRoom);
-//       socket.emit('all-users', usersInRoom);
-//     }
-//   } catch (err) {
-//     console.error('Error in join-video-call:', err);
-//   }
-// });
+    socket.on("video:offer", ({ offer, to }) => {
+      console.log(`Sending offer to ${to}`);
+      io.to(to).emit("video:offer", { offer, from: socket.id });
+    });
+    
+    socket.on("video:answer", ({ answer, to }) => {
+      console.log(`Sending answer to ${to}`);
+      io.to(to).emit("video:answer", { answer, from: socket.id });
+    });
+    
+    socket.on("video:ice-candidate", ({ candidate, to }) => {
+      console.log(`Sending ice-candidate to ${to}`);
+      io.to(to).emit("video:ice-candidate", { candidate, from: socket.id });
+    });
+    
 
-// socket.on('sending-signal', ({ userToSignal, callerID, signal }) => {
-//   try {
-//     console.log(`User ${socket.id} sending signal to ${userToSignal}`);
-//     io.to(userToSignal).emit('user-joined', { signal, callerID });
-//   } catch (err) {
-//     console.error('Error in sending-signal:', err);
-//   }
-// });
+socket.on("disconnect", () => {
+  socket.broadcast.emit("video:user-left", socket.id);
+});
 
-// socket.on('returning-signal', ({ signal, callerID }) => {
-//   try {
-//     console.log(`User ${socket.id} returning signal to ${callerID}`);
-//     io.to(callerID).emit('receiving-returned-signal', { signal, id: socket.id });
-//   } catch (err) {
-//     console.error('Error in returning-signal:', err);
-//   }
-// });
 
-// socket.on('leave-video-call', (roomId) => {
-//   try {
-//     console.log(`User ${socket.id} leaving video call in room ${roomId}`);
-//     socket.leave(roomId);
-//     socket.to(roomId).emit('user-left', socket.id);
-//   } catch (err) {
-//     console.error('Error in leave-video-call:', err);
-//   }
-// });
 
-// socket.on('disconnect', () => {
-//   console.log(`User ${socket.id} disconnected`);
-//   // Get all rooms this socket was in
-//   const rooms = Array.from(socket.rooms).filter(room => room !== socket.id);
-//   rooms.forEach(roomId => {
-//     socket.to(roomId).emit('user-left', socket.id);
-//   });
-// });
     // Broadcast file changes to room
     socket.on("file:change", async ({ path, content, roomId }) => {
       try {
