@@ -22,7 +22,7 @@ const Logo = ({ scrolled }) => {
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: 10 }}
                             transition={{ duration: 0.4 }}
-                            className="text-red-400"
+                            className="bg-gradient-to-r from-purple-500 to-blue-500 text-transparent bg-clip-text"
                         >
                             D
                         </motion.span>
@@ -33,7 +33,7 @@ const Logo = ({ scrolled }) => {
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: 10 }}
                             transition={{ duration: 0.4 }}
-                            className="text-red-400"
+                            className="bg-gradient-to-r from-purple-500 to-blue-500 text-transparent bg-clip-text"
                         >
                             Dev
                         </motion.span>
