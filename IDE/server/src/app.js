@@ -162,6 +162,12 @@ io.on("connection" , (socket) => {
           //socket.emit('error', { message: error.message });
         }
       });
+
+      socket.on("html-css-js", async ({ html ,css, js}) => {
+          await fs.writeFile("./user/HtmlCssJs/index.html",html)
+          await fs.writeFile("./user/HtmlCssJs/style.css",css)
+          await fs.writeFile("./user/HtmlCssJs/script.js",js)
+      })
   });
 
 import router from "./routes/ide.routes.js"

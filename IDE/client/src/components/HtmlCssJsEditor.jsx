@@ -1,40 +1,46 @@
 import React, { useEffect, useState } from 'react';
 import Editor from '@monaco-editor/react';
-import { MdLightMode } from 'react-icons/md';
 import { AiOutlineExpandAlt } from "react-icons/ai";
+import socket from '../socket.js';
+import axios from "axios"
 
 
 
 const HtmlCssJsEditor = () => {
   const [tab, setTab] = useState("html");
-  const [isLightMode, setIsLightMode] = useState(false);
+  const [count, setCount] = useState(0)
   const [isExpanded, setIsExpanded] = useState(false);
-  const [htmlCode, setHtmlCode] = useState("<h1>Hello world</h1>");
-  const [cssCode, setCssCode] = useState("body { background-color: #f4f4f4; }");
-  const [jsCode, setJsCode] = useState("// some comment");
+  const [htmlCode, setHtmlCode] = useState("");
+  const [cssCode, setCssCode] = useState("");
+  const [jsCode, setJsCode] = useState("");
 
-  // Extract projectID from URL using useParams
-
-
-  const changeTheme = () => {
-    const editorNavbar = document.querySelector(".EditiorNavbar");
-    if (isLightMode) {
-      editorNavbar.style.background = "#141414";
-      document.body.classList.remove("lightMode");
-      setIsLightMode(false);
-    } else {
-      editorNavbar.style.background = "#f4f4f4";
-      document.body.classList.add("lightMode");
-      setIsLightMode(true);
+  useEffect(() => {
+    const getFileContent = async () => {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/file-content/htmlcssjs`)
+        const { html, css, js} = response.data
+        setHtmlCode(html)
+        setCssCode(css)
+        setJsCode(js)
     }
-  };
+    getFileContent()
+}, [])
+
 
   const run = () => {
+
     const html = htmlCode;
     const css = `<style>${cssCode}</style>`;
     const js = `<script>${jsCode}</script>`;
     const iframe = document.getElementById("iframe");
 
+    if(count !== 0){ 
+    socket.emit("html-css-js",{
+        html:htmlCode,
+        css:cssCode,
+        js:jsCode
+    })
+ }
+     setCount(count + 1)
     if (iframe) {
       iframe.srcdoc = html + css + js;
     }
@@ -43,8 +49,8 @@ const HtmlCssJsEditor = () => {
   useEffect(() => {
     setTimeout(() => {
       run();
-    }, 200);
-  }, [htmlCode, cssCode, jsCode]);
+    }, 0);
+  }, [htmlCode, cssCode, jsCode, isExpanded]);
 
   
 
@@ -60,7 +66,6 @@ const HtmlCssJsEditor = () => {
             </div>
 
             <div className="flex items-center gap-2">
-              <i className="text-[20px] cursor-pointer" onClick={changeTheme}><MdLightMode /></i>
               <i className="text-[20px] cursor-pointer" onClick={() => { setIsExpanded(!isExpanded); }}><AiOutlineExpandAlt /></i>
             </div>
           </div>
@@ -68,33 +73,33 @@ const HtmlCssJsEditor = () => {
           {tab === "html" ? (
             <Editor
               onChange={(value) => {
-                setHtmlCode(value || "");
+                setHtmlCode(value);
                 run();
               }}
               height="82vh"
-              theme={isLightMode ? "vs-light" : "vs-dark"}
+              theme= "vs-dark"
               language="html"
               value={htmlCode}
             />
           ) : tab === "css" ? (
             <Editor
               onChange={(value) => {
-                setCssCode(value || "");
+                setCssCode(value);
                 run();
               }}
               height="82vh"
-              theme={isLightMode ? "vs-light" : "vs-dark"}
+              theme="vs-dark"
               language="css"
               value={cssCode}
             />
           ) : (
             <Editor
               onChange={(value) => {
-                setJsCode(value || "");
+                setJsCode(value);
                 run();
               }}
               height="82vh"
-              theme={isLightMode ? "vs-light" : "vs-dark"}
+              theme="vs-dark"
               language="javascript"
               value={jsCode}
             />
