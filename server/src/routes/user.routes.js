@@ -10,7 +10,9 @@ import {
         deleteAccountController,
         updateProfilePictureController,
         updateUserNameController,
-        deactivateAccountController
+        deactivateAccountController,
+        forgotPasswordController,
+        resetPasswordController
         } from "../controllers/user.controller.js";
         
 import { authMiddleware } from "../middlewares/auth.middleware.js"
@@ -34,5 +36,8 @@ router.route("/me").get( fetchProfileController)
 router.route("/logout").get( logoutController)
 router.route("/delete-account").delete( deleteAccountController)
 router.route("/deactivate-account").patch(deactivateAccountController);
+
+router.route("/reset").post(forgotPasswordController);
+router.route("/reset/:resetToken").post(resetPasswordController);
 
 export default router;

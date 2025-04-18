@@ -5,6 +5,8 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import jwt from "jsonwebtoken"
 import { deleteFromCloudinary, uploadOnCloudinary } from "../utils/cloudinary.js"
 import { usernameCheck , emailCheck , passwordCheck } from "../utils/inputValdation.js";
+import sendEmail from "../utils/sendEmail.js";
+import crypto from "crypto";
 
 const generateAccessTokenAndRefreshToken = async (user) =>{
     const accessToken = user.generateAccessToken()
@@ -247,6 +249,77 @@ const updateUserNameController = asyncHandler(async(req, res) => {
     )
 })
 
+const forgotPasswordController = asyncHandler(async(req, res) => {
+    const { email } = req.body;
+
+    if(!email){
+        throw new ApiError(400, "Email is required");
+    }
+
+    const user = await User.findOne({ email });
+    if(!user){
+        throw new ApiError(400, "Email not registered");
+    }
+
+    const resetToken = await user.generatePasswordResetToken();
+    await user.save({ validateBeforeSave : false });
+
+    const resetPasswordUrl = `${process.env.FRONTED_URL}/auth/reset/${resetToken}`;
+
+    const subject = "Reset Password Token";
+    const message = `You can reset your password by clicking <a href=${resetPasswordUrl} target="_blank" > Reset Your Password </a>.\nIf the above link does not work for some reason, then copy paste this link in new tab ${resetPasswordUrl}.\nIf you have not requested this, kindly Ignore.\nThe Link will be valid for 15 minutes only`;
+
+    try{
+        await sendEmail(email, subject, message);
+        return res.status(200)
+        .json(
+            new ApiResponse(
+                200,
+                {},
+                `Reset Token has been sent to ${email} respectively`
+            )
+        );
+    }catch(err){
+        user.forgotPasswordExpiry = undefined;
+        user.forgotPasswordToken = undefined;
+        await user.save({ validateBeforeSave : false });
+
+        throw new ApiError(400, err?.message || "Error occurred while sending Reset Token");
+    }
+    
+})
+
+const resetPasswordController = asyncHandler(async(req, res) => {
+    const { resetToken } = req.params;
+    const { password } = req.body;
+
+    const forgotPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+
+    const user = await User.findOne({
+        forgotPasswordToken,
+        forgotPasswordExpiry : {$gt : Date.now()}
+    });
+
+    if(!user){
+        throw new ApiError(400, "Token is invalid or expired, Please try again...");
+    }
+
+    user.password = password;
+    user.forgotPasswordExpiry = undefined;
+    user.forgotPasswordToken = undefined;
+    await user.save();
+
+    return res.status(200)
+    .json(
+        new ApiResponse(
+            200,
+            {},
+            "Password changed successfully"
+        )
+    )
+
+})
+
 const changePasswordController = asyncHandler(async (req,res) => {
     const { currentPassword, newPassword} = req.body
     // console.log(req.body);
@@ -416,5 +489,7 @@ export {
     deleteAccountController,
     deactivateAccountController,
     updateProfilePictureController,
-    updateUserNameController
+    updateUserNameController,
+    forgotPasswordController,
+    resetPasswordController
 }
