@@ -1,12 +1,12 @@
 import { useState, useRef, useEffect, lazy, Suspense } from 'react';
 import socket from './socket.js';
 import LoadingScreen from './components/LoadingScreen';
+import InviteCollaborator from './components/InviteCollaborator';
 
 // Lazy-loaded components
 const FileTree = lazy(() => import('./components/FileTree'));
 const TerminalManager = lazy(() => import('./components/TerminalManager'));
 const Editor = lazy(() => import('./components/Editor.jsx'));
-const InviteCollaborator = lazy(() => import('./components/InviteCollaborator'));
 const VideoCall = lazy(() => import('./components/VideoCall'));
 
 const App = () => {
@@ -23,7 +23,7 @@ const App = () => {
   const [clientRoomId, setClientRoomId] = useState("");
   const [roomId, setRoomId] = useState(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    const urlRoomId = urlParams.get('room');
+    const urlRoomId = urlParams.get('roomId');
     setIsRoomOwner(!urlRoomId);
     return urlRoomId || Math.random().toString(36).substring(2, 8);
   });
@@ -166,9 +166,7 @@ const App = () => {
               </div>
             )}
             {isRoomOwner && (
-              <Suspense fallback={<div className="text-sm text-gray-400">...</div>}>
                 <InviteCollaborator roomId={roomId} />
-              </Suspense>
             )}
           </div>
 
@@ -210,10 +208,7 @@ const App = () => {
           </div>
         </div>
       </div>
-
-      <Suspense fallback={null}>
         <VideoCall roomId={roomId} />
-      </Suspense>
     </div>
   );
 };

@@ -29,7 +29,7 @@ const FileTreeNode = ({ treeName, nodes, path, setSelectedFolder, onSelect, sele
             : "text-[#e0e0e0] hover:text-white"
         }`}
       >
-        {treeName !== "File Box" && (
+        {treeName !== "user" && (
           <span className="mr-1.5 flex items-center">
             {isDir ? (
               isOpen ? (
@@ -118,7 +118,7 @@ const FileTree = ({ onSelect, setSelectedFolder, selectedFile, roomId }) => {
   return (
     <div className="h-full overflow-y-auto scrollbar-thin scrollbar-thumb-[#444444] scrollbar-track-[#252525]">
       <FileTreeNode
-        treeName="User"
+        treeName="user"
         nodes={fileTree}
         path=""
         setSelectedFolder={setSelectedFolder}

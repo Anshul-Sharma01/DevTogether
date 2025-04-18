@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import socket from '../socket.js';
+
 
 const InviteCollaborator = ({ roomId }) => {
   const [isOpen, setIsOpen] = useState(false);
