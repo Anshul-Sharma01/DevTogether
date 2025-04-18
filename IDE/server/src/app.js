@@ -70,6 +70,8 @@ io.on("connection" , (socket) => {
 
     socket.on("terminal:create", (terminalId) => {
         // console.log("terminal created", terminalId);
+
+        
         createTerminal(terminalId)
     })
     
