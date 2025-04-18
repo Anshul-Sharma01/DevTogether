@@ -324,33 +324,37 @@ const VideoCall = ({ roomId }) => {
   );
 };
 
-const Video = ({ peer, peerID }) => {
+
+const Video = ({ peer }) => {
   const ref = useRef();
 
   useEffect(() => {
     if (!peer) return;
-    
-    console.log(`Setting up video for peer ${peerID}`);
-    peer.on('stream', stream => {
-      console.log(`Received stream for peer ${peerID}`, stream);
+
+    const onStream = (stream) => {
+      console.log('Assigning remote stream to video element');
       if (ref.current) {
         ref.current.srcObject = stream;
       }
-    });
+    };
+
+    peer.on('stream', onStream);
 
     return () => {
-      console.log(`Cleaning up video for peer ${peerID}`);
+      peer.removeListener('stream', onStream);
     };
-  }, [peer, peerID]);
+  }, [peer]);
 
   return (
     <video
-      ref={ref}
-      autoPlay
       playsInline
+      autoPlay
+      ref={ref}
       className="w-full h-auto rounded"
     />
   );
 };
+
+
 
 export default VideoCall;
