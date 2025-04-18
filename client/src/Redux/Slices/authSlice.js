@@ -130,6 +130,28 @@ export const changePasswordThunk = createAsyncThunk("/auth/change-password", asy
     }
 })
 
+export const forgotPasswordThunk = createAsyncThunk("/auth/forgot-password", async({ email }, { rejectWithValue }) => {
+    try{
+        const res = axiosInstance.post("user/reset", { email });
+        toastHandler(res, "Verifying your email", "Mail sent successfully");
+        return (await res).data;
+    }catch(err){
+        const message = err?.response?.data?.message || "Something went wrong during forgetting password...";
+        return rejectWithValue(message);
+    }
+})
+
+export const resetPasswordThunk = createAsyncThunk("/auth/reset-password", async({ password }, { rejectWithValue }) => {
+    try{
+        const res = axiosInstance.post(`user/reset/${resetToken}`, { password });
+        toastHandler(res, "Resetting your password", "Successfully resetted your password");
+        return (await res).data;
+    }catch(err){
+        const message = err?.response?.data?.message || "Something went wrong while resetting your password";
+        return rejectWithValue(message);
+    }
+})
+
 const authSlice = createSlice({
     name : "auth",
     initialState,
@@ -218,6 +240,12 @@ const authSlice = createSlice({
         })
         .addCase(deactivateAccountThunk.rejected, (state, action) => {
             toast.error(action.payload || "Account deactivation failed");
+        })
+        .addCase(forgotPasswordThunk.rejected, (_, action) => {
+            toast.error(action.payload || "Password reset failed !!");
+        })
+        .addCase(resetPasswordThunk.rejected, (_, action) => {
+            toast.error(action.payload || "Password reset failed !!");
         })
     }
 })
