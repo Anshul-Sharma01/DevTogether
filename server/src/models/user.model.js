@@ -62,11 +62,9 @@ const userSchema = new Schema(
         },
         forgotPasswordToken : {
             type : String,
-            select : false,
         },
         forgotPasswordExpiry : {
             type : Date,
-            select : false
         }
     },
         
@@ -114,7 +112,7 @@ userSchema.methods = {
 
     generatePasswordResetToken : async function(){
         const resetToken = crypto.randomBytes(20).toString('hex');
-        this.forgotPasswordtoken = crypto.createHash('sha256').update(resetToken).digest('hex');
+        this.forgotPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
         this.forgotPasswordExpiry = Date.now() + 15 * 60 * 1000;
         return resetToken;
 

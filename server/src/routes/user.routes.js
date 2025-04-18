@@ -25,6 +25,8 @@ router.route("/register")
 
 router.route("/login").post(loginController)
 router.route("/refresh-token").post(refreshAccessTokenController)
+router.route("/reset").post(forgotPasswordController);
+router.route("/reset/:resetToken").post(resetPasswordController);
 
 router.use(authMiddleware);
 
@@ -37,7 +39,6 @@ router.route("/logout").get( logoutController)
 router.route("/delete-account").delete( deleteAccountController)
 router.route("/deactivate-account").patch(deactivateAccountController);
 
-router.route("/reset").post(forgotPasswordController);
-router.route("/reset/:resetToken").post(resetPasswordController);
+
 
 export default router;

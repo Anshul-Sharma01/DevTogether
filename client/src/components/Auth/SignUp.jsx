@@ -2,7 +2,7 @@ import React, { useEffect, useReducer, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { createUserAccountThunk } from "../../Redux/Slices/authSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import generateBio from "../Profile/GenerateBio.js";
 import { RiAiGenerate, RiEyeFill, RiEyeOffFill } from "react-icons/ri";
 import { FaSpinner } from "react-icons/fa";
@@ -458,9 +458,9 @@ function SignUp() {
                     {/* Sign in link */}
                     <div className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
                         Already have an account?{" "}
-                        <a href="/auth/login" className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors duration-200">
+                        <Link to="/auth/login" className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors duration-200">
                             Sign in
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>

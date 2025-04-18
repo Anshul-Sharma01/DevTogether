@@ -141,7 +141,7 @@ export const forgotPasswordThunk = createAsyncThunk("/auth/forgot-password", asy
     }
 })
 
-export const resetPasswordThunk = createAsyncThunk("/auth/reset-password", async({ password }, { rejectWithValue }) => {
+export const resetPasswordThunk = createAsyncThunk("/auth/reset-password", async({ resetToken, password }, { rejectWithValue }) => {
     try{
         const res = axiosInstance.post(`user/reset/${resetToken}`, { password });
         toastHandler(res, "Resetting your password", "Successfully resetted your password");

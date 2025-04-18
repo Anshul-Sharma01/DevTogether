@@ -16,6 +16,7 @@ const ForgotPassword = lazy(() => import('./components/Auth/ForgotPassword'));
 const DevelopersTeam = lazy(() => import('./pages/DevelopersTeam'));
 const Contact = lazy(() => import('./pages/Contact'));
 const LogIn = lazy(() => import('./components/Auth/LogIn'));
+const ResetPassword = lazy(() => import("./components/Auth/ResetPassword"));
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
         <Route path='/auth/login' element={<LogIn />} />
         <Route path='/auth/sign-up' element={<SignUp />} />
         <Route path='/auth/forgot-password' element={<ForgotPassword />} />
+        <Route path='/auth/reset/:resetToken' element={<ResetPassword/>} ></Route>
 
         {/* Denied Route */}
         <Route path='/denied' element={<Denied />} />

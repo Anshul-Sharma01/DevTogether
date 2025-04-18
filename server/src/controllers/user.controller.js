@@ -291,6 +291,7 @@ const forgotPasswordController = asyncHandler(async(req, res) => {
 
 const resetPasswordController = asyncHandler(async(req, res) => {
     const { resetToken } = req.params;
+    console.log("resetToken : ", resetToken);
     const { password } = req.body;
 
     const forgotPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
