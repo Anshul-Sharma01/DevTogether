@@ -2,11 +2,11 @@ import { useState, useRef, useEffect, lazy, Suspense } from 'react';
 import socket from './socket.js';
 import LoadingScreen from './components/LoadingScreen';
 import InviteCollaborator from './components/InviteCollaborator';
+import Editor from './components/Editor.jsx';
 
 // Lazy-loaded components
 const FileTree = lazy(() => import('./components/FileTree'));
 const TerminalManager = lazy(() => import('./components/TerminalManager'));
-const Editor = lazy(() => import('./components/Editor.jsx'));
 const VideoCall = lazy(() => import('./components/VideoCall'));
 
 const App = () => {
@@ -172,9 +172,7 @@ const App = () => {
 
           <div className="flex-1 overflow-hidden relative bg-[#121212]">
             {selectedFile ? (
-              <Suspense fallback={<div className="text-gray-400 text-center mt-10">Loading Editor...</div>}>
                 <Editor selectedFile={selectedFile} roomId={roomId} />
-              </Suspense>
             ) : (
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center max-w-md p-6">
