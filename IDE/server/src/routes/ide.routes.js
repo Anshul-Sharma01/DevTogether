@@ -16,4 +16,15 @@ router.route("/file-content").get(async(req, res) => {
     res.json({content})
 })
 
+router.route("/file-content/htmlcssjs").get(async(req,res) => {
+    const html = await fs.readFile('./user/HtmlCssJs/index.html', "utf-8")
+    const css = await fs.readFile('./user/HtmlCssJs/style.css', "utf-8")
+    const js = await fs.readFile('./user/HtmlCssJs/script.js', "utf-8")
+
+    res.json({
+        html,css,js
+    })
+
+})
+
 export default router;

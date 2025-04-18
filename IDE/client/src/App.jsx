@@ -3,6 +3,7 @@ import socket from './socket.js';
 import LoadingScreen from './components/LoadingScreen';
 import InviteCollaborator from './components/InviteCollaborator';
 import Editor from './components/Editor.jsx';
+import HtmlCssJsEditor from './components/HtmlCssJsEditor.jsx';
 
 // Lazy-loaded components
 const FileTree = lazy(() => import('./components/FileTree'));
@@ -118,7 +119,7 @@ const App = () => {
     <div className="flex flex-col h-screen bg-[#121212] text-[#e0e0e0] overflow-hidden select-none font-[consolas,'Courier New',monospace] cursor-default">
       <div className="flex-1 flex overflow-hidden">
         {/* Sidebar */}
-        <div
+        {/* <div
           ref={sidebarRef}
           className="flex flex-col bg-[#1e1e1e] border-r border-[#333333]"
           style={{ width: `${sidebarWidth}px` }}
@@ -150,10 +151,10 @@ const App = () => {
               />
             </Suspense>
           </div>
-        </div>
+        </div> */}
 
         {/* Resize handle */}
-        <div className="w-1 bg-[#121212] hover:bg-[#ffffff] cursor-col-resize transition-all" onMouseDown={() => setIsDraggingSidebar(true)} />
+        {/* <div className="w-1 bg-[#121212] hover:bg-[#ffffff] cursor-col-resize transition-all" onMouseDown={() => setIsDraggingSidebar(true)} /> */}
 
         {/* Main content area */}
         <div className="flex-1 flex flex-col overflow-hidden bg-[#121212]">
@@ -171,12 +172,11 @@ const App = () => {
           </div>
 
           <div className="flex-1 overflow-hidden relative bg-[#121212]">
-            {selectedFile ? (
+            {/* {selectedFile ? (
                 <Editor selectedFile={selectedFile} roomId={roomId} />
             ) : (
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center max-w-md p-6">
-                  {/* SVG */}
                   <svg className="w-32 h-32 mx-auto text-[#333333]" viewBox="0 0 100 100" fill="currentColor">
                     <path d="M75.7,50.4L99,34.2l-23.3-4v-12L30.1,1.4L0.8,18.2v64.4l29.3,16.6l45.5-16.4l23.3-11.4V17.2L75.7,50.4z M30.1,83.4L8.8,70.8V28.8l21.3,9.4V83.4z M30.1,31.4L9.6,22.5l20.5-11L70.3,25L30.1,31.4z M91.5,67.8L76.5,75V36.7l-37.8,15v31.8l-1.7,0.6l-0.1-0.3V39.7L91.5,23V67.8z" />
                   </svg>
@@ -194,16 +194,17 @@ const App = () => {
                   </div>
                 </div>
               </div>
-            )}
+            )} */}
+            <HtmlCssJsEditor />
           </div>
 
-          <div className="h-1 bg-[#121212] hover:bg-[#ffffff] cursor-row-resize transition-all" onMouseDown={() => setIsDraggingTerminal(true)} />
+          {/* <div className="h-1 bg-[#121212] hover:bg-[#ffffff] cursor-row-resize transition-all" onMouseDown={() => setIsDraggingTerminal(true)} />
 
           <div ref={terminalRef} className="flex flex-col bg-[#121212] border-t border-[#333333] overflow-hidden" style={{ height: `${terminalHeight}px` }}>
             <Suspense fallback={<div className="p-4 text-gray-400">Loading Terminal...</div>}>
               <TerminalManager terminalHeight={terminalHeight} />
             </Suspense>
-          </div>
+          </div> */}
         </div>
       </div>
         <VideoCall roomId={roomId} />
