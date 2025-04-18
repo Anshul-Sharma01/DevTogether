@@ -119,7 +119,7 @@ const App = () => {
     <div className="flex flex-col h-screen bg-[#121212] text-[#e0e0e0] overflow-hidden select-none font-[consolas,'Courier New',monospace] cursor-default">
       <div className="flex-1 flex overflow-hidden">
         {/* Sidebar */}
-        {/* <div
+        <div
           ref={sidebarRef}
           className="flex flex-col bg-[#1e1e1e] border-r border-[#333333]"
           style={{ width: `${sidebarWidth}px` }}
@@ -151,10 +151,10 @@ const App = () => {
               />
             </Suspense>
           </div>
-        </div> */}
+        </div>
 
         {/* Resize handle */}
-        {/* <div className="w-1 bg-[#121212] hover:bg-[#ffffff] cursor-col-resize transition-all" onMouseDown={() => setIsDraggingSidebar(true)} /> */}
+        <div className="w-1 bg-[#121212] hover:bg-[#ffffff] cursor-col-resize transition-all" onMouseDown={() => setIsDraggingSidebar(true)} />
 
         {/* Main content area */}
         <div className="flex-1 flex flex-col overflow-hidden bg-[#121212]">
@@ -172,7 +172,7 @@ const App = () => {
           </div>
 
           <div className="flex-1 overflow-hidden relative bg-[#121212]">
-            {/* {selectedFile ? (
+            {selectedFile ? (
                 <Editor selectedFile={selectedFile} roomId={roomId} />
             ) : (
               <div className="absolute inset-0 flex items-center justify-center">
@@ -194,17 +194,17 @@ const App = () => {
                   </div>
                 </div>
               </div>
-            )} */}
-            <HtmlCssJsEditor />
+            )}
+            {/* <HtmlCssJsEditor /> */}
           </div>
 
-          {/* <div className="h-1 bg-[#121212] hover:bg-[#ffffff] cursor-row-resize transition-all" onMouseDown={() => setIsDraggingTerminal(true)} />
+          <div className="h-1 bg-[#121212] hover:bg-[#ffffff] cursor-row-resize transition-all" onMouseDown={() => setIsDraggingTerminal(true)} />
 
           <div ref={terminalRef} className="flex flex-col bg-[#121212] border-t border-[#333333] overflow-hidden" style={{ height: `${terminalHeight}px` }}>
             <Suspense fallback={<div className="p-4 text-gray-400">Loading Terminal...</div>}>
               <TerminalManager terminalHeight={terminalHeight} />
             </Suspense>
-          </div> */}
+          </div>
         </div>
       </div>
         <VideoCall roomId={roomId} />
