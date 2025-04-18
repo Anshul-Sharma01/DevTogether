@@ -21,6 +21,7 @@ body {
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
     position: relative;
     width: 320px;
+    border-radius: 10px;
 }
 
 h1 {
@@ -46,6 +47,7 @@ button {
     position: relative;
     overflow: hidden;
     transition: all 0.3s;
+    border-radius: 7px;
 }
 
 button::before {
@@ -82,6 +84,7 @@ button:active {
     height: 100px;
     overflow-y: auto;
     font-size: 0.9rem;
+    border-radius: 10px;
 }
 
 .terminal-line {

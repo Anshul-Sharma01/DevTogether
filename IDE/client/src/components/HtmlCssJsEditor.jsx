@@ -76,7 +76,7 @@ const HtmlCssJsEditor = () => {
                 setHtmlCode(value);
                 run();
               }}
-              height="82vh"
+              height="90vh"
               theme= "vs-dark"
               language="html"
               value={htmlCode}
@@ -87,7 +87,7 @@ const HtmlCssJsEditor = () => {
                 setCssCode(value);
                 run();
               }}
-              height="82vh"
+              height="90vh"
               theme="vs-dark"
               language="css"
               value={cssCode}
@@ -98,7 +98,7 @@ const HtmlCssJsEditor = () => {
                 setJsCode(value);
                 run();
               }}
-              height="82vh"
+              height="90vh"
               theme="vs-dark"
               language="javascript"
               value={jsCode}
@@ -109,7 +109,7 @@ const HtmlCssJsEditor = () => {
         {!isExpanded && (
           <iframe
             id="iframe"
-            className="w-[50%] min-h-[82vh] bg-[#fff] text-black"
+            className="w-[50%] min-h-[90vh] bg-[#fff] text-black"
             title="output"
           />
         )}
