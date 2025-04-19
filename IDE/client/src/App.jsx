@@ -20,6 +20,7 @@ const App = () => {
   const terminalRef = useRef(null);
   const [isDraggingSidebar, setIsDraggingSidebar] = useState(false);
   const [isDraggingTerminal, setIsDraggingTerminal] = useState(false);
+  const [language, setLanguage] = useState("");
   const [isRoomOwner, setIsRoomOwner] = useState(false);
   const [clientRoomId, setClientRoomId] = useState("");
   const [roomId, setRoomId] = useState(() => {
@@ -37,6 +38,10 @@ const App = () => {
 
   useEffect(() => {
     socket.emit('join-room', roomId);
+
+    const languagePart = window.location.pathname.split("/");
+    const thirdPath = languagePart[languagePart.length - 3]
+    setLanguage(thirdPath)
 
     const loadingTimer = setTimeout(() => {
       setIsLoading(false);
@@ -148,7 +153,7 @@ const App = () => {
                 setSelectedFolder={setSelectedFolder}
                 selectedFile={selectedFile}
                 roomId={roomId}
-                language="custom"
+                language={language}
               />
             </Suspense>
           </div>
