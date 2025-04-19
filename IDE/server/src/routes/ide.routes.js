@@ -4,8 +4,10 @@ import { generateFileTree } from "../controllers/generateFileTree.controller.js"
 
 const router = Router()
 
-router.route("/file-path").get(async (_,res) => {
-    const {language} = req.query
+router.route("/file-path").get(async (req,res) => {
+    const { language } = req.query
+    console.log(language);
+    
     const file = await generateFileTree("./user", language)
     
     res.json({tree:file})

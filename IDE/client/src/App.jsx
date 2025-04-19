@@ -148,6 +148,7 @@ const App = () => {
                 setSelectedFolder={setSelectedFolder}
                 selectedFile={selectedFile}
                 roomId={roomId}
+                language="custom"
               />
             </Suspense>
           </div>

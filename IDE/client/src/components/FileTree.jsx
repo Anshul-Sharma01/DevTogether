@@ -90,7 +90,8 @@ const FileTreeNode = ({ treeName, nodes, path, setSelectedFolder, onSelect, sele
 
 const FileTree = ({ onSelect, setSelectedFolder, selectedFile, roomId, language }) => {
   const [fileTree, setFileTree] = useState({});
-
+  console.log(language);
+  
   const getFileTree = async () => {
     try {
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/file-path?language=${language}`);
