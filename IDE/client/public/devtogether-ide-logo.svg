@@ -1,0 +1,24 @@
+<svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+  <!-- Main background circle -->
+  <circle cx="80" cy="80" r="75" fill="#2c2c2c" />
+  <circle cx="80" cy="80" r="70" fill="#1e1e1e" />
+  
+  <!-- Code angle brackets -->
+  <path d="M55 50 L40 80 L55 110" fill="none" stroke="#569cd6" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M105 50 L120 80 L105 110" fill="none" stroke="#569cd6" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Central connecting dot -->
+  <circle cx="80" cy="80" r="15" fill="#61dafb" />
+  
+  <!-- Inner glow effect for the central dot -->
+  <circle cx="80" cy="80" r="10" fill="#ffffff" opacity="0.3" />
+  
+  <!-- Subtle orbital ring -->
+  <circle cx="80" cy="80" r="35" fill="none" stroke="#61dafb" stroke-width="2" stroke-dasharray="4 6" opacity="0.5" />
+  
+  <!-- Small satellite dots -->
+  <circle cx="80" cy="45" r="5" fill="#61dafb" />
+  <circle cx="115" cy="80" r="5" fill="#61dafb" />
+  <circle cx="80" cy="115" r="5" fill="#61dafb" />
+  <circle cx="45" cy="80" r="5" fill="#61dafb" />
+</svg>

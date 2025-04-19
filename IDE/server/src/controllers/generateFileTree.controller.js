@@ -7,16 +7,16 @@ const generateFileTree = async (directory , language) => {
 
     let check1 , check2;
     if(language === "node") { 
-      check1 = ".client"  
+      check1 = "client"  
       check2 = "HtmlCssJs"
     }
     else if(language === "react") {
-      check1 = ".server"
+      check1 = "server"
       check2 = "HtmlCssJs"
     }
     else if(language === "html" ) {
-      check1 = ".server"
-      check2 = ".client"
+      check1 = "server"
+      check2 = "client"
     }
     else {
       check1 = "HtmlCssJs"

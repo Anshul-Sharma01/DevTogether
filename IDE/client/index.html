@@ -2,11 +2,22 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <!-- Favicon as link tag -->
+    <link rel="icon" type="image/svg+xml" href="/devtogether-ide-logo.svg" />
+    <!-- Alternate favicon formats for different browsers -->
+    <link rel="apple-touch-icon" href="/devtogether-ide-logo.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-
-    <title>Vite + React</title>
+    <title>DevTogether IDE</title>
+    <!-- Optional: If you really want to ensure it works, include this script -->
+    <script>
+      // Force favicon refresh in some browsers
+      const link = document.querySelector("link[rel~='icon']");
+      if (link) {
+        const clonedLink = link.cloneNode(true);
+        link.parentNode.replaceChild(clonedLink, link);
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
