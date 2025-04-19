@@ -2,13 +2,21 @@ import path from "path"
 import fs from "fs/promises"
 
 
-const generateFileTree = async (directory) => {
+const generateFileTree = async (directory , language) => {
     const tree = {};
-  
+
+    let check;
+    if(language === "node") check = ".server"
+    else if(language === "react") check = ".client"
+    else if(language === "html") check = "HtmlCssjs"
+    else check = ""
+
     async function fileTree(directory, currentTree) {
   
       const dirents = await fs.readdir(directory , {withFileTypes : true});
-      const files =  dirents.filter(dirent => !dirent.name.startsWith('.'));
+      // console.log(dirents);
+      
+      const files =  dirents.filter(dirent => dirent.name !== check);
       // console.log(files);
       for (const file of files) {
         const filePath = path.join(directory, file.name);
