@@ -41,6 +41,9 @@ const LandingPage = () => {
     
     const seeItRef = useRef(null);
     const [hasScrolled, setHasScrolled] = useState(false);
+    
+
+
 
     useEffect(() => {
         let hasScrolledOnce = false;

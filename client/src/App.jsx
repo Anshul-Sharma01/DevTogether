@@ -19,6 +19,7 @@ const LogIn = lazy(() => import('./components/Auth/LogIn'));
 const ResetPassword = lazy(() => import("./components/Auth/ResetPassword"));
 
 
+
 function App() {
   return (
     <Suspense fallback={<Loader/>}>
@@ -31,6 +32,7 @@ function App() {
         </Route>
 
         <Route path='/contact' element={<Contact />} />
+
 
         {/* Auth Routes */}
         <Route path='/auth/login' element={<LogIn />} />
