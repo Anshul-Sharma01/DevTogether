@@ -156,7 +156,7 @@ Make it pop. Make it clever. Make it memorable.
       setShowNewCollabModel(false);
 
       setTimeout(() => {
-        window.location.href = `http://localhost:${res?.payload?.data?.frontendPort}/language/${language}/room/${roomId}`;
+        window.location.href = `http://localhost:${res?.payload?.data?.frontendPort}/language/${res?.payload?.data?.language}/room/${roomId}`;
       }, 200);
       // window.location.href = `http://localhost:${5174}/room/${roomId}`;
     }
