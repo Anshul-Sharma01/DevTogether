@@ -147,7 +147,7 @@ function NavigationLayout({ children }) {
                                         <DropdownItem label="Change Password" onClick={() => setShowPasswordModal(true)} />
                                         <DropdownItem label="Update Profile" onClick={() => setShowBioModal(true)} />
                                         <DropdownItem label="Update Username" onClick={() => setShowUserNameModel(true)} />
-                                        <DropdownItem label="Delete Account" onClick={() => setShowDeleteAccountModal(true)} />
+                                        <DropdownItem label="Account Visibility" onClick={() => setShowDeleteAccountModal(true)} />
                                     </div>
                                 )}
                             </li>
@@ -177,8 +177,8 @@ const DropdownItem = ({ label, onClick, hasSubmenu }) => {
         <div
             onClick={onClick}
             className={`px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex justify-between items-center 
-                ${label === "Delete Account" && "text-red-600"} 
-                ${label === "Logout" && "text-red-600"}`}
+                ${label === "Account Visibility" && "text-red-600 font-bold"} 
+                ${label === "Logout" && " text-red-600 font-bold"}`}
         >
             {label}
             {hasSubmenu && <span className="ml-2 text-gray-400 dark:text-gray-300"></span>}

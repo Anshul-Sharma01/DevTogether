@@ -95,13 +95,6 @@ const DeleteAccount = ({ showDeleteAccountModal, setShowDeleteAccountModal }) =>
                         )}
 
                         {/* Close button */}
-                        <button
-                            type="button"
-                            onClick={() => setShowDeleteAccountModal(false)}
-                            className="absolute top-4 right-4 text-gray-700 dark:text-gray-300 hover:scale-110 hover:rotate-90 transition-transform"
-                        >
-                            <RxCross2 className="text-2xl" />
-                        </button>
 
                         {/* Action buttons */}
                         <div className="flex justify-center gap-4 mt-8">
