@@ -105,16 +105,18 @@ const App = () => {
   }, [isDraggingSidebar, isDraggingTerminal]);
 
   useEffect(() => {
-    const handleBeforeUnload = (event) => {
+    // Get query params from URL
+    const queryParams = new URLSearchParams(window.location.search);
+    const isHost = !queryParams.has('roomId'); // No roomId means it's the host
+  
+    // Only attach the listener if the user is host
+    if (!isHost) return;
+  
+    const handleBeforeUnload = () => {
       const url = `http://localhost:5000/api/v1/collab/stop-collab/${clientRoomId}`;
       const data = JSON.stringify({ roomId: clientRoomId });
       const blob = new Blob([data], { type: 'application/json' });
       navigator.sendBeacon(url, blob);
-  
-      // If you want to show a confirmation dialog:
-      const message = "Are you sure you want to leave?";
-      event.returnValue = message; // Standard for most browsers
-      return message;  // Some older browsers may require this as well
     };
   
     window.addEventListener("beforeunload", handleBeforeUnload);
