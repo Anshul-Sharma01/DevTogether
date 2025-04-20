@@ -69,7 +69,7 @@ function NavigationLayout({ children }) {
         if(res?.payload?.statusCode === 200){
             console.log("Successfully started the playground");
             setTimeout(() => {
-                window.location.href = `http://localhost:${res?.payload?.data?.frontendPort}/room/${res?.payload?.data?.roomId}`;
+                window.location.href = `http://localhost:${res?.payload?.data?.frontendPort}/language/${res?.payload?.data?.language}/room/${res?.payload?.data?.roomId}`;
                 console.log("Redirecting");
             }, 500);
         }

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import NavigationLayout from "../../layouts/NavigationLayout";
 import { RxCross2 } from "react-icons/rx";
 import { FaReact, FaTrash } from 'react-icons/fa';
+import { FaNodeJs } from "react-icons/fa";
+import { FaDev } from "react-icons/fa";
 import { SiHtml5 } from 'react-icons/si';
 import { BsCodeSlash } from 'react-icons/bs';
 import { Link } from "react-router-dom";
@@ -83,7 +85,8 @@ const AllCollabs = () => {
                 <p>🛠️ Tech Stack:</p>
                 {collab.language === 'react' && <FaReact className="text-blue-500" />}
                 {collab.language === 'html' && <SiHtml5 className="text-orange-500" />}
-                {collab.language === 'custom' && <BsCodeSlash className="text-purple-500" />}
+                {collab.language === 'custom' && <FaDev className="text-purple-500" />}
+                {collab.language === 'node' && <FaNodeJs className="text-green-800"/>} 
               </div>
             </button>
           </div>
