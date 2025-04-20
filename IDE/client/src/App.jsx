@@ -105,16 +105,25 @@ const App = () => {
   }, [isDraggingSidebar, isDraggingTerminal]);
 
   useEffect(() => {
-    const handlePageHide = () => {
+    const handleBeforeUnload = (event) => {
       const url = `http://localhost:5000/api/v1/collab/stop-collab/${clientRoomId}`;
       const data = JSON.stringify({ roomId: clientRoomId });
       const blob = new Blob([data], { type: 'application/json' });
       navigator.sendBeacon(url, blob);
+  
+      // If you want to show a confirmation dialog:
+      const message = "Are you sure you want to leave?";
+      event.returnValue = message; // Standard for most browsers
+      return message;  // Some older browsers may require this as well
     };
-
-    window.addEventListener("pagehide", handlePageHide);
-    return () => window.removeEventListener("pagehide", handlePageHide);
+  
+    window.addEventListener("beforeunload", handleBeforeUnload);
+  
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
   }, [clientRoomId]);
+  
 
   if (isLoading) {
     return <LoadingScreen onLoadComplete={handleLoadComplete} />;
