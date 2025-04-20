@@ -12,7 +12,7 @@ const developers = [
         name: 'Shaishav',
         role: 'Frontend, UI Designer, Database Schema Designer',
         avatar: 'https://s3.amazonaws.com/cbrig-assets/csoethp/resources/Student/S46cYSh.JPG',
-        description: 'Shaishav is responsible for frontend development, UI design, and database schema design. He creates intuitive and visually appealing user interfaces and ensures the database is optimized for performance.'
+        description: 'Shaishav is responsible for frontend development, UI design, and database schema design. He creates intuitive and visually appealing user interfaces and ensures the database is optimized for performance. Udta Birdie Inc. 100% StackHolder'
     },
     {
         name: 'Chirag Bhatia',
