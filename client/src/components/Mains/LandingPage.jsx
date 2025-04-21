@@ -92,7 +92,7 @@ const LandingPage = () => {
                     className="flex reveal flex-col items-center justify-center text-center px-6 py-20 h-screen"
                 >
                     <h1 className="text-5xl md:text-6xl font-extrabold leading-tight bg-gradient-to-r from-purple-500 to-blue-500 text-transparent bg-clip-text mb-4">
-                        Build, Collaborate, Deploy — Instantly
+                        Build, Collaborate, Code — Instantly
                     </h1>
                     <p className="text-lg md:text-xl text-gray-700 mt-2 mb-4 dark:text-gray-300 max-w-2xl">
                         The all-in-one collaborative coding platform with live preview, real-time teamwork, and zero setup.
