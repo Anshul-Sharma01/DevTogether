@@ -54,8 +54,7 @@ io.on("connection" , (socket) => {
 
     ptyProcess.onData((output) => {
           const id =terminalId
-          console.log(id, output);
-          
+          // console.log(id, output);
           socket.emit("terminal:data",{id, output})
         })
   }
@@ -70,52 +69,17 @@ io.on("connection" , (socket) => {
 
     socket.on("terminal:create", (terminalId) => {
         // console.log("terminal created", terminalId);
-
-
         createTerminal(terminalId)
     })
-    
       
     // socket.on("terminal:write", (data) => {
     //     ptyProcess.write(data);
     // }) // data comes from frontend
     socket.on('join-room', (roomId) => {
       socket.join(roomId);
-      console.log(`User ${socket.id} joined room ${roomId}`);
+      // console.log(`User ${socket.id} joined room ${roomId}`);
     });
-
-
-    // Add Video Call Code:
-
-    // WebRTC Signaling for Video Call
-    socket.on("video:join", (roomId) => {
-      console.log(`${socket.id} joined room ${roomId}`);
-      socket.join(roomId);
-      socket.to(roomId).emit("video:user-joined", socket.id);
-    });
-    
-    socket.on("video:offer", ({ offer, to }) => {
-      console.log(`Sending offer to ${to}`);
-      io.to(to).emit("video:offer", { offer, from: socket.id });
-    });
-    
-    socket.on("video:answer", ({ answer, to }) => {
-      console.log(`Sending answer to ${to}`);
-      io.to(to).emit("video:answer", { answer, from: socket.id });
-    });
-    
-    socket.on("video:ice-candidate", ({ candidate, to }) => {
-      console.log(`Sending ice-candidate to ${to}`);
-      io.to(to).emit("video:ice-candidate", { candidate, from: socket.id });
-    });
-    
-
-socket.on("disconnect", () => {
-  socket.broadcast.emit("video:user-left", socket.id);
-});
-
-
-
+  
     // Broadcast file changes to room
     socket.on("file:change", async ({ path, content, roomId }) => {
       try {
@@ -141,7 +105,6 @@ socket.on("disconnect", () => {
           socket.emit('file:refresh');
         } catch (error) {
           console.error(`Error creating ${type}:`, error.message);
-          //socket.emit('error', { message: error.message });
         }
       });
 
