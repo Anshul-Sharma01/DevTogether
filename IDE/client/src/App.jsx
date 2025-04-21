@@ -4,7 +4,7 @@ import LoadingScreen from './components/LoadingScreen';
 import InviteCollaborator from './components/InviteCollaborator';
 import Editor from './components/Editor.jsx';
 import HtmlCssJsEditor from './components/HtmlCssJsEditor.jsx';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, } from 'react-router-dom';
 
 // Lazy-loaded components
 const FileTree = lazy(() => import('./components/FileTree'));
@@ -24,6 +24,7 @@ const App = () => {
   const [language, setLanguage] = useState("");
   const [isRoomOwner, setIsRoomOwner] = useState(false);
   const [clientRoomId, setClientRoomId] = useState("");
+  const [video, setVideo] = useState("")
   const [roomId, setRoomId] = useState(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const urlRoomId = urlParams.get('roomId');
@@ -131,9 +132,17 @@ const App = () => {
   if (isLoading) {
     return <LoadingScreen onLoadComplete={handleLoadComplete} />;
   }
+  
+  const videoHandler = async () => {
+    let id = video;
 
-  const videoHandler = () => {
-    window.open(`${window.location.pathname}/video/${Math.random().toString(36).substring(2, 8)}`, '_blank');
+  if (id === "") {
+    id = Math.random().toString(36).substring(2, 8);
+    setVideo(id); // update state if needed elsewhere
+  }
+
+  window.open(`/video/${id}`, '_blank');
+
   }
 
   return (
@@ -248,7 +257,7 @@ const App = () => {
         <Routes>
           <Route path="/video/:videoId" element={<VideoCall/>} />
         </Routes>
-        <div className="fixed bottom-4 right-4 z-50">
+         {isRoomOwner  && ( <div className="fixed bottom-4 right-4 z-50">
         <button
           className="bg-green-600 hover:bg-green-700 text-white p-3 rounded-full shadow-lg"
           title="Start Video Call"
@@ -258,7 +267,7 @@ const App = () => {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
           </svg>
         </button>
-        </div>
+        </div> ) }
     </div>
   );
 };
