@@ -152,6 +152,17 @@ export const resetPasswordThunk = createAsyncThunk("/auth/reset-password", async
     }
 })
 
+export const sendOtpToUserThunk = createAsyncThunk("/auth/send-otp", async({ otp, email }, { rejectWithValue }) => {
+    try{
+        const res = axiosInstance.post(`user/send-otp`, { otp, email });
+        toastHandler(res, "Sending OTP", "Successfully sent the otp, please check your mail");
+        return (await res).data;
+    }catch(err){
+        const message = err?.response?.data?.message || "Something went wrong while sending otp for verification";
+        return rejectWithValue(message);
+    }
+})
+
 const authSlice = createSlice({
     name : "auth",
     initialState,
@@ -246,6 +257,9 @@ const authSlice = createSlice({
         })
         .addCase(resetPasswordThunk.rejected, (_, action) => {
             toast.error(action.payload || "Password reset failed !!");
+        })
+        .addCase(sendOtpToUserThunk.rejected, (_ , action) => {
+            toast.error(action.payload || "OTP verification failed");
         })
     }
 })

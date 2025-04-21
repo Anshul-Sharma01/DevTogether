@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useReducer, useState, useRef } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { createUserAccountThunk } from "../../Redux/Slices/authSlice";
@@ -17,6 +17,8 @@ const initialState = {
     password: "",
     confirmPassword: "",
     bio: "",
+    otp: ["", "", "", ""],
+    isOtpVerified: false
 };
 
 function reducer(state, action) {
@@ -37,6 +39,12 @@ function reducer(state, action) {
             return { ...state, confirmPassword: action.payload };
         case "SET_BIO":
             return { ...state, bio: action.payload };
+        case "SET_OTP":
+            const newOtp = [...state.otp];
+            newOtp[action.index] = action.payload;
+            return { ...state, otp: newOtp };
+        case "SET_OTP_VERIFIED":
+            return { ...state, isOtpVerified: action.payload };
         default:
             return state;
     }
@@ -49,6 +57,9 @@ function SignUp() {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [step, setStep] = useState(1);
     const [passwordFocused, setPasswordFocused] = useState(false);
+    const [otpLoading, setOtpLoading] = useState(false);
+    const [otpSent, setOtpSent] = useState(false);
+    const otpInputRefs = [useRef(), useRef(), useRef(), useRef()];
 
     const isLoggedIn = useSelector((state) => state?.auth?.isLoggedIn);
     const dispatch = useDispatch();
@@ -135,6 +146,12 @@ function SignUp() {
             toast.error("Please fill in all fields before proceeding");
             return;
         }
+
+        if (step === 1.5 && !state.isOtpVerified) {
+            toast.error("Please verify your email to continue");
+            return;
+        }
+
         if (step === 2 && (!state.password || !state.confirmPassword)) {
             toast.error("Please fill in all fields before proceeding");
             return;
@@ -147,17 +164,35 @@ function SignUp() {
                 toast.error("Password does not meet all requirements");
                 return;
             }
-            
+
             if (state.password !== state.confirmPassword) {
                 toast.error("Passwords do not match");
                 return;
             }
         }
-        
+
+        // If on step 1, go to OTP verification (step 1.5)
+        if (step === 1) {
+            setStep(1.5);
+            // Automatically trigger OTP send
+            handleOtpGeneration();
+            return;
+        }
+        if(step == 1.5){
+            setStep(2);
+            return;
+        }
+
         setStep((prev) => prev + 1);
     };
 
     const prevStep = () => {
+        // If on OTP verification step, go back to step 1
+        if (step === 1.5) {
+            setStep(1);
+            return;
+        }
+
         setStep((prev) => prev - 1);
     };
 
@@ -172,21 +207,87 @@ function SignUp() {
     const passwordsMatch = state.password === state.confirmPassword;
     const showPasswordMatch = state.confirmPassword.length > 0;
 
+    // Handle OTP input change
+    const handleOtpChange = (index, value) => {
+        // Only allow numbers
+        if (value && !/^\d*$/.test(value)) return;
+
+        // Update the OTP value at the specified index
+        dispatchState({ type: "SET_OTP", index, payload: value });
+
+        // Auto-focus to next input if value is set
+        if (value && index < 3) {
+            otpInputRefs[index + 1].current.focus();
+        }
+    };
+
+    // Handle OTP input key press
+    const handleOtpKeyDown = (index, e) => {
+        // Handle backspace
+        if (e.key === 'Backspace') {
+            if (index > 0 && state.otp[index] === '') {
+                otpInputRefs[index - 1].current.focus();
+            }
+        }
+    };
+
+    // Generate OTP and send to email
+    const handleOtpGeneration = async () => {
+        if (!state.email) {
+            toast.error("Please enter your email address");
+            return;
+        }
+
+        setOtpLoading(true);
+
+        // Simulate OTP sending
+        // In a real implementation, this would be an API call
+        setTimeout(() => {
+            setOtpLoading(false);
+            setOtpSent(true);
+            toast.success("OTP has been sent to your email");
+        }, 1500);
+    };
+
+    // Verify OTP code
+    const verifyOtp = () => {
+        // Check if all OTP fields are filled
+        if (state.otp.some(digit => digit === '')) {
+            toast.error("Please enter the complete OTP");
+            return;
+        }
+
+        setOtpLoading(true);
+
+        // Simulate OTP verification
+        // In a real implementation, this would be an API call
+        setTimeout(() => {
+            setOtpLoading(false);
+            // For this example, we're considering "1234" as the correct OTP
+            if (state.otp.join('') === "1234") {
+                dispatchState({ type: "SET_OTP_VERIFIED", payload: true });
+                toast.success("Email verified successfully");
+            } else {
+                toast.error("Invalid OTP, please try again");
+            }
+        }, 1500);
+    };
+
     // New simplified step labels
-    const stepLabels = ["Profile", "Security", "Bio"];
+    const stepLabels = ["Profile", "Verify", "Security", "Bio"];
 
     return (
         <section className="flex flex-col items-center min-h-screen w-full bg-gradient-to-r from-gray-50 to-white dark:from-gray-950 dark:to-black transition-colors duration-300 py-10">
             <div className="w-full max-w-2xl p-4 md:p-8">
                 {/* Simplified Step Indicator */}
                 <div className="flex justify-center mb-10">
-                    <div className="flex gap-6 md:gap-12">
-                        {[1, 2, 3].map((stepNumber) => (
+                    <div className="flex gap-6 md:gap-10">
+                        {[1, 1.5, 2, 3].map((stepNumber, index) => (
                             <div key={stepNumber} className="flex flex-col items-center">
-                                <div 
+                                <div
                                     className={`w-12 h-12 rounded-full flex items-center justify-center text-base font-medium shadow-md transition-all duration-300 ${
-                                        step === stepNumber 
-                                            ? "bg-blue-500 text-white scale-110" 
+                                        step === stepNumber
+                                            ? "bg-blue-500 text-white scale-110"
                                             : step > stepNumber
                                             ? "bg-green-500 text-white"
                                             : "bg-gray-200 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
@@ -197,15 +298,15 @@ function SignUp() {
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                         </svg>
                                     ) : (
-                                        stepNumber
+                                        index + 1
                                     )}
                                 </div>
                                 <span className={`mt-2 text-sm font-medium ${
-                                    step >= stepNumber 
-                                        ? "text-blue-600 dark:text-blue-400" 
+                                    step >= stepNumber
+                                        ? "text-blue-600 dark:text-blue-400"
                                         : "text-gray-500 dark:text-gray-500"
                                 }`}>
-                                    {stepLabels[stepNumber - 1]}
+                                    {stepLabels[index]}
                                 </span>
                             </div>
                         ))}
@@ -273,9 +374,108 @@ function SignUp() {
                                     onClick={nextStep}
                                     className="w-full mt-6 bg-blue-500 hover:bg-blue-600 text-white py-3.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-300 transform hover:translate-y-[-2px] font-medium text-sm"
                                 >
-                                    Continue to Security
+                                    Continue to Verification
                                 </button>
                             </form>
+                        </div>
+                    )}
+
+                    {step === 1.5 && (
+                        <div className="animate-fadeIn">
+                            {/* OTP Verification */}
+                            <div className="text-center mb-6">
+                                <h2 className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-2">Verify Your Email</h2>
+                                <p className="text-gray-600 dark:text-gray-400 text-sm">
+                                    We've sent a 4-digit verification code to
+                                    <span className="font-medium ml-1">{state.email}</span>
+                                </p>
+                            </div>
+
+                            {/* OTP Input Fields */}
+                            <div className="flex justify-center gap-3 mb-6">
+                                {[0, 1, 2, 3].map((index) => (
+                                    <input
+                                        key={index}
+                                        ref={otpInputRefs[index]}
+                                        type="text"
+                                        maxLength={1}
+                                        value={state.otp[index]}
+                                        onChange={(e) => handleOtpChange(index, e.target.value)}
+                                        onKeyDown={(e) => handleOtpKeyDown(index, e)}
+                                        className="w-14 h-14 text-center text-2xl font-bold border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white transition-all duration-300"
+                                    />
+                                ))}
+                            </div>
+
+                            {/* OTP Verification Message */}
+                            {state.isOtpVerified && (
+                                <div className="flex items-center justify-center mb-6 text-green-500">
+                                    <FiCheck className="mr-2" />
+                                    <span>Email successfully verified</span>
+                                </div>
+                            )}
+
+                            {/* Verify Button */}
+                            <div className="flex flex-col mb-6">
+                                <button
+                                    type="button"
+                                    onClick={verifyOtp}
+                                    disabled={otpLoading || state.isOtpVerified}
+                                    className={`w-full py-3 rounded-lg font-medium transition-all duration-300 ${
+                                        state.isOtpVerified
+                                            ? "bg-green-500 hover:bg-green-600 text-white cursor-not-allowed"
+                                            : "bg-blue-500 hover:bg-blue-600 text-white"
+                                    }`}
+                                >
+                                    {otpLoading ? (
+                                        <FaSpinner className="animate-spin mx-auto" />
+                                    ) : state.isOtpVerified ? (
+                                        "Verified"
+                                    ) : (
+                                        "Verify OTP"
+                                    )}
+                                </button>
+
+                                {/* Resend OTP */}
+                                {!state.isOtpVerified && (
+                                    <div className="text-center mt-4">
+                                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                                            Didn't receive the code?{" "}
+                                            <button
+                                                type="button"
+                                                onClick={handleOtpGeneration}
+                                                disabled={otpLoading}
+                                                className="text-blue-600 dark:text-blue-400 font-medium hover:underline focus:outline-none"
+                                            >
+                                                Resend
+                                            </button>
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Navigation Buttons */}
+                            <div className="flex justify-between pt-4">
+                                <button
+                                    type="button"
+                                    onClick={prevStep}
+                                    className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-700 py-3 px-6 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 transition-colors duration-300 font-medium"
+                                >
+                                    Back
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={nextStep}
+                                    disabled={!state.isOtpVerified}
+                                    className={`py-3 px-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-opacity-50 transition-all duration-300 transform hover:translate-y-[-2px] font-medium ${
+                                        state.isOtpVerified
+                                            ? "bg-blue-500 hover:bg-blue-600 text-white"
+                                            : "bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed"
+                                    }`}
+                                >
+                                    Continue to Security
+                                </button>
+                            </div>
                         </div>
                     )}
 
@@ -298,17 +498,17 @@ function SignUp() {
                                             placeholder="Enter your password"
                                             required
                                         />
-                                        {showPassword ? (
-                                            <RiEyeOffFill
-                                                onClick={() => setShowPassword(!showPassword)}
-                                                className="text-xl text-gray-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-gray-300 cursor-pointer absolute top-1/2 right-3.5 transform -translate-y-1/2 transition-colors duration-200"
-                                            />
-                                        ) : (
-                                            <RiEyeFill
-                                                onClick={() => setShowPassword(!showPassword)}
-                                                className="text-xl text-gray-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-gray-300 cursor-pointer absolute top-1/2 right-3.5 transform -translate-y-1/2 transition-colors duration-200"
-                                            />
-                                        )}
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowPassword(!showPassword)}
+                                            className="absolute top-1/2 right-3.5 transform -translate-y-1/2 transition-colors duration-200 focus:outline-none"
+                                        >
+                                            {showPassword ? (
+                                                <RiEyeOffFill className="text-xl text-gray-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-gray-300" />
+                                            ) : (
+                                                <RiEyeFill className="text-xl text-gray-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-gray-300" />
+                                            )}
+                                        </button>
                                     </div>
                                 </div>
 
@@ -326,19 +526,19 @@ function SignUp() {
                                             placeholder="Confirm your password"
                                             required
                                         />
-                                        {showConfirmPassword ? (
-                                            <RiEyeOffFill
-                                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                                className="text-xl text-gray-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-gray-300 cursor-pointer absolute top-1/2 right-3.5 transform -translate-y-1/2 transition-colors duration-200"
-                                            />
-                                        ) : (
-                                            <RiEyeFill
-                                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                                className="text-xl text-gray-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-gray-300 cursor-pointer absolute top-1/2 right-3.5 transform -translate-y-1/2 transition-colors duration-200"
-                                            />
-                                        )}
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                            className="absolute top-1/2 right-3.5 transform -translate-y-1/2 transition-colors duration-200 focus:outline-none"
+                                        >
+                                            {showConfirmPassword ? (
+                                                <RiEyeOffFill className="text-xl text-gray-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-gray-300" />
+                                            ) : (
+                                                <RiEyeFill className="text-xl text-gray-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-gray-300" />
+                                            )}
+                                        </button>
                                     </div>
-                                    
+
                                     {/* Password match indicator - only shown when confirm password has content */}
                                     {showPasswordMatch && (
                                         <div className={`flex items-center mt-2 ml-1 text-sm ${passwordsMatch ? 'text-green-500' : 'text-red-500'}`}>
@@ -356,7 +556,7 @@ function SignUp() {
                                         </div>
                                     )}
                                 </div>
-                                
+
                                 {/* Password requirements - only shown when password field has content */}
                                 {(state.password.length > 0 || passwordFocused) && (
                                     <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-3 text-xs">
@@ -382,7 +582,7 @@ function SignUp() {
                                         </ul>
                                     </div>
                                 )}
-                                
+
                                 <div className="flex justify-between pt-4">
                                     <button
                                         type="button"
@@ -435,7 +635,7 @@ function SignUp() {
                                         rows={8}
                                     />
                                 </div>
-                                
+
                                 <div className="flex justify-between pt-4">
                                     <button
                                         type="button"
@@ -454,7 +654,7 @@ function SignUp() {
                             </form>
                         </div>
                     )}
-                    
+
                     {/* Sign in link */}
                     <div className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
                         Already have an account?{" "}
@@ -464,7 +664,7 @@ function SignUp() {
                     </div>
                 </div>
             </div>
-            
+
             {/* Add custom animation styles */}
             <style jsx>{`
                 @keyframes fadeIn {
