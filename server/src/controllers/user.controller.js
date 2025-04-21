@@ -478,6 +478,33 @@ const deactivateAccountController = asyncHandler(async (req, res) => {
     );
 });
 
+const sendOtpToUserController = asyncHandler(async(req, res) => {
+    const { otp, email } = req.body;
+    const userExists = await User.findOne({ email });
+    if(userExists){
+        throw new ApiResponse(400, "An Account with the same email already exists !!");
+    }
+
+    const subject = "OTP for Email Verification";
+    const message = `Here is your otp for email verification : ${otp}`;
+    try{
+        await sendEmail(email, subject, message);
+        return res.status(200)
+        .json(
+            new ApiResponse(
+                200,
+                {},
+                `OTP sent successfully`
+            )
+        );
+    }catch(err){
+        throw new ApiResponse(400, "Our server is down, please try again later");
+    }
+
+
+
+})
+
 
 export {
     registerController, 
@@ -492,5 +519,6 @@ export {
     updateProfilePictureController,
     updateUserNameController,
     forgotPasswordController,
-    resetPasswordController
+    resetPasswordController,
+    sendOtpToUserController
 }
