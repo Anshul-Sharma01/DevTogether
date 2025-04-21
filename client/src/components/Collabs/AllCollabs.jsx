@@ -31,7 +31,7 @@ const AllCollabs = () => {
     if(res?.payload?.statusCode === 200){
       console.log("Successfully started the playground");
       setTimeout(() => {
-        window.location.href = `http://localhost:${res?.payload?.data?.frontendPort}/language/${res?.payload?.data?.language}/room/${res?.payload?.data?.roomId}`;
+       window.open(`http://localhost:${res?.payload?.data?.frontendPort}/language/${res?.payload?.data?.language}/room/${res?.payload?.data?.roomId}`,'_blank');
         console.log("Redirecting ??");
       }, 500);
     }
@@ -80,7 +80,7 @@ const AllCollabs = () => {
               <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400 group-hover:underline">
                 {collab.title}
               </h2>
-              <p className="text-gray-700 dark:text-gray-300">{collab.description}</p>
+              <p className="text-gray-700 dark:text-gray-300 text-wrap line-clamp-3">{collab.description}</p>
               <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
                 <p>🛠️ Tech Stack:</p>
                 {collab.language === 'react' && <FaReact className="text-blue-500" />}
