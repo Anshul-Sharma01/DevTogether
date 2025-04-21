@@ -51,14 +51,14 @@ const DevelopersTeam = () => {
     }, [selectedDeveloper]);
 
     return (
-        <div className=" bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+        <div className=" bg-gray-100 dark:bg-black text-gray-900 dark:text-gray-100">
             <div className="container mx-auto p-4">
                 <h1 className="text-4xl font-bold text-center mb-8">Developers Team</h1>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 cursor-pointer">
                     {developers.map((developer, index) => (
                         <div
                             key={index}
-                            className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden transform transition-transform duration-300 hover:scale-105"
+                            className="bg-white dark:bg-gray-800 shadow-lg rounded-2xl overflow-hidden transform transition-transform duration-300 hover:scale-105"
                             onClick={() => setSelectedDeveloper(developer)}
                         >
                             <img className="w-full h-48 object-contain" src={developer.avatar} alt={developer.name} />
