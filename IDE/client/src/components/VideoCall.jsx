@@ -8,8 +8,8 @@ const VideoCall = () =>  {
 
   useEffect(() => {
     const MyRoom = async () => {
-      const appId = 1511634706;
-      const serverSecret = "8f72ab86e21e70a14795d617b8472d77";
+      const appId = Number(import.meta.env.VITE_ZEGOCLOUD_APP_ID);
+      const serverSecret = import.meta.env.VITE_ZEGOCLOUD_SERVER_SECRET;
       const userId = Date.now().toString();
       const userName = "User" + userId;
 
