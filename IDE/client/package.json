@@ -13,6 +13,7 @@
     "@monaco-editor/react": "^4.7.0",
     "@xterm/addon-fit": "^0.10.0",
     "@xterm/xterm": "^5.5.0",
+    "@zegocloud/zego-uikit-prebuilt": "^2.14.3-beta",
     "axios": "^1.8.4",
     "peerjs": "^1.5.4",
     "react": "^19.0.0",
