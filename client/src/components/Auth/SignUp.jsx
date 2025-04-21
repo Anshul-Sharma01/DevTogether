@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer, useState, useRef } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { createUserAccountThunk } from "../../Redux/Slices/authSlice";
+import { createUserAccountThunk, sendOtpToUserThunk } from "../../Redux/Slices/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 import generateBio from "../Profile/GenerateBio.js";
 import { RiAiGenerate, RiEyeFill, RiEyeOffFill } from "react-icons/ri";
@@ -59,6 +59,7 @@ function SignUp() {
     const [passwordFocused, setPasswordFocused] = useState(false);
     const [otpLoading, setOtpLoading] = useState(false);
     const [otpSent, setOtpSent] = useState(false);
+    const [emailOTP, setEmailOTP] = useState();
     const otpInputRefs = [useRef(), useRef(), useRef(), useRef()];
 
     const isLoggedIn = useSelector((state) => state?.auth?.isLoggedIn);
@@ -239,32 +240,25 @@ function SignUp() {
         }
 
         setOtpLoading(true);
-
-        // Simulate OTP sending
-        // In a real implementation, this would be an API call
-        setTimeout(() => {
-            setOtpLoading(false);
-            setOtpSent(true);
-            toast.success("OTP has been sent to your email");
-        }, 1500);
+        const otp = Math.floor(1000 + Math.random() * 9000).toString();
+        setEmailOTP(otp);
+        const res = await dispatch(sendOtpToUserThunk({ otp, email : state.email }));
+        console.log("Res of otp : ", res);
+        setOtpLoading(false);
+        setOtpSent(true);
     };
 
     // Verify OTP code
     const verifyOtp = () => {
-        // Check if all OTP fields are filled
         if (state.otp.some(digit => digit === '')) {
             toast.error("Please enter the complete OTP");
             return;
         }
 
         setOtpLoading(true);
-
-        // Simulate OTP verification
-        // In a real implementation, this would be an API call
         setTimeout(() => {
             setOtpLoading(false);
-            // For this example, we're considering "1234" as the correct OTP
-            if (state.otp.join('') === "1234") {
+            if (state.otp.join('') === emailOTP) {
                 dispatchState({ type: "SET_OTP_VERIFIED", payload: true });
                 toast.success("Email verified successfully");
             } else {
