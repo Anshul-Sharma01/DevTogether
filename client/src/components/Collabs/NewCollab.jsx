@@ -88,7 +88,7 @@ Below are example names for inspiration. These were previously generated and sho
 - Is short and easy to remember
 - Feels like a brand or company name (e.g., Zoom, Slack, Notion, Figma)
 - Could realistically be available as a domain or app name
--If u can try to add a suffix such as  "collab", "container", "group", "team" creatively in name or the terms related to these words
+- Also add a suffix from one of these "collab", "container", "group", "team", "lab" creatively in name or the terms related to these words
 🎯 Output: Return **just one name**, not a list, with no explanations or extra text.
 
 Make it pop. Make it clever. Make it memorable.
