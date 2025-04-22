@@ -45,53 +45,58 @@ const NewCollab = ({ showNewCollabModal, setShowNewCollabModel }) => {
     const exampleText = exampleNames.map(name => `- ${name}`).join('\n');
   
     const prompt = `
-You are a professional product naming expert working at a top branding agency. Your task is to generate **a single, creative, catchy, short, and unique name** for a new-age product or developer-focused collaboration platform. The name should be **modern, one to two words**, preferably a **portmanteau** or a **newly invented word**, that feels **techy, brandable, and futuristic** — suitable for startups, SaaS platforms, or devtools.
+You are a professional naming strategist at a leading branding firm. Your task is to invent a single, highly original name for a modern, developer-focused collaboration platform (think SaaS tools, devtools, or team apps).
 
-Below are example names for inspiration. These were previously generated and should NOT be repeated, reused, or used as a base.
+This name must:
 
-**Existing Names (Do NOT use or remix):**
-- CodeSync
-- DevNest
-- CollabCrate
-- HackHive
-- BuildFlow
-- DevDrop
-- IdeaBridge
-- CodeWeld
-- CollabDrift
-- CloudCraze
-- ProjectPulse
-- CodeTunnel
-- TeamForge
-- DevNova
-- SyncFlick
-- CodeWarp
-- CodeRush
-- DevChain
-- HackNest
-- TeamSpark
-- MergeMind
-- ThinkStorm
-- CodeLift
-- HiveCloud
-- DevMint
-- ProjectZen
-- DevSparks
-- CodeTrail
-- IdeaNexus
-- CodeCrave
-- CollabVibe
-- LaunchLink
+Be completely new — not previously used, generated, or repeated in this or any prior iteration.
 
-⚠️ Your job is to generate a **completely new** name that:
-- Sounds futuristic and original
-- Is short and easy to remember
-- Feels like a brand or company name (e.g., Zoom, Slack, Notion, Figma)
-- Could realistically be available as a domain or app name
-- Also add a suffix from one of these "collab", "container", "group", "team", "lab" creatively in name or the terms related to these words
-🎯 Output: Return **just one name**, not a list, with no explanations or extra text.
+Be short, catchy, inventive, and brandable (like Figma, Notion, Linear).
 
-Make it pop. Make it clever. Make it memorable.
+Be a made-up word or clever portmanteau.
+You are a top-tier naming strategist at a world-class branding agency. Your task is to create a single, original, futuristic, and brandable name for a next-gen, developer-focused collaboration platform (think SaaS for teams, developers, or creators).
+
+The name must be rooted in the core concepts of collaboration, teamwork, creation, or shared building — and must feel modern, punchy, and startup-ready.
+
+✅ Naming Rules:
+Include a creative reference to any of the following:
+"collab", "group", "container", "team", "lab"
+OR indirect/abstract ideas related to those — such as:
+building, syncing, creating, uniting, co-working, iteration, fusion, pods, launches, flows, or real-time work.
+
+Must be one or two words only (preferably one).
+
+Name must be a newly coined word, portmanteau, or tech-sounding invention.
+
+Must feel brandable, modern, and not overly literal.
+
+Avoid anything too generic or boring. Think Figma, Notion, Linear, Vercel — names that sound like strong standalone brands.
+
+Avoid using common tech clichés or words like "code", "cloud", or "project" unless cleverly reinvented.
+
+❌ Repetition & Context Filters:
+Do not reuse or remix previously generated names in this or past sessions.
+
+Strictly simulate a uniqueness check — if a name has been generated or seen before, discard and invent a new one.
+
+Avoid out-of-context names — each name must align with the world of collaboration tools, developer platforms, or SaaS ecosystems.
+
+Avoid names like:
+CoSphere, SynapseLab, FrenzyZone,
+and any other that are irrelevant, overly generic, or off-topic.
+
+✨ Output Requirements:
+Return only ONE name
+
+No lists, no explanations, no markdown, no formatting
+
+Do not include **, punctuation, emojis, or styling
+
+Just the name, as a plain text output
+
+🎯 Make it short. Make it relevant. Make it unforgettable.
+Let every name feel like a future unicorn startup.
+
 
   `;
   
