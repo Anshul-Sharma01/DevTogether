@@ -6,7 +6,7 @@ const router = Router()
 
 router.route("/file-path").get(async (req,res) => {
     const { language } = req.query
-    console.log(language);
+    // console.log(language);
     
     const file = await generateFileTree("./user", language)
     
