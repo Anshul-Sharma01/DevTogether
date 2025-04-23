@@ -179,6 +179,7 @@ function SignUp() {
             handleOtpGeneration();
             return;
         }
+
         if(step == 1.5){
             setStep(2);
             return;
@@ -244,6 +245,9 @@ function SignUp() {
         setEmailOTP(otp);
         const res = await dispatch(sendOtpToUserThunk({ otp, email : state.email }));
         console.log("Res of otp : ", res);
+        if(res?.payload?.statusCode !== 200){
+            setStep(1);
+        }
         setOtpLoading(false);
         setOtpSent(true);
     };

@@ -482,7 +482,7 @@ const sendOtpToUserController = asyncHandler(async(req, res) => {
     const { otp, email } = req.body;
     const userExists = await User.findOne({ email });
     if(userExists){
-        throw new ApiResponse(400, "An Account with the same email already exists !!");
+        throw new ApiError(400, "An Account with the same email already exists !!");
     }
 
     const subject = "OTP for Email Verification";

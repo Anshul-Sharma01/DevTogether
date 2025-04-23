@@ -13,24 +13,24 @@ const LandingPage = () => {
 
     const logos = [
         {
-            name: "Vercel",
-            url: "https://1000logos.net/wp-content/uploads/2024/08/Vercel-Logo-tumb.png",
+            name: "Mircrosoft",
+            url: "https://res.cloudinary.com/dqnzstk72/image/upload/v1745433361/DevTogether/ms-logo_fwtnhq.png",
         },
         {
-            name: "Netlify",
-            url: "https://seeklogo.com/images/N/netlify-logo-758722CDF4-seeklogo.com.png",
+            name: "Netflix",
+            url: "https://res.cloudinary.com/dqnzstk72/image/upload/v1745433361/DevTogether/ntflx-logo_qvdigx.png",
         },
         {
             name: "AWS",
-            url: "https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg",
+            url: "https://res.cloudinary.com/dqnzstk72/image/upload/v1745433361/DevTogether/aws-logo_ug2vz8.png",
         },
         {
             name: "GitHub",
-            url: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+            url: "https://res.cloudinary.com/dqnzstk72/image/upload/v1745433361/DevTogether/github-logo_uvqvdu.png",
         },
         {
-            name: "GitLab",
-            url: "https://about.gitlab.com/images/press/logo/png/gitlab-icon-rgb.png",
+            name: "Sandbox",
+            url: "https://res.cloudinary.com/dqnzstk72/image/upload/v1745433362/DevTogether/sandbox-logo_adbpan.png",
         },
     ];
 
@@ -198,35 +198,26 @@ const LandingPage = () => {
 
 
                 {/* Trusted Logos */}
-                <section className="py-24 bg-gray-50 reveal dark:bg-black text-center">
-                    <motion.h2
-                        initial={{ opacity: 0, y: -20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                        className="text-4xl font-extrabold text-gray-900 dark:text-white mb-12"
-                    >
-                        Trusted by Engineering Teams Worldwide
-                    </motion.h2>
+                <section className="py-24 bg-white dark:bg-black">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="text-center mb-20">
+                            <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+                                Trusted by Engineering Teams Worldwide
+                            </h2>
+                        </div>
 
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 justify-items-center items-center px-6 max-w-6xl mx-auto">
-                        {logos.map((brand, idx) => (
-                            <motion.div
-                                key={idx}
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.4, delay: idx * 0.1 }}
-                                className="bg-white dark:bg-neutral-900 p-4 rounded-lg shadow hover:shadow-xl transition duration-300 transform hover:scale-105"
-                            >
+                        <div className="flex flex-wrap justify-center gap-y-12 gap-x-16 hover:cursor-pointer">
+                            {logos.map((brand, idx) => (
+                                <div key={idx} className="flex items-center justify-center w-40">
                                 <img
                                     src={brand.url}
                                     alt={`${brand.name} logo`}
-                                    title={brand.name}
-                                    className="h-12 object-contain mx-auto"
+                                    className="max-h-40 w-auto  mix-blend-multiply dark:mix-blend-normal grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
                                 />
-                            </motion.div>
-                        ))}
+                                </div>
+                            ))}
+                        </div>
+                        
                     </div>
                 </section>
 
