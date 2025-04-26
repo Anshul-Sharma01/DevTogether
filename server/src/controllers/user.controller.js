@@ -134,7 +134,7 @@ const loginController = asyncHandler(async (req,res) => {
     }
 
     return res
-    .status(201)
+    .status(200)
     .cookie("accessToken", accessToken, cookieOptions)
     .cookie("refreshToken", refreshToken, cookieOptions)
     .json(

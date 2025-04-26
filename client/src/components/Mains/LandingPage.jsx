@@ -14,23 +14,23 @@ const LandingPage = () => {
     const logos = [
         {
             name: "Mircrosoft",
-            url: "https://res.cloudinary.com/dqnzstk72/image/upload/v1745433361/DevTogether/ms-logo_fwtnhq.png",
+            url: "https://res.cloudinary.com/dqnzstk72/image/upload/v1745662079/DevTogether/microsoft-svgrepo-com_yjmrow.svg",
         },
         {
             name: "Netflix",
-            url: "https://res.cloudinary.com/dqnzstk72/image/upload/v1745433361/DevTogether/ntflx-logo_qvdigx.png",
+            url: "https://res.cloudinary.com/dqnzstk72/image/upload/v1745662079/DevTogether/netflix-svgrepo-com_fchc3y.svg",
         },
         {
-            name: "AWS",
-            url: "https://res.cloudinary.com/dqnzstk72/image/upload/v1745433361/DevTogether/aws-logo_ug2vz8.png",
+            name: "LinkedIn",
+            url: "https://res.cloudinary.com/dqnzstk72/image/upload/v1745663043/DevTogether/linkedin-svgrepo-com_nxd74u.svg",
         },
         {
-            name: "GitHub",
-            url: "https://res.cloudinary.com/dqnzstk72/image/upload/v1745433361/DevTogether/github-logo_uvqvdu.png",
+            name: "Vite",
+            url: "https://res.cloudinary.com/dqnzstk72/image/upload/v1745663376/DevTogether/vite-svgrepo-com_yl2b1m.svg",
         },
         {
-            name: "Sandbox",
-            url: "https://res.cloudinary.com/dqnzstk72/image/upload/v1745433362/DevTogether/sandbox-logo_adbpan.png",
+            name: "Docker",
+            url: "https://res.cloudinary.com/dqnzstk72/image/upload/v1745662538/DevTogether/docker-svgrepo-com_v3ucpi.svg",
         },
     ];
 
@@ -212,7 +212,7 @@ const LandingPage = () => {
                                 <img
                                     src={brand.url}
                                     alt={`${brand.name} logo`}
-                                    className="max-h-40 w-auto  mix-blend-multiply dark:mix-blend-normal grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+                                    className="max-h-40 w-auto  mix-blend-multiply dark:mix-blend-normal transition-all duration-300"
                                 />
                                 </div>
                             ))}
