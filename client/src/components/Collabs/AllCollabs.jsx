@@ -31,9 +31,9 @@ const AllCollabs = () => {
     if(res?.payload?.statusCode === 200){
       console.log("Successfully started the playground");
       setTimeout(() => {
-       window.open(`http://localhost:${res?.payload?.data?.frontendPort}/language/${res?.payload?.data?.language}/room/${res?.payload?.data?.roomId}`,'_blank');
+        window.open(`http://${res?.payload?.data?.frontendContainerName}.docker.localhost/language/${res?.payload?.data?.language}/room/${res?.payload?.data?.roomId}`, '_blank');
         console.log("Redirecting ??");
-      }, 500);
+      }, 5000);
     }
   }
 

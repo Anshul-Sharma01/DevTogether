@@ -161,7 +161,7 @@ Let every name feel like a future unicorn startup.
       setShowNewCollabModel(false);
 
       setTimeout(() => {
-        window.open(`http://localhost:${res?.payload?.data?.frontendPort}/language/${res?.payload?.data?.language}/room/${roomId}`, '_blank');
+        window.open(`http://${res?.payload?.data?.frontendContainerName}.docker.localhost/language/${res?.payload?.data?.language}/room/${res?.payload?.data?.roomId}`, '_blank');
       }, 200);
       // window.location.href = `http://localhost:${5174}/room/${roomId}`;
     }
