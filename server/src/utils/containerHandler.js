@@ -1,123 +1,58 @@
 import Docker from 'dockerode';
-import getPort from 'get-port';
 
 const docker = new Docker();
 
-const NETWORK_NAME = `Network-${Date.now()}`;
 const FRONTEND_IMAGE = 'frontend-ide';
 const BACKEND_IMAGE = 'backend-ide';
-const PORT_IMAGE = "port-ide"
 
-// Create the Docker network if it doesn't exist
-const ensureNetworkExists = async (networkName) => {
-  const networks = await docker.listNetworks();
-  const existing = networks.find(n => n.Name === networkName);
-  if (!existing) {
-    console.log(`Creating network: ${networkName}`);
-    await docker.createNetwork({ Name: networkName });
-  } else {
-    console.log(`Network '${networkName}' already exists`);
-  }
-}
 
-const createContainerWithExposedPorts = async (imageName) => {
-  const exposedPorts = {
-    '3000/tcp': {},
-    '5175/tcp': {}
-  };
-
-  const portBindings = {
-    '3000/tcp': [{ HostPort: '3000' }],
-    '5175/tcp': [{ HostPort: '5175' }]
-  };
-
+const setup = async (language, roomId) => {
   try {
-    const container = await docker.createContainer({
-      Image: imageName,
-      name: `container-${Date.now()}`,
-      ExposedPorts: exposedPorts,
-      HostConfig: {
-        PortBindings: portBindings,
-      },
-      NetworkingConfig: {
-        EndpointsConfig: {
-          [NETWORK_NAME]: {}
-        }
-      }
-    });
+    const date = Date.now();
 
-    await container.start();
-    console.log(`🚀 User container started. Access ports → 3000 & 5175`);
-    return container.id;
-  } catch (err) {
-    console.error('❌ Error creating container:', err);
-  }
-};
-
-// Create a container with a unique name and dynamic port
-const createDynamicContainer = async (namePrefix, image, containerPort, envVars = {}) => {
-  const hostPort = await getPort();
-  const containerName = `${namePrefix}-${Date.now()}`;
-
-  const container = await docker.createContainer({
-    name: containerName,
-    Image: image,
-    ExposedPorts: {
-      [`${containerPort}/tcp`]: {}
-    },
-    HostConfig: {
-      PortBindings: {
-        [`${containerPort}/tcp`]: [{ HostPort: String(hostPort) }]
-      }
-    },
-    Env: Object.entries(envVars).map(([key, val]) => `${key}=${val}`),
-    NetworkingConfig: {
-      EndpointsConfig: {
-        [NETWORK_NAME]: {}
-      }
-    }
+  const backend = await docker.createContainer({
+    Image: BACKEND_IMAGE,
+    name: `backend-${date}`,
+    ExposedPorts: { '9000/tcp': {} },
+    HostConfig: { NetworkMode: 'bridge' },
+    Labels: { 
+      "traefik.enable": "true",
+      [`traefik.http.routers.backend-${date}.rule`]: 
+        `Host(\`backend-${date}.docker.localhost\`)`,
+      [`traefik.http.services.backend-${date}.loadbalancer.server.port`]:
+        "9000",
+     }
   });
+  await backend.start();
+  console.log("Backend Container Created.....")
 
-  await container.start();
-  console.log(`${containerName} started → http://localhost:${hostPort}`);
-  return { 
-    containerName, 
-    hostPort,
-    containerId: container.id,
-   };
-}
+  const frontend = await docker.createContainer({
+    Image: FRONTEND_IMAGE,
+    name: `frontend-${date}`,
+    ExposedPorts: { '5174/tcp': {} },
+    HostConfig: { NetworkMode: 'bridge' },
+    Labels: {
+      "traefik.enable": "true",
+      [`traefik.http.routers.frontend-${date}.rule`]:
+        `Host(\`frontend-${date}.docker.localhost\`)`,
+      [`traefik.http.services.frontend-${date}.loadbalancer.server.port`]:
+        "5174",
+    },
+    Env: [
+      `VITE_API_URL=http://backend-${date}.docker.localhost`
+    ]
+  });
+  await frontend.start();
+  console.log("Frontend Container Created.....")
 
-// Boot everything
-const setup = async () =>  {
-  try {
-    await ensureNetworkExists(NETWORK_NAME);
-
-  // Create backend container
-  const backend = await createDynamicContainer(
-    'backend',
-    BACKEND_IMAGE,
-    9000
-  );
-
-  // Create frontend container with backend VITE_URL injected
-  const frontend = await createDynamicContainer(
-    'frontend',
-    FRONTEND_IMAGE,
-    5174,
-    { VITE_API_URL: `http://localhost:${backend.hostPort}` }
-  );
-  
-  const userContainer = await createContainerWithExposedPorts(PORT_IMAGE)
-
-  console.log(userContainer);
-  
-  console.log('\nContainers ready:');
-  console.log(`Backend → http://localhost:${backend.hostPort}`);
-  console.log(`Frontend → http://localhost:${frontend.hostPort}`);
-  return { frontend , backend }
-
+  return {
+    frontendName: `frontend-${date}`,
+    backendName: `backend-${date}`,
+    frontendId: frontend.id,
+    backendId: backend.id,
+  }
   } catch (error) {
-    console.log(error.message);
+    console.log(error)
   }
 }
 
