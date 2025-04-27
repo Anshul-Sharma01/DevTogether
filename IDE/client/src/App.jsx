@@ -5,6 +5,7 @@ import InviteCollaborator from './components/InviteCollaborator';
 import Editor from './components/Editor.jsx';
 import HtmlCssJsEditor from './components/HtmlCssJsEditor.jsx';
 import { Route, Routes, } from 'react-router-dom';
+import { Output } from './components/Output.jsx';
 
 // Lazy-loaded components
 const FileTree = lazy(() => import('./components/FileTree'));
@@ -23,6 +24,7 @@ const App = () => {
   const [isDraggingTerminal, setIsDraggingTerminal] = useState(false);
   const [language, setLanguage] = useState("");
   const [isRoomOwner, setIsRoomOwner] = useState(false);
+  const [showOutput, setShowOutput] = useState(false);
   const [clientRoomId, setClientRoomId] = useState("");
   const [video, setVideo] = useState("")
   const [roomId, setRoomId] = useState(() => {
@@ -192,6 +194,14 @@ const App = () => {
         {/* Main content area */}
         <div className="flex-1 flex flex-col overflow-hidden bg-[#121212]">
           <div className="bg-[#252525] px-4 py-1 text-xs border-b border-[#333333] flex justify-between items-center">
+          {language != "html" && (
+          <button
+    onClick={() => setShowOutput(!showOutput)}
+    className="ml-4 px-3 py-1 rounded bg-[#333333] hover:bg-[#444444] text-white text-xs border border-[#555555] transition"
+  >
+    {showOutput ? "Hide Output" : "Show Output"}
+  </button>
+)}
             {selectedFile ? (
               <span className="text-[#ffffff] p-1 tracking-wider ">{selectedFile.replaceAll("/", " > ")}</span>
             ) : (
@@ -268,6 +278,7 @@ const App = () => {
           </svg>
         </button>
         </div> ) }
+        {showOutput && <Output/>}
     </div>
   );
 };
