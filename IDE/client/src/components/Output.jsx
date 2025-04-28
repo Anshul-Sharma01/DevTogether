@@ -6,7 +6,7 @@ export const Output = ({ clientRoomId }) => {
     const [name, setName] = useState("");
     useEffect(() => {
       const fetching = async () => {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/user-url?clientRoomId=${clientRoomId}`);
+        const response = await axios.get(`http://localhost:5000/api/collab/user-url?clientRoomId=${clientRoomId}`);
         setName(response.data.name)
       }
       fetching()
