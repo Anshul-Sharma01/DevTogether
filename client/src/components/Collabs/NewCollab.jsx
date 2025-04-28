@@ -160,9 +160,18 @@ Let every name feel like a future unicorn startup.
       setSelectedOption(null);
       setShowNewCollabModel(false);
 
+      const newWindow = window.open('', '_blank'); // Open blank tab immediately
       setTimeout(() => {
-        window.open(`http://${res?.payload?.data?.frontendContainerName}.docker.localhost/language/${res?.payload?.data?.language}/room/${res?.payload?.data?.roomId}`, '_blank');
-      }, 200);
+        if (newWindow) {
+          if(res?.payload?.data?.language !== "custom"){
+            newWindow.location.href = `http://${res?.payload?.data?.frontendContainerName}.docker.localhost/${res?.payload?.data?.userContainerName}/language/${res?.payload?.data?.language}/room/${res?.payload?.data?.roomId}`;
+          }
+          else {
+            newWindow.location.href = `http://${res?.payload?.data?.frontendContainerName}.docker.localhost/${res?.payload?.data?.userFrontendContainerName}/language/${res?.payload?.data?.language}/room/${res?.payload?.data?.roomId}`;
+          }
+        }
+      }, 2000);
+      
       // window.location.href = `http://localhost:${5174}/room/${roomId}`;
     }
   };

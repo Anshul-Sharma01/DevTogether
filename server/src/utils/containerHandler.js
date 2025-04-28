@@ -14,7 +14,7 @@ const setup = async (language, roomId) => {
     Image: BACKEND_IMAGE,
     name: `backend-${date}`,
     ExposedPorts: { '9000/tcp': {} },
-    HostConfig: { NetworkMode: 'bridge' },
+    HostConfig: { NetworkMode: 'traefik-public' },
     Labels: { 
       "traefik.enable": "true",
       [`traefik.http.routers.backend-${date}.rule`]: 
@@ -30,7 +30,7 @@ const setup = async (language, roomId) => {
     Image: FRONTEND_IMAGE,
     name: `frontend-${date}`,
     ExposedPorts: { '5174/tcp': {} },
-    HostConfig: { NetworkMode: 'bridge' },
+    HostConfig: { NetworkMode: 'traefik-public' },
     Labels: {
       "traefik.enable": "true",
       [`traefik.http.routers.frontend-${date}.rule`]:
@@ -49,23 +49,25 @@ const setup = async (language, roomId) => {
   let userContainerPort;
 
   if(language === "node")  {
-    userContainerFolder = "server"
+    userContainerFolder = "backend"
     userContainerPort = 3000
   }
   else if(language === "react") {
-    userContainerFolder = "client"
+    userContainerFolder = "frontend"
     userContainerPort = 5175
   }
   
   let user;
+  let userbackend;
+  let userfrontend;
   if(userContainerFolder && userContainerPort) {
      user = await docker.createContainer({
-      Image: 'node:18',
+      Image: 'node:18-alpine3.18',
       name: `user-${date}`,
       Tty: true,
       ExposedPorts: { [`${userContainerPort}/tcp`]: {} },
       HostConfig: {
-        NetworkMode: 'bridge',
+        NetworkMode: 'traefik-public',
         VolumesFrom: [`backend-${date}`]
       },
       Labels: {
@@ -81,29 +83,70 @@ const setup = async (language, roomId) => {
     await user.start();
     console.log("User container started.....");
   }
+  else {
+      userbackend = await docker.createContainer({
+      Image: 'node:18-alpine3.18',
+      name: `user-backend-${date}`,
+      Tty: true,
+      ExposedPorts: { [`3000/tcp`]: {} },
+      HostConfig: {
+        NetworkMode: 'traefik-public',
+        VolumesFrom: [`backend-${date}`]
+      },
+      Labels: {
+        "traefik.enable": "true",
+        [`traefik.http.routers.user-backend-${date}.rule`]:
+          `Host(\`user-backend-${date}.docker.localhost\`)`,
+        [`traefik.http.services.user-backend-${date}.loadbalancer.server.port`]:
+          `3000`,
+      },
+      WorkingDir: `/app/user/server`,
+      Cmd: ['sh','-c','npm install && npm run dev']
+    });
+    await userbackend.start();
+
+      userfrontend = await docker.createContainer({
+      Image: 'node:18-alpine3.18',
+      name: `user-frontend-${date}`,
+      Tty: true,
+      ExposedPorts: { [`5175/tcp`]: {} },
+      HostConfig: {
+        NetworkMode: 'traefik-public',
+        VolumesFrom: [`backend-${date}`]
+      },
+      Labels: {
+        "traefik.enable": "true",
+        [`traefik.http.routers.user-frontend-${date}.rule`]:
+          `Host(\`user-frontend-${date}.docker.localhost\`)`,
+        [`traefik.http.services.user-frontend-${date}.loadbalancer.server.port`]:
+          `5175`,
+      },
+      WorkingDir: `/app/user/client`,
+      Env: [
+        `VITE_BACKEND_URL=http://user-backend-${date}.docker.localhost`
+      ],
+      Cmd: ['sh','-c','npm install && npm run dev']
+    });
+    await userfrontend.start();
+  }
   
   return {
     frontendName: `frontend-${date}`,
     backendName: `backend-${date}`,
     userName: `user-${date}`,
+    userbackendName: `user-backend-${date}`,
+    userfrontendName: `user-frontend-${date}`,
     frontendId: frontend.id,
     backendId: backend.id,
-    userId: user?.id
+    userId: user?.id,
+    userbackendId: userbackend?.id,
+    userfrontendId: userfrontend?.id
   }
   } catch (error) {
     console.log(error)
   }
 }
 
-const stopContainer = async (containerId) => {
-   try {
-     const container = docker.getContainer(containerId)
-     await container.stop();
-    
-   } catch (error) {
-      console.log(error.message);
-   }
-}
 
 const startContainer = async (containerId) => {
   try {
@@ -134,7 +177,6 @@ const deleteContainer = async (containerId) => {
 
 export {
     setup,
-    stopContainer,
     startContainer,
     deleteContainer
 }

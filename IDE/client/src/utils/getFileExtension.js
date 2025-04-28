@@ -39,7 +39,7 @@ export const getFileExtension = ({ selectedFile }) => {
       case "txt":
         return "txt"
       case "jsx":
-        return "jsx"
+        return "javascript.jsx"
       case "ts":
         return "typescript"
       case "tsx":

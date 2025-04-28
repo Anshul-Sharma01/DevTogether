@@ -30,10 +30,17 @@ const AllCollabs = () => {
     console.log("Res : ", res);
     if(res?.payload?.statusCode === 200){
       console.log("Successfully started the playground");
+      const newWindow = window.open('', '_blank'); // Open blank tab immediately
       setTimeout(() => {
-        window.open(`http://${res?.payload?.data?.frontendContainerName}.docker.localhost/language/${res?.payload?.data?.language}/room/${res?.payload?.data?.roomId}`, '_blank');
-        console.log("Redirecting ??");
-      }, 5000);
+        if (newWindow) {
+          if(res?.payload?.data?.language !== "custom"){
+            newWindow.location.href = `http://${res?.payload?.data?.frontendContainerName}.docker.localhost/${res?.payload?.data?.userContainerName}/language/${res?.payload?.data?.language}/room/${res?.payload?.data?.roomId}`;
+          }
+          else {
+            newWindow.location.href = `http://${res?.payload?.data?.frontendContainerName}.docker.localhost/${res?.payload?.data?.userFrontendContainerName}/language/${res?.payload?.data?.language}/room/${res?.payload?.data?.roomId}`;
+          }
+        }
+      }, 1000);
     }
   }
 

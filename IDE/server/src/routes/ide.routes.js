@@ -1,7 +1,9 @@
 import { Router } from "express";
 import fs from "fs/promises"
 import { generateFileTree } from "../controllers/generateFileTree.controller.js";
+import Docker from "dockerode"
 
+const docker = new Docker({ socketPath: '/var/run/docker.sock' })
 const router = Router()
 
 router.route("/file-path").get(async (req,res) => {
@@ -29,18 +31,34 @@ router.route("/file-content/htmlcssjs").get(async(req,res) => {
     })
 })
 
-
-// router.route("/user-url").get(async(req,res) => {
-//     const { clientRoomId } = req.query;
-
-//     const collab = await Collab.findOne({roomId:clientRoomId})
-
-//     let name = collab?.userContainerName;
-//     res.json({
-//         name
-//     })
-
-// })
+router.route("/stop-collab/:date").post(async (req, res) => {
+    try {
+      const { date } = req.params;
+      console.log(date);
+  
+      await stopContainer(`frontend-${date}`);
+      await stopContainer(`user-${date}`);
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await stopContainer(`backend-${date}`);
+  
+      res.status(200).send("Stopped containers");
+    } catch (error) {
+      console.log(error);
+      res.status(500).send("Error stopping containers");
+    }
+  });
+  
+  async function stopContainer(containerName) {
+    try {
+      const container = docker.getContainer(containerName);
+      await container.stop();
+      console.log(`Stopped ${containerName}`);
+    } catch (err) {
+      console.error(`Failed to stop ${containerName}:`, err);
+      throw err;
+    }
+  }
+  
 
 
 export default router;

@@ -68,10 +68,17 @@ function NavigationLayout({ children }) {
         console.log("Res : ", res);
         if(res?.payload?.statusCode === 200){
             console.log("Successfully started the playground");
+            const newWindow = window.open('', '_blank');
             setTimeout(() => {
-                window.open(`http://localhost:${res?.payload?.data?.frontendPort}/language/${res?.payload?.data?.language}/room/${res?.payload?.data?.roomId}`,'_blank');
-                console.log("Redirecting");
-            }, 500);
+                if (newWindow) {
+                  if(res?.payload?.data?.language !== "custom"){
+                    newWindow.location.href = `http://${res?.payload?.data?.frontendContainerName}.docker.localhost/${res?.payload?.data?.userContainerName}/language/${res?.payload?.data?.language}/room/${res?.payload?.data?.roomId}`;
+                  }
+                  else {
+                    newWindow.location.href = `http://${res?.payload?.data?.frontendContainerName}.docker.localhost/${res?.payload?.data?.userFrontendContainerName}/language/${res?.payload?.data?.language}/room/${res?.payload?.data?.roomId}`;
+                  }
+                }
+              }, 1000);
         }
     }
 
