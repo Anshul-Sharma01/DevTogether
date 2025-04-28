@@ -1,6 +1,7 @@
 import { Router } from "express";
 import fs from "fs/promises"
 import { generateFileTree } from "../controllers/generateFileTree.controller.js";
+import { Collab } from "../../../../server/src/models/collab.model.js";
 
 const router = Router()
 
@@ -27,6 +28,18 @@ router.route("/file-content/htmlcssjs").get(async(req,res) => {
     res.json({
         html,css,js
     })
+
+router.route("/user-url").get(async(req,res) => {
+    const { clientRoomId } = req.query;
+
+    const collab = await Collab.findOne({roomId:clientRoomId})
+
+    let name = collab?.userContainerName;
+    res.json({
+        name
+    })
+
+})
 
 })
 

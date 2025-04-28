@@ -278,7 +278,7 @@ const App = () => {
           </svg>
         </button>
         </div> ) }
-        {showOutput && <Output/>}
+        {showOutput && <Output  clientRoomId={clientRoomId} />}
     </div>
   );
 };
