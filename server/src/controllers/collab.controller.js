@@ -25,15 +25,20 @@ const createCollab = asyncHandler(async (req, res) => {
         throw new ApiError(409, "Collab with same room ID already exists");
     }
 
-    const {frontendName,backendName,frontendId,backendId} = await setup(language, roomId);
+    const {frontendName,backendName,userName,frontendId,backendId,userId} = await setup(language, roomId);
 
     console.log("Frontend Name: ", frontendName);
     console.log("Backend Name: ", backendName);
     console.log("Frontend Container ID: ", frontendId);
     console.log("Backend Container ID: ", backendId);
+    console.log("User Container",userId)
 
     if(!frontendId || !backendId) {
       throw new ApiError(400, "Container not formed")
+    }
+
+    if(userId === undefined) {
+    userId = "null"
     }
 
     const newCollab = await Collab.create({
@@ -45,7 +50,9 @@ const createCollab = asyncHandler(async (req, res) => {
       frontendContainerName: frontendName,
       backendContainerName: backendName,
       frontendContainerId: frontendId,
-      backendContainerId: backendId
+      backendContainerId: backendId,
+      userContainerName: userName,
+      userContainerId: userId
     });
 
     if(!newCollab) {

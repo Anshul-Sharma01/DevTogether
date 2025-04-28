@@ -39,6 +39,10 @@ const collabSchema = new Schema(
         required:true,
       },
 
+      userContainerName: {
+        type: String,
+      },
+
       frontendContainerId: {
         type:String,
         required:true,
@@ -47,6 +51,10 @@ const collabSchema = new Schema(
       backendContainerId: {
         type:String,
         required:true
+      },
+
+      userContainerId: {
+        type: String
       }
     },
 

@@ -45,11 +45,50 @@ const setup = async (language, roomId) => {
   await frontend.start();
   console.log("Frontend Container Created.....")
 
+  let userContainerFolder;
+  let userContainerPort;
+
+  if(language === "node")  {
+    userContainerFolder = "server"
+    userContainerPort = 3000
+  }
+  else if(language === "react") {
+    userContainerFolder = "client"
+    userContainerPort = 5175
+  }
+  
+  let user;
+  if(userContainerFolder && userContainerPort) {
+     user = await docker.createContainer({
+      Image: 'node:18',
+      name: `user-${date}`,
+      Tty: true,
+      ExposedPorts: { [`${userContainerPort}/tcp`]: {} },
+      HostConfig: {
+        NetworkMode: 'bridge',
+        VolumesFrom: [`backend-${date}`]
+      },
+      Labels: {
+        "traefik.enable": "true",
+        [`traefik.http.routers.user-${date}.rule`]:
+          `Host(\`user-${date}.docker.localhost\`)`,
+        [`traefik.http.services.user-${date}.loadbalancer.server.port`]:
+          `${userContainerPort}`,
+      },
+      WorkingDir: `/app/user/${userContainerFolder}`,
+      Cmd: ['sh','-c','npm install && npm run dev']
+    });
+    await user.start();
+    console.log("User container started.....");
+  }
+  
   return {
     frontendName: `frontend-${date}`,
     backendName: `backend-${date}`,
+    userName: `user-${date}`,
     frontendId: frontend.id,
     backendId: backend.id,
+    userId: user?.id
   }
   } catch (error) {
     console.log(error)
