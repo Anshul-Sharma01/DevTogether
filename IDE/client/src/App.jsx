@@ -24,10 +24,9 @@ const App = () => {
   const [isDraggingTerminal, setIsDraggingTerminal] = useState(false);
   const [language, setLanguage] = useState("");
   const [isRoomOwner, setIsRoomOwner] = useState(false);
-  const [showOutput, setShowOutput] = useState(false);
+  const [showOutput, setShowOutput] = useState(true);
   const [clientRoomId, setClientRoomId] = useState("");
   const [video, setVideo] = useState("")
-  const [date, setDate] = useState("")
   const [roomId, setRoomId] = useState(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const urlRoomId = urlParams.get('roomId');
