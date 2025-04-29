@@ -60,12 +60,7 @@ const AllCollabs = () => {
       <div className="pt-24 px-4 md:px-8 bg-white dark:bg-black min-h-screen text-gray-900 dark:text-white transition-all duration-300">
         <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
         
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-xl shadow transition-all"
-          >
-            Create / Add Collab
-          </button>
+          
 
           <button
             onClick={() => setView(view === "grid" ? "list" : "grid")}
