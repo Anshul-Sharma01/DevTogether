@@ -5,7 +5,7 @@ import InviteCollaborator from './components/InviteCollaborator';
 import Editor from './components/Editor.jsx';
 import HtmlCssJsEditor from './components/HtmlCssJsEditor.jsx';
 import { Route, Routes, } from 'react-router-dom';
-import { Output } from './components/Output.jsx';
+import Output  from './components/Output.jsx';
 
 // Lazy-loaded components
 const FileTree = lazy(() => import('./components/FileTree'));
@@ -214,7 +214,7 @@ const App = () => {
               {language != "html" && (
                 <button
                   onClick={() => setShowOutput(!showOutput)}
-                  className="px-3 py-1 rounded bg-[#333333] hover:bg-[#444444] text-white text-xs border border-[#555555] transition mr-4"
+                  className="px-3 py-1 rounded bg-[#333333] hover:bg-[#444444] text-white text-sm border border-[#555555] transition mr-4"
                 >
                   {showOutput ? "Hide Output" : "Show Output"}
                 </button>
@@ -229,7 +229,7 @@ const App = () => {
           {/* This div contains both editor and output side by side */}
           <div className="flex-1 flex overflow-hidden relative bg-[#121212]">
             {/* Editor area */}
-            <div className={`${showOutput ? 'w-1/2' : 'w-full'} flex flex-col relative`}>
+            <div className={`${language!== "html" ? (showOutput ? 'w-1/2' : 'w-full') : "w-full"} flex flex-col relative`}>
               {language !== "html" ? (
                 selectedFile ? (
                   <Editor selectedFile={selectedFile} roomId={roomId} />
@@ -270,9 +270,9 @@ const App = () => {
             </div>
             
             {/* Output area */}
-            {showOutput && (
+            {language != "html" && showOutput && (
               <div className="w-1/2 border-l border-[#333333]">
-                <Output clientRoomId={clientRoomId} />
+                <Output language = {language}/>
               </div>
             )}
           </div>
