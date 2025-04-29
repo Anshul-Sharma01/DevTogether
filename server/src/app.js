@@ -5,14 +5,7 @@ import cors from "cors";
 
 const app = express();
 app.use(cors({
-    origin: (origin, callback) => {
-        const allowedOrigins = [/^http:\/\/localhost:\d+$/];
-        if (!origin) return callback(null, false);
-        if (allowedOrigins.some(regex => regex.test(origin))) {
-            return callback(null, true);
-        }
-        return callback(new Error("Not allowed by CORS"));
-    },
+    origin: process.env.FRONTEND_URL,
     credentials: true
 }));
 
