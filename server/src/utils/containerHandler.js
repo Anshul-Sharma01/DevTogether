@@ -133,9 +133,9 @@ const setup = async (language, roomId) => {
   return {
     frontendName: `frontend-${date}`,
     backendName: `backend-${date}`,
-    userName: `user-${date}`,
-    userbackendName: `user-backend-${date}`,
-    userfrontendName: `user-frontend-${date}`,
+    userName: user ? `user-${date}` : undefined,
+    userbackendName: userbackend ? `user-backend-${date}` : undefined,
+    userfrontendName: userfrontend ?  `user-frontend-${date}` : undefined,
     frontendId: frontend.id,
     backendId: backend.id,
     userId: user?.id,

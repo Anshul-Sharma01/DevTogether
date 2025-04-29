@@ -155,8 +155,8 @@ const startCollab = asyncHandler(async (req,res) => {
    await startContainer(collab.frontendContainerId)
    await startContainer(collab.backendContainerId)
    await startContainer(collab?.userContainerId)
-   await deleteContainer(collab?.userFrontendContainerId)
-   await deleteContainer(collab?.userBackendContainerId)
+   await startContainer(collab?.userFrontendContainerId)
+   await startContainer(collab?.userBackendContainerId)
 
 
    return res
