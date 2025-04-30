@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import socket from "../socket.js";
 
-const FileTreeNode = ({ treeName, nodes, path, setSelectedFolder, onSelect, selectedFile }) => {
+const FileTreeNode = ({ treeName, nodes, path, setSelectedFolder, setSelectedFile, selectedFile }) => {
   const [isOpen, setIsOpen] = useState(false);
   const isDir = !!nodes;
   const isSelected = selectedFile === path;
@@ -12,7 +12,7 @@ const FileTreeNode = ({ treeName, nodes, path, setSelectedFolder, onSelect, sele
       setIsOpen(!isOpen);
       setSelectedFolder(path);
     } else {
-      onSelect(path);
+      setSelectedFile(path);
     }
   };
 
@@ -75,7 +75,7 @@ const FileTreeNode = ({ treeName, nodes, path, setSelectedFolder, onSelect, sele
               <FileTreeNode
                 treeName={child}
                 nodes={nodes[child]}
-                onSelect={onSelect}
+                setSelectedFile={setSelectedFile}
                 path={path + "/" + child}
                 setSelectedFolder={setSelectedFolder}
                 selectedFile={selectedFile}
@@ -88,7 +88,7 @@ const FileTreeNode = ({ treeName, nodes, path, setSelectedFolder, onSelect, sele
   );
 };
 
-const FileTree = ({ onSelect, setSelectedFolder, selectedFile, roomId, language }) => {
+const FileTree = ({ setSelectedFile, setSelectedFolder, selectedFile, roomId, language }) => {
   const [fileTree, setFileTree] = useState({});
   console.log(language);
   
@@ -123,7 +123,7 @@ const FileTree = ({ onSelect, setSelectedFolder, selectedFile, roomId, language 
         nodes={fileTree}
         path=""
         setSelectedFolder={setSelectedFolder}
-        onSelect={onSelect}
+        setSelectedFile={setSelectedFile}
         selectedFile={selectedFile}
       />
     </div>

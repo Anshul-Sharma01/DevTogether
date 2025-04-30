@@ -24,7 +24,7 @@ const App = () => {
   const [isDraggingTerminal, setIsDraggingTerminal] = useState(false);
   const [language, setLanguage] = useState("");
   const [isRoomOwner, setIsRoomOwner] = useState(false);
-  const [showOutput, setShowOutput] = useState(true);
+  const [showOutput, setShowOutput] = useState(false);
   const [clientRoomId, setClientRoomId] = useState("");
   const [video, setVideo] = useState("")
   const [roomId, setRoomId] = useState(() => {
@@ -184,7 +184,7 @@ const App = () => {
         <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-[#444444] scrollbar-track-[#252525] p-1">
           <Suspense fallback={<div className="p-4 text-sm text-gray-400">Loading File Tree...</div>}>
             <FileTree
-              onSelect={(path) => setSelectedFile(path)}
+              setSelectedFile={setSelectedFile}
               setSelectedFolder={setSelectedFolder}
               selectedFile={selectedFile}
               roomId={roomId}
