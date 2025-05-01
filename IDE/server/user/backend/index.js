@@ -1,17 +1,12 @@
-// Dont change the port
 import express from 'express';
 
 const app = express();
 const PORT = 3000;
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-
 app.get('/', (req, res) => {
-    res.send('Welcome to DevTogether!');
+    res.send('Welcone to DevTogether!');
 });
 
-app.listen(PORT,"0.0.0.0", () => {
+app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
